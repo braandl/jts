@@ -126,7 +126,7 @@ public class TestCaseTextDialog extends JDialog {
             }
         });
         rbJTSJava.setEnabled(false);
-        rbJTSJava.setText("JTS Java ");
+        rbJTSJava.setText("JTSEntry Java ");
         
         rbWKT.setText("WKT");
         rbWKT.addActionListener(new java.awt.event.ActionListener() {

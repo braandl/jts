@@ -13,6 +13,8 @@
  */
 package org.locationtech.jts.geom;
 
+import com.google.common.annotations.GwtIncompatible;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -219,6 +221,7 @@ public class CoordinateList
    *
    * @return a clone of this <tt>CoordinateList</tt> instance
    */
+  @GwtIncompatible
   public Object clone() {
       CoordinateList clone = (CoordinateList) super.clone();
       for (int i = 0; i < this.size(); i++) {

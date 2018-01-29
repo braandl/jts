@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.geom;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
@@ -166,6 +167,7 @@ public interface CoordinateSequence
    * @return a copy of the coordinate sequence containing copies of all points
    * @deprecated
    */
+  @GwtIncompatible
   Object clone();
   
   /**

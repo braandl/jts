@@ -13,7 +13,7 @@
 package org.locationtech.jts;
 
 /**
- * JTS API version information.
+ * JTSEntry API version information.
  * <p>
  * Versions consist of a 3-part version number: <code>major.minor.patch</code>
  * An optional release status string may be present in the string version of
@@ -24,7 +24,7 @@ package org.locationtech.jts;
 public class JTSVersion {
 
   /**
-   * The current version number of the JTS API.
+   * The current version number of the JTSEntry API.
    */
   public static final JTSVersion CURRENT_VERSION = new JTSVersion();
 
@@ -49,7 +49,7 @@ public class JTSVersion {
   private static final String releaseInfo = "";
 
   /**
-   * Prints the current JTS version to stdout.
+   * Prints the current JTSEntry version to stdout.
    *
    * @param args the command-line arguments (none are required).
    */

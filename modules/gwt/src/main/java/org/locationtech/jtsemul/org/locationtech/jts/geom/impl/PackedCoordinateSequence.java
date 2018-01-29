@@ -1,16 +1,36 @@
 /*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
+* The JTS Topology Suite is a collection of Java classes that
+* implement the fundamental operations required to validate a given
+* geo-spatial data set to a known topological specification.
+*
+* Copyright (C) 2001 Vivid Solutions
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*
+* For more information, contact:
+*
+*     Vivid Solutions
+*     Suite #1A
+*     2328 Government Street
+*     Victoria BC  V8T 5G5
+*     Canada
+*
+*     (250)385-6040
+*     www.vividsolutions.com
+*/
 package org.locationtech.jts.geom.impl;
-
 
 import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.Coordinate;
@@ -18,10 +38,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequences;
 import org.locationtech.jts.geom.Envelope;
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-import java.lang.ref.SoftReference;
-import java.util.Arrays;
 
 /**
  * A {@link CoordinateSequence} implementation based on a packed arrays.
@@ -36,11 +52,9 @@ import java.util.Arrays;
  *
  * @version 1.7
  */
-@GwtIncompatible
 public abstract class PackedCoordinateSequence
-    implements CoordinateSequence, Serializable
+    implements CoordinateSequence
 {
-  private static final long serialVersionUID = -3151899011275603L;
   /**
    * The dimensions of the coordinates hold in the packed array
    */
@@ -50,17 +64,17 @@ public abstract class PackedCoordinateSequence
    * A soft reference to the Coordinate[] representation of this sequence.
    * Makes repeated coordinate array accesses more efficient.
    */
-  protected transient SoftReference coordRef;
+  protected Coordinate[] coordRef;
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getDimension()
+   * @see CoordinateSequence#getDimension()
    */
   public int getDimension() {
     return this.dimension;
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int)
+   * @see CoordinateSequence#getCoordinate(int)
    */
   public Coordinate getCoordinate(int i) {
     Coordinate[] coords = getCachedCoords();
@@ -70,14 +84,14 @@ public abstract class PackedCoordinateSequence
       return getCoordinateInternal(i);
   }
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int)
+   * @see CoordinateSequence#getCoordinate(int)
    */
   public Coordinate getCoordinateCopy(int i) {
     return getCoordinateInternal(i);
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int)
+   * @see CoordinateSequence#getCoordinate(int)
    */
   public void getCoordinate(int i, Coordinate coord) {
     coord.x = getOrdinate(i, 0);
@@ -86,7 +100,7 @@ public abstract class PackedCoordinateSequence
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#toCoordinateArray()
+   * @see CoordinateSequence#toCoordinateArray()
    */
   public Coordinate[] toCoordinateArray() {
     Coordinate[] coords = getCachedCoords();
@@ -98,17 +112,20 @@ public abstract class PackedCoordinateSequence
     for (int i = 0; i < coords.length; i++) {
       coords[i] = getCoordinateInternal(i);
     }
-    coordRef = new SoftReference(coords);
+    coordRef = coords;
 
     return coords;
   }
+
+  @GwtIncompatible
+  public abstract PackedCoordinateSequence clone();
 
   /**
    * @return
    */
   private Coordinate[] getCachedCoords() {
     if (coordRef != null) {
-      Coordinate[] coords = (Coordinate[]) coordRef.get();
+      Coordinate[] coords = (Coordinate[]) coordRef;
       if (coords != null) {
         return coords;
       } else {
@@ -124,21 +141,21 @@ public abstract class PackedCoordinateSequence
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getX(int)
+   * @see CoordinateSequence#getX(int)
    */
   public double getX(int index) {
     return getOrdinate(index, 0);
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getY(int)
+   * @see CoordinateSequence#getY(int)
    */
   public double getY(int index) {
     return getOrdinate(index, 1);
   }
 
   /**
-   * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int)
+   * @see CoordinateSequence#getOrdinate(int, int)
    */
   public abstract double getOrdinate(int index, int ordinateIndex);
 
@@ -169,11 +186,6 @@ public abstract class PackedCoordinateSequence
     return CoordinateSequences.toString(this);
   }
 
-  protected Object readResolve() throws ObjectStreamException {
-    coordRef = null;
-    return this;
-  }
-  
   /**
    * Returns a Coordinate representation of the specified coordinate, by always
    * building a new Coordinate object
@@ -182,15 +194,6 @@ public abstract class PackedCoordinateSequence
    * @return
    */
   protected abstract Coordinate getCoordinateInternal(int index);
-
-  /**
-   * @see java.lang.Object#clone()
-   * @deprecated
-   */
-  @GwtIncompatible
-  public abstract Object clone();
-  
-  public abstract PackedCoordinateSequence copy();
 
   /**
    * Sets the ordinate of a coordinate in this sequence.
@@ -279,6 +282,8 @@ public abstract class PackedCoordinateSequence
 
     /**
      * Builds a new empty packed coordinate sequence of a given size and dimension
+     *
+     * @param coordinates
      */
     public Double(int size, int dimension) {
       this.dimension = dimension;
@@ -286,7 +291,7 @@ public abstract class PackedCoordinateSequence
     }
 
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int)
+     * @see CoordinateSequence#getCoordinate(int)
      */
     public Coordinate getCoordinateInternal(int i) {
       double x = coords[i * dimension];
@@ -306,30 +311,16 @@ public abstract class PackedCoordinateSequence
     }
     
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#size()
+     * @see CoordinateSequence#size()
      */
     public int size() {
       return coords.length / dimension;
     }
 
-    /**
-     * @see java.lang.Object#clone()
-     * @deprecated
-     */
-    @GwtIncompatible
-    public Object clone() {
-      return copy();
-    }
 
-    @GwtIncompatible
-    public Double copy() {
-      double[] clone = Arrays.copyOf(coords, coords.length);
-      return new Double(clone, dimension);
-    }
-    
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int)
-     *      Beware, for performance reasons the ordinate index is not checked, if
+     * @see CoordinateSequence#getOrdinate(int, int)
+     *      Beware, for performace reasons the ordinate index is not checked, if
      *      it's over dimensions you may not get an exception but a meaningless
      *      value.
      */
@@ -338,7 +329,7 @@ public abstract class PackedCoordinateSequence
     }
 
     /**
-     * @see com.vividsolutions.jts.geom.PackedCoordinateSequence#setOrdinate(int,
+     * @see org.oscim.web.jts.geom.PackedCoordinateSequence#setOrdinate(int,
      *      int, double)
      */
     public void setOrdinate(int index, int ordinate, double value) {
@@ -353,6 +344,15 @@ public abstract class PackedCoordinateSequence
       }
       return env;
     }
+
+    @GwtIncompatible
+    public Double clone() {
+      return null;
+    }
+
+    public CoordinateSequence copy() {
+      return null;
+    }
   }
 
   /**
@@ -366,7 +366,7 @@ public abstract class PackedCoordinateSequence
     float[] coords;
 
     /**
-     * Constructs a packed coordinate sequence from an array of <code>float</code>s
+     * Constructs a packed coordinate sequence from an array of <code>float<code>s
      *
      * @param coords
      * @param dimensions
@@ -384,14 +384,14 @@ public abstract class PackedCoordinateSequence
     }
 
     /**
-     * Constructs a packed coordinate sequence from an array of <code>double</code>s
+     * Constructs a packed coordinate sequence from an array of <code>double<code>s
      *
      * @param coordinates
      * @param dimension
      */
-    public Float(double[] coordinates, int dimension) {
+    public Float(double[] coordinates, int dimensions) {
       this.coords = new float[coordinates.length];
-      this.dimension = dimension;
+      this.dimension = dimensions;
       for (int i = 0; i < coordinates.length; i++) {
         this.coords[i] = (float) coordinates[i];
       }
@@ -419,6 +419,8 @@ public abstract class PackedCoordinateSequence
 
     /**
      * Constructs an empty packed coordinate sequence of a given size and dimension
+     *
+     * @param coordinates
      */
     public Float(int size, int dimension) {
       this.dimension = dimension;
@@ -426,7 +428,7 @@ public abstract class PackedCoordinateSequence
     }
 
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int)
+     * @see CoordinateSequence#getCoordinate(int)
      */
     public Coordinate getCoordinateInternal(int i) {
       double x = coords[i * dimension];
@@ -446,28 +448,15 @@ public abstract class PackedCoordinateSequence
     }
     
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#size()
+     * @see CoordinateSequence#size()
      */
     public int size() {
       return coords.length / dimension;
     }
 
-    /**
-     * @see java.lang.Object#clone()
-     * @deprecated
-     */
-    @GwtIncompatible
-    public Object clone() {
-      return copy();
-    }
-    
-    public Float copy() {
-      float[] clone = Arrays.copyOf(coords, coords.length);
-      return new Float(clone, dimension);
-    }
 
     /**
-     * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int)
+     * @see CoordinateSequence#getOrdinate(int, int)
      *      For performance reasons the ordinate index is not checked.
      *      If it is larger than the dimension a meaningless
      *      value may be returned.
@@ -477,7 +466,7 @@ public abstract class PackedCoordinateSequence
     }
 
     /**
-     * @see com.vividsolutions.jts.geom.PackedCoordinateSequence#setOrdinate(int,
+     * @see org.oscim.web.jts.geom.PackedCoordinateSequence#setOrdinate(int,
      *      int, double)
      */
     public void setOrdinate(int index, int ordinate, double value) {
@@ -491,6 +480,15 @@ public abstract class PackedCoordinateSequence
         env.expandToInclude(coords[i], coords[i + 1]);
       }
       return env;
+    }
+
+    @GwtIncompatible
+    public Float clone() {
+      return null;
+    }
+
+    public CoordinateSequence copy() {
+      return null;
     }
 
   }

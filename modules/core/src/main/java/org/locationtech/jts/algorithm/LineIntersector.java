@@ -14,6 +14,7 @@ package org.locationtech.jts.algorithm;
 /**
  * @version 1.7
  */
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.WKTWriter;
@@ -244,6 +245,7 @@ public abstract class LineIntersector
   }
 */
 
+  @GwtIncompatible
   public String toString() {
     return WKTWriter.toLineString(inputLines[0][0], inputLines[0][1]) + " - "
     + WKTWriter.toLineString(inputLines[1][0], inputLines[1][1])

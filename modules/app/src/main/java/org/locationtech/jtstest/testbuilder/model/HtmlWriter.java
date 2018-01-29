@@ -426,7 +426,7 @@ public class HtmlWriter {
     String html
          = "<HTML>" + StringUtil.newLine
          + "<HEAD>" + StringUtil.newLine
-         + "<TITLE>JTS Test Suite Index</TITLE>" + StringUtil.newLine
+         + "<TITLE>JTSEntry Test Suite Index</TITLE>" + StringUtil.newLine
          + "<link REL='STYLESHEET' HREF='../jts.css' TYPE='Text/css'>" + StringUtil.newLine
          + "<script LANGUAGE=\"JavaScript\">" + StringUtil.newLine
          + "  function LoadDetailFrame() {" + StringUtil.newLine
@@ -459,7 +459,7 @@ public class HtmlWriter {
          + "</script>" + StringUtil.newLine
          + "</HEAD>" + StringUtil.newLine
          + "<BODY>" + StringUtil.newLine
-         + "<h1>JTS Validation Suite</h1>" + StringUtil.newLine
+         + "<h1>JTSEntry Validation Suite</h1>" + StringUtil.newLine
          + htmlTitle(precisionModel)
          + "<p>" + StringUtil.newLine
          + "<FORM id=\"main_form\" name=\"main_form\">" + StringUtil.newLine;
@@ -501,7 +501,7 @@ public class HtmlWriter {
          + "<HTML>" + StringUtil.newLine
          + "<HEAD>" + StringUtil.newLine
          + "<TITLE>" + StringUtil.newLine
-         + "JTS Validation Suite" + StringUtil.newLine
+         + "JTSEntry Validation Suite" + StringUtil.newLine
          + "</TITLE>" + StringUtil.newLine
          + "</HEAD>" + StringUtil.newLine
          + "<FRAMESET rows=\"120px,*\" framespacing=0 frameborder=0>" + StringUtil.newLine

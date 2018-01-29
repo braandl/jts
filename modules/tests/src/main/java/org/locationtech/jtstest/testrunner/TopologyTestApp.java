@@ -206,7 +206,7 @@ public class TopologyTestApp extends JFrame {
       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       parseCommandLine(args);
       
-      System.out.println("=====  Test Runner  -  JTS Topology Suite (Version " 
+      System.out.println("=====  Test Runner  -  JTSEntry Topology Suite (Version "
       		+ JTSVersion.CURRENT_VERSION
       		+ ")  =====");
       

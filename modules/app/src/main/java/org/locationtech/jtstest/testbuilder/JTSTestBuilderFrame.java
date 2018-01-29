@@ -77,7 +77,7 @@ import org.locationtech.jtstest.util.StringUtil;
 
 
 /**
- * The main frame for the JTS Test Builder.
+ * The main frame for the JTSEntry Test Builder.
  * 
  * @version 1.7
  */
@@ -716,7 +716,7 @@ public class JTSTestBuilderFrame extends JFrame
         Color.white, new Color(93, 93, 93), new Color(134, 134, 134));
     contentPane.setLayout(borderLayout1);
     this.setSize(new Dimension(800, 800));
-    this.setTitle("JTS TestBuilder");
+    this.setTitle("JTSEntry TestBuilder");
     
     /*
     testCasePanel.editPanel.addGeometryListener(

@@ -191,7 +191,7 @@ public class OraReader
   Geometry read(OraGeom oraGeom) {
     int ordDim = oraGeom.ordDim();
     if (ordDim < 2) {
-    	throw new IllegalArgumentException("Dimension D = " + ordDim + " is not supported by JTS. " +
+    	throw new IllegalArgumentException("Dimension D = " + ordDim + " is not supported by JTSEntry. " +
     			"Either specify a valid dimension or use Oracle Locator Version 9i or later");
     }
     // read from SDO_POINT_TYPE, if that carries the primary geometry data
@@ -224,7 +224,7 @@ public class OraReader
 
   /**
    * Create a {@link GeometryCollection} as specified by elemInfo. Note that in
-   * Oracle, unlike the SFS and JTS, collections contain only atomic types or
+   * Oracle, unlike the SFS and JTSEntry, collections contain only atomic types or
    * (possibly) MultiPoints. This makes them simpler to parse.
    * 
    * @param oraGeom
@@ -279,7 +279,7 @@ public class OraReader
 
         default:
             throw new IllegalArgumentException("ETYPE " + etype
-                + " not representable as a JTS Geometry."
+                + " not representable as a JTSEntry Geometry."
                 + "(Custom and Compound Straight and Curved Geometries not supported)");
         }
         geomList.add(geom);
@@ -379,7 +379,7 @@ public class OraReader
      * @param elemIndex the element being read
      * @param coords the coordinates of the entire geometry
      * @return Polygon as encoded by elemInfo, or null when faced with and
-     *         encoding that can not be captured by JTS
+     *         encoding that can not be captured by JTSEntry
      * @throws IllegalArgumentException When faced with an invalid SDO encoding
      */
     private Polygon readPolygon(OraGeom oraGeom, int elemIndex) 

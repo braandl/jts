@@ -74,7 +74,7 @@ public class OrientationIndexFailureTest
 
   public void testBadCCW4() throws Exception
   {
-    // from JTS list - 5/15/2012  strange case for the GeometryNoder
+    // from JTSEntry list - 5/15/2012  strange case for the GeometryNoder
     Coordinate[] pts = {
         new Coordinate(-26.2, 188.7),
         new Coordinate(37.0, 290.7),
@@ -85,7 +85,7 @@ public class OrientationIndexFailureTest
 
   public void testBadCCW5() throws Exception
   {
-    // from JTS list - 6/15/2012  another case from Tomas Fa
+    // from JTSEntry list - 6/15/2012  another case from Tomas Fa
     Coordinate[] pts = {
         new Coordinate(-5.9, 163.1),
         new Coordinate(76.1, 250.7),
@@ -97,7 +97,7 @@ public class OrientationIndexFailureTest
 
   public void testBadCCW7() throws Exception
   {
-    // from JTS list - 6/26/2012  another case from Tomas Fa
+    // from JTSEntry list - 6/26/2012  another case from Tomas Fa
     Coordinate[] pts = {
         new Coordinate(-0.9575, 0.4511),
         new Coordinate(-0.9295, 0.3291),
@@ -110,7 +110,7 @@ public class OrientationIndexFailureTest
 
   public void testBadCCW7_2() throws Exception
   {
-    // from JTS list - 6/26/2012  another case from Tomas Fa
+    // from JTSEntry list - 6/26/2012  another case from Tomas Fa
     // scale to integers - all methods work on this
     Coordinate[] pts = {
         new Coordinate(-9575, 4511),
@@ -125,7 +125,7 @@ public class OrientationIndexFailureTest
 
   public void testBadCCW6() throws Exception
   {
-    // from JTS Convex Hull "Almost collinear" unit test
+    // from JTSEntry Convex Hull "Almost collinear" unit test
     Coordinate[] pts = {
         new Coordinate(-140.8859438214298, 140.88594382142983),
         new Coordinate(-57.309236848216706, 57.30923684821671),
@@ -136,7 +136,7 @@ public class OrientationIndexFailureTest
   
   /**
    * Shorthand method for most common case,
-   * where the high-precision methods work but JTS Robust algorithm fails.
+   * where the high-precision methods work but JTSEntry Robust algorithm fails.
    * @param pts
    */
   void checkOrientation(Coordinate[] pts)
@@ -156,7 +156,7 @@ public class OrientationIndexFailureTest
 
   private void checkOriginalJTS(Coordinate[] pts, boolean expected)
   {
-    assertTrue("JTS RobustDeterminant FAIL", expected == isAllOrientationsEqualRD(pts));
+    assertTrue("JTSEntry RobustDeterminant FAIL", expected == isAllOrientationsEqualRD(pts));
   }
 
   private void checkDD(Coordinate[] pts, boolean expected)

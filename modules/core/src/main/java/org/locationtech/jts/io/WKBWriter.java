@@ -14,6 +14,7 @@ package org.locationtech.jts.io;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
@@ -156,6 +157,7 @@ import org.locationtech.jts.util.Assert;
  * </pre></blockquote> 
  * @see WKBReader
  */
+@GwtIncompatible
 public class WKBWriter
 {
   /**

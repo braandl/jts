@@ -21,6 +21,7 @@ import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -33,6 +34,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
+@GwtIncompatible
 public class WKBHexFileReader 
 {
 	private File file = null;

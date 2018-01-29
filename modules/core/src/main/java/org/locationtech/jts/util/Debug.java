@@ -70,7 +70,7 @@ public class Debug {
    */
   public static void main(String[] args)
   {
-    System.out.println("JTS Debugging is " +
+    System.out.println("JTSEntry Debugging is " +
                        (debugOn ? "ON" : "OFF") );
   }
 

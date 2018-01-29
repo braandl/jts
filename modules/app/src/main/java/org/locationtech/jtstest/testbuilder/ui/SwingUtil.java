@@ -37,7 +37,7 @@ import org.locationtech.jtstest.util.StringUtil;
 
 public class SwingUtil {
 
-  public static FileFilter XML_FILE_FILTER = createFileFilter("JTS Test XML File (*.xml)", ".xml");
+  public static FileFilter XML_FILE_FILTER = createFileFilter("JTSEntry Test XML File (*.xml)", ".xml");
   public static  FileFilter JAVA_FILE_FILTER = createFileFilter("Java File (*.java)", ".java");
   public static  FileFilter PNG_FILE_FILTER = createFileFilter("PNG File (*.png)", ".png");
 

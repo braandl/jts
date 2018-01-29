@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.algorithm.Centroid;
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.algorithm.InteriorPointArea;
@@ -153,6 +154,7 @@ import org.locationtech.jts.util.Assert;
  *
  *@version 1.7
  */
+@GwtIncompatible
 public abstract class Geometry
     implements Cloneable, Comparable, Serializable
 {
@@ -1634,6 +1636,7 @@ public abstract class Geometry
    * @return a clone of this instance
    * @deprecated
    */
+  @GwtIncompatible
   public Object clone() {
     try {
       Geometry clone = (Geometry) super.clone();

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
@@ -187,7 +188,8 @@ public class NodedSegmentString
 		SegmentNode ei = nodeList.add(intPt, normalizedSegmentIndex);
 		return ei;
 	}
-  
+
+  @GwtIncompatible
   public String toString()
   {
   	return WKTWriter.toLineString(new CoordinateArraySequence(pts));

@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.geom;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.algorithm.Length;
 import org.locationtech.jts.operation.BoundaryOp;
 
@@ -261,6 +262,7 @@ public class LineString
    * @return a clone of this instance
    * @deprecated
    */
+  @GwtIncompatible
   public Object clone() {
     return copy();
   }

@@ -13,6 +13,7 @@ package org.locationtech.jts.geom.impl;
 
 import java.io.Serializable;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
@@ -189,6 +190,7 @@ public class CoordinateArraySequence
    * @return The deep copy
    * @deprecated
    */
+  @GwtIncompatible
   public Object clone() {
     return copy();
   }

@@ -33,7 +33,7 @@ import org.locationtech.jtstest.util.FilesUtil;
 import org.locationtech.jtstest.util.StringUtil;
 
 /**
- * A command-line utility to execute tests specified in JTS Test XML files.
+ * A command-line utility to execute tests specified in JTSEntry Test XML files.
  * Displays status and any errors encountered.
  * <p>
  * <b>Command Line Options</b>
@@ -127,7 +127,7 @@ public class JTSTestRunnerCmd {
     try {
 
       System.out
-          .println("=====  Test Runner  -  JTS Topology Suite (Version " + JTSVersion.CURRENT_VERSION + ")  =====");
+          .println("=====  Test Runner  -  JTSEntry Topology Suite (Version " + JTSVersion.CURRENT_VERSION + ")  =====");
 
       JTSTestRunnerCmd testRunner = new JTSTestRunnerCmd();
       if (args.length == 0) {

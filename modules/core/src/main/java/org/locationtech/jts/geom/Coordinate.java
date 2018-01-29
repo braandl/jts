@@ -14,6 +14,7 @@ package org.locationtech.jts.geom;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.util.Assert;
 import org.locationtech.jts.util.NumberUtil;
 
@@ -277,6 +278,7 @@ public class Coordinate implements Comparable, Cloneable, Serializable {
     return "(" + x + ", " + y + ", " + z + ")";
   }
 
+  @GwtIncompatible
   public Object clone() {
     try {
       Coordinate coord = (Coordinate) super.clone();

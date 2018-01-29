@@ -11,12 +11,15 @@
  */
 package org.locationtech.jts.io;
 
+import com.google.common.annotations.GwtIncompatible;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
  * An adapter to allow an {@link OutputStream} to be used as an {@link OutStream}
  */
+@GwtIncompatible
 public class OutputStreamOutStream
 	implements OutStream
 {

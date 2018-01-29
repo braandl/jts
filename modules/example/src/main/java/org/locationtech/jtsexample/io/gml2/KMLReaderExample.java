@@ -33,7 +33,7 @@ public class KMLReaderExample
   public static void main(String[] args)
   throws Exception
   {
-  	String filename = "C:\\proj\\JTS\\KML\\usPop-STUS-p06.kml";
+  	String filename = "C:\\proj\\JTSEntry\\KML\\usPop-STUS-p06.kml";
   	KMLReader rdr = new KMLReader(filename);
   	rdr.read();
   }

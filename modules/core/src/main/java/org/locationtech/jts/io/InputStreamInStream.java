@@ -11,12 +11,16 @@
  */
 package org.locationtech.jts.io;
 
+import com.google.common.annotations.GwtIncompatible;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * An adapter to allow an {@link InputStream} to be used as an {@link InStream}
  */
+
+@GwtIncompatible
 public class InputStreamInStream
 	implements InStream
 {

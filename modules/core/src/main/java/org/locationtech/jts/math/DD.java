@@ -11,6 +11,8 @@
  */
 package org.locationtech.jts.math;
 
+import com.google.common.annotations.GwtIncompatible;
+
 import java.io.Serializable;
 
 /**
@@ -239,6 +241,7 @@ public strictfp final class DD
    * 
    * @return a copy of this value
    */
+  @GwtIncompatible
   public Object clone()
   {
     try {

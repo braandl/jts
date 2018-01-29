@@ -38,6 +38,7 @@
         <jump.version>1.2</jump.version>
         <json-simple-version>1.1.1</json-simple-version>
         <sde-version>9.1</sde-version>
+        <gwt.version>2.8.0-beta1</gwt.version>
     </properties>
 
     <!-- PROJECT INFORMATION -->
@@ -111,6 +112,21 @@
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc7</artifactId>
                 <version>11.1.0.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-servlet</artifactId>
+                <version>${gwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-dev</artifactId>
+                <version>${gwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

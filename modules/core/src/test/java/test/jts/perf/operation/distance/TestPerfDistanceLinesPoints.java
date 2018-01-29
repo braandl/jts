@@ -102,7 +102,7 @@ public class TestPerfDistanceLinesPoints
   public void xtest(int num)
   throws Exception
   {
-    Geometry target = loadData("C:\\proj\\JTS\\test\\g2e\\ffmwdec08.wkt");
+    Geometry target = loadData("C:\\proj\\JTSEntry\\test\\g2e\\ffmwdec08.wkt");
     Envelope bcEnv_Albers = new Envelope(-45838, 1882064, 255756, 1733287);
     Geometry[] pts = createPoints(bcEnv_Albers, num);
     

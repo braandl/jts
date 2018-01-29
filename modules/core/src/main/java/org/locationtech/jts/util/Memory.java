@@ -11,12 +11,15 @@
  */
 package org.locationtech.jts.util;
 
+import com.google.common.annotations.GwtIncompatible;
+
 /**
  * Utility functions to report JVM memory usage.
  * 
  * @author mbdavis
  *
  */
+@GwtIncompatible
 public class Memory 
 {
 	public static long used()

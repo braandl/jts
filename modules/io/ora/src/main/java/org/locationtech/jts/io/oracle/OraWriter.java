@@ -32,8 +32,8 @@ import oracle.jdbc.OracleConnection;
 import oracle.sql.*;
 
 /**
- * Translates a JTS Geometry into an Oracle STRUCT representing an <code>MDSYS.SDO_GEOMETRY</code> object. 
- * Supports writing all JTS geometry types into an equivalent Oracle representation.
+ * Translates a JTSEntry Geometry into an Oracle STRUCT representing an <code>MDSYS.SDO_GEOMETRY</code> object.
+ * Supports writing all JTSEntry geometry types into an equivalent Oracle representation.
  * <p>
  * To write an Oracle <code>STRUCT</code> a connection to an Oracle instance with access to the definition of the <code>MDSYS.SDO_GEOMETRY</code>
  * type is required.  Oracle <code>SDO_GEOMETRY</code> SQL strings may be written without a connection, however.
@@ -65,7 +65,7 @@ import oracle.sql.*;
  * 
  * <h3>LIMITATIONS</h3>
  * <ul>
- * <li>Since JTS does not support Measures, they cannot be written.
+ * <li>Since JTSEntry does not support Measures, they cannot be written.
  * (A future release could allow forcing interpreting Z as M, or else providing a fixed M value).
  * </ul>
  * 
@@ -470,7 +470,7 @@ public class OraWriter
       return offset;
     }
 
-    throw new IllegalArgumentException("Cannot encode JTS "
+    throw new IllegalArgumentException("Cannot encode JTSEntry "
         + geom.getGeometryType() + " as SDO_ELEM_INFO "
         + "(Limited to Point, Line, Polygon, GeometryCollection, MultiPoint,"
         + " MultiLineString and MultiPolygon)");

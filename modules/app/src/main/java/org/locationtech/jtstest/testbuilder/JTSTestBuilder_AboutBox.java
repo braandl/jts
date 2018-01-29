@@ -52,7 +52,7 @@ public class JTSTestBuilder_AboutBox extends JDialog implements ActionListener {
     FlowLayout flowLayout1 = new FlowLayout();
     GridLayout gridLayout1 = new GridLayout();
     String product = "";
-    String version = "JTS Version " + JTSVersion.CURRENT_VERSION.toString();
+    String version = "JTSEntry Version " + JTSVersion.CURRENT_VERSION.toString();
     String copyright = "";
     String comments = "";
 
@@ -82,7 +82,7 @@ public class JTSTestBuilder_AboutBox extends JDialog implements ActionListener {
         
         labelJTS.setFont(new java.awt.Font("Dialog", 1, 16));
         labelJTS.setForeground(Color.blue);
-        labelJTS.setText("JTS Topology Suite");
+        labelJTS.setText("JTSEntry Topology Suite");
         
         label1.setFont(new java.awt.Font("Dialog", 1, 20));
         label1.setForeground(SystemColor.desktop);
