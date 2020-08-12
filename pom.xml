@@ -39,6 +39,8 @@
         <json-simple-version>1.1.1</json-simple-version>
         <sde-version>9.1</sde-version>
         <gwt.version>2.8.0-beta1</gwt.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <!-- PROJECT INFORMATION -->
@@ -76,16 +78,15 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>repo.locationtech.org</id>
+            <id>artifacts.contagt.com</id>
             <name>JTS Repository - Snapshots</name>
-            <url>https://repo.locationtech.org/content/repositories/jts-snapshots/</url>
+            <url>https://artifacts.contagt.com/artifactory/contagt-snapshot-local</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
