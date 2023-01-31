@@ -1,4 +1,4 @@
-JTS Topology Suite
+JTS Topology Suite (Modified to compile with GWT)
 ==================
 
 The JTS Topology Suite is a Java library for creating and manipulating vector geometry.  It also provides a comprehensive set of geometry test cases, and the TestBuilder GUI application for working with and visualizing geometry and JTS functions.
