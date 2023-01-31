@@ -3,7 +3,6 @@
 <module rename-to="JTS">
 	<inherits name="com.google.gwt.core.Core" />
 	<inherits name="com.google.web.bindery.autobean.AutoBean" />
-	
 	<entry-point class="org.locationtech.jts.JTSEntry" />
 
 	<source path="jts" />
