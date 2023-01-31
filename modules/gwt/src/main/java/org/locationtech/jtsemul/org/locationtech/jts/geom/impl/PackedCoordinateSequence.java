@@ -21,8 +21,6 @@ import org.locationtech.jts.geom.CoordinateXYM;
 import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.Envelope;
 
-import java.io.ObjectStreamException;
-import java.lang.ref.SoftReference;
 import java.util.Arrays;
 
 /**
@@ -41,7 +39,6 @@ import java.util.Arrays;
 public abstract class PackedCoordinateSequence
         implements CoordinateSequence
 {
-  private static final long serialVersionUID = -3151899011275603L;
   /**
    * The dimensions of the coordinates held in the packed array
    */
@@ -69,7 +66,7 @@ public abstract class PackedCoordinateSequence
    * A soft reference to the Coordinate[] representation of this sequence.
    * Makes repeated coordinate array accesses more efficient.
    */
-  protected transient SoftReference<Coordinate[]> coordRef;
+  protected Coordinate[] coordRef;
 
   /**
    * @see CoordinateSequence#getDimension()
@@ -130,21 +127,14 @@ public abstract class PackedCoordinateSequence
     for (int i = 0; i < coords.length; i++) {
       coords[i] = getCoordinateInternal(i);
     }
-    coordRef = new SoftReference<Coordinate[]>(coords);
+    coordRef = coords;
 
     return coords;
   }
 
   private Coordinate[] getCachedCoords() {
     if (coordRef != null) {
-      Coordinate[] coords = (Coordinate[]) coordRef.get();
-      if (coords != null) {
-        return coords;
-      } else {
-        // System.out.print("-");
-        coordRef = null;
-        return null;
-      }
+      return coordRef;
     } else {
       // System.out.print("-");
       return null;
@@ -198,7 +188,7 @@ public abstract class PackedCoordinateSequence
     return CoordinateSequences.toString(this);
   }
 
-  protected Object readResolve() throws ObjectStreamException {
+  protected Object readResolve() {
     coordRef = null;
     return this;
   }
@@ -242,7 +232,7 @@ public abstract class PackedCoordinateSequence
    * Packed coordinate sequence implementation based on doubles
    */
   public static class Double extends PackedCoordinateSequence {
-    private static final long serialVersionUID = 5777450686367912719L;
+
     /**
      * The packed coordinate array
      */
@@ -384,7 +374,6 @@ public abstract class PackedCoordinateSequence
       return copy();
     }
 
-    @GwtIncompatible
     /**
      * @see PackedCoordinateSequence#size()
      */

@@ -546,11 +546,22 @@ public class WKTWriter
         return formatter.format(d);
     }
 
+
+    public static String format(Coordinate p) {
+        return format(p.x, p.y);
+    }
+
+
+    private static String format(double x, double y) {
+        return x + " " + y;
+    }
     /**
      *  Converts a <code>LineString</code> to &lt;LineString Text&gt; format, then
      *  appends it to the writer.
      *
-     *@param  lineString  the <code>LineString</code> to process
+     *@param  CoordinateSequence  the <code>LineString</code> to process
+     *@param  int  the <code>level</code> to process
+     *@param  boolean  the <code>doIndent</code> to process
      *@param  writer      the output writer to append to
      */
     private void appendSequenceText(CoordinateSequence seq, int level, boolean doIndent, Writer writer)

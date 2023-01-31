@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.geom;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Comparator;
@@ -128,6 +129,7 @@ public class CoordinateArrays {
    * @param measures
    * @return array returned, or copy created if required to enforce consistency.
    */
+  @GwtIncompatible
   public static Coordinate[] enforceConsistency(Coordinate[] array,int dimension, int measures)
   {
     Coordinate sample = Coordinates.create(dimension,measures);

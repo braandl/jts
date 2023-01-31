@@ -12,6 +12,7 @@
 
 package org.locationtech.jts.io;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -33,6 +34,7 @@ import java.util.Locale;
  * @author mdavis
  *
  */
+@GwtIncompatible
 public class OrdinateFormat
 {
   private static final String DECIMAL_PATTERN = "0";
