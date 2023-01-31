@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -91,7 +91,6 @@ public class OrientedCoordinateArray
 
     int i1 = orientation1 ? 0 : pts1.length - 1;
     int i2 = orientation2 ? 0 : pts2.length - 1;
-    int comp = 0;
     while (true) {
       int compPt = pts1[i1].compareTo(pts2[i2]);
       if (compPt != 0)

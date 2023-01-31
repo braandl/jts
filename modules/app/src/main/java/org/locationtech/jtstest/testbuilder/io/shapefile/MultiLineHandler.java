@@ -1,36 +1,40 @@
 /*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+/*
  * Copyright (c) 2003 Open Source Geospatial Foundation, All rights reserved.
- * 
+ *
  * This program and the accompanying materials are made available under the terms
  * of the OSGeo BSD License v1.0 available at:
  *
  * https://www.osgeo.org/sites/osgeo.org/files/Page/osgeo-bsd-license.txt
  */
-/*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
 package org.locationtech.jtstest.testbuilder.io.shapefile;
 
 import java.io.IOException;
 
 import org.locationtech.jts.geom.*;
-
+import org.locationtech.jtstest.testbuilder.io.shapefile.EndianDataInputStream;
+import org.locationtech.jtstest.testbuilder.io.shapefile.InvalidShapefileException;
+import org.locationtech.jtstest.testbuilder.io.shapefile.ShapeHandler;
 
 /**
  * Wrapper for a Shapefile arc.
  */
-public class MultiLineHandler implements ShapeHandler{
-    
-     int myShapeType= -1;
+public class MultiLineHandler implements ShapeHandler {
+
+    int myShapeType = -1;
+    private PrecisionModel precisionModel = new PrecisionModel();
+    private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+
      
     public MultiLineHandler()
     {
@@ -46,7 +50,7 @@ public class MultiLineHandler implements ShapeHandler{
     }
     
     
-    public Geometry read( EndianDataInputStream file , GeometryFactory geometryFactory, int contentLength) throws IOException,InvalidShapefileException 
+    public Geometry read( EndianDataInputStream file , GeometryFactory geometryFactory, int contentLength) throws IOException,InvalidShapefileException
     {
         
         double junk;
@@ -60,7 +64,7 @@ public class MultiLineHandler implements ShapeHandler{
         
         if (shapeType ==0)
         {
-             return new MultiLineString(null,new PrecisionModel(),0); //null shape
+            return geometryFactory.createMultiLineString(null); //null shape
         }
         
         if (shapeType != myShapeType)
@@ -109,7 +113,7 @@ public class MultiLineHandler implements ShapeHandler{
             
             for (int t =0;t<numPoints; t++)
             {
-              coords[t].z =   file.readDoubleLE(); //z value
+              coords[t].setZ(file.readDoubleLE()); //z value
 		   	  actualReadWords += 4;
             }
         }
@@ -224,7 +228,7 @@ public class MultiLineHandler implements ShapeHandler{
         
         for (int t=0;t<cs.length; t++)
         {
-            z= cs[t].z ;
+            z= cs[t].getZ() ;
             if (!(Double.isNaN( z ) ))
             {
                 if (validZFound)
@@ -275,7 +279,7 @@ public class MultiLineHandler implements ShapeHandler{
  * Removed LEDatastream refs and replaced with EndianData[in/out]putstream
  *
  * Revision 1.1  2002/08/27 21:04:58  dblasby
- * orginal
+ * original
  *
  * Revision 1.2  2002/03/05 10:23:59  jmacgill
  * made sure geometries were created using the factory methods

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -58,14 +58,14 @@ public class ValidClosedRingTest
   public void testBadPolygonShell()
   {
     Polygon poly = (Polygon) fromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0))");
-    updateNonClosedRing((LinearRing) poly.getExteriorRing());
+    updateNonClosedRing(poly.getExteriorRing());
     checkIsValid(poly, false);
   }
 
   public void testBadPolygonHole()
   {
     Polygon poly = (Polygon) fromWKT("POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) ))");
-    updateNonClosedRing((LinearRing) poly.getInteriorRingN(0));
+    updateNonClosedRing(poly.getInteriorRingN(0));
     checkIsValid(poly, false);
   }
 
@@ -79,7 +79,7 @@ public class ValidClosedRingTest
   {
     GeometryCollection gc = (GeometryCollection) fromWKT("GEOMETRYCOLLECTION ( POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0), (1 1, 2 1, 2 2, 1 2, 1 1) )), POINT(0 0) )");
     Polygon poly = (Polygon) gc.getGeometryN(0);
-    updateNonClosedRing((LinearRing) poly.getInteriorRingN(0));
+    updateNonClosedRing(poly.getInteriorRingN(0));
     checkIsValid(poly, false);
   }
 

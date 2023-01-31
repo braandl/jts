@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -29,12 +29,23 @@ public class DistanceFunctions {
     return a.getFactory().createLineString(pts);
   }
 
-	public static Geometry discreteHausdorffDistanceLine(Geometry a, Geometry b)	
-	{		
+  public static double discreteFrechetfDistance(Geometry a, Geometry b)  
+  {   
+    return DiscreteFrechetDistance.distance(a, b);
+  }
+
+  public static Geometry discreteFrechetfDistanceLine(Geometry a, Geometry b)  
+  {   
+    DiscreteFrechetDistance dist = new DiscreteFrechetDistance(a, b);
+    return a.getFactory().createLineString(dist.getCoordinates());
+  }
+
+  public static Geometry discreteHausdorffDistanceLine(Geometry a, Geometry b)  
+  {   
     DiscreteHausdorffDistance dist = new DiscreteHausdorffDistance(a, b);
     dist.distance();
     return a.getFactory().createLineString(dist.getCoordinates());
-	}
+  }
 
 	public static Geometry densifiedDiscreteHausdorffDistanceLine(Geometry a, Geometry b, double frac)	
 	{		
@@ -63,4 +74,25 @@ public class DistanceFunctions {
     return dist.orientedDistance();
 	}
 	
+  public static double distanceIndexed(Geometry a, Geometry b) {
+    return IndexedFacetDistance.distance(a, b);
+  }
+  
+  public static Geometry nearestPointsIndexed(Geometry a, Geometry b) {
+    Coordinate[] pts =  IndexedFacetDistance.nearestPoints(a, b);
+    return a.getFactory().createLineString(pts);
+  }
+  
+  public static Geometry nearestPointsIndexedEachB(Geometry a, Geometry b) {
+    IndexedFacetDistance ifd = new IndexedFacetDistance(a);
+    
+    int n = b.getNumGeometries();
+    LineString[] lines = new LineString[n];
+    for (int i = 0; i < n; i++) {
+      Coordinate[] pts =  ifd.nearestPoints(b.getGeometryN(i));
+      lines[i] = a.getFactory().createLineString(pts);
+    }
+    
+    return a.getFactory().createMultiLineString(lines);
+  }
 }

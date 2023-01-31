@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -14,9 +14,11 @@ package org.locationtech.jtstest.function;
 
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.geom.util.*;
+import org.locationtech.jtstest.geomfunction.Metadata;
 
 public class AffineTransformationFunctions 
 {
+  @Metadata(description="Transforms a geometry using 1, 2 or 3 control vectors")
 	public static Geometry transformByVectors(Geometry g, Geometry control)
 	{
 		int nControl = control.getNumGeometries();
@@ -32,7 +34,8 @@ public class AffineTransformationFunctions
 		System.out.println(trans);
     return trans.transform(g);    
 	}
-  
+	
+  @Metadata(description="Transforms a geometry by mapping envelope baseline to target vector")
 	public static Geometry transformByBaseline(Geometry g, Geometry destBaseline)
 	{
 		Envelope env = g.getEnvelopeInternal();
@@ -57,7 +60,7 @@ public class AffineTransformationFunctions
     return new Coordinate(env.getMinX(), env.getMinY());
   }
   
-  public static Geometry viewport(Geometry g, Geometry gViewport)
+  public static Geometry transformToViewport(Geometry g, Geometry gViewport)
   {
     Envelope viewEnv = gViewport.getEnvelopeInternal();
     Envelope env = g.getEnvelopeInternal();
@@ -82,7 +85,9 @@ public class AffineTransformationFunctions
     return trans;
   }
   
-  public static Geometry scale(Geometry g, double scale)
+  public static Geometry scale(Geometry g, 
+      @Metadata(title="Scale factor")
+      double scale)
   {
     Coordinate centre = envelopeCentre(g);
     AffineTransformation trans = AffineTransformation.scaleInstance(scale, scale, centre.x, centre.y);
@@ -103,14 +108,20 @@ public class AffineTransformationFunctions
     return trans.transform(g);    
   }
   
-  public static Geometry rotateByPiMultiple(Geometry g, double multipleOfPi)
+  @Metadata(description="Rotate a geometry by an multiple of Pi radians")
+  public static Geometry rotateByPiMultiple(Geometry g,
+      @Metadata(title="Angle (multiple of Pi)")
+      double multipleOfPi)
   {
     Coordinate centre = envelopeCentre(g);
     AffineTransformation trans = AffineTransformation.rotationInstance(multipleOfPi * Math.PI, centre.x, centre.y);
     return trans.transform(g);    
   }
   
-  public static Geometry rotateByPiMultipleAroundPoint(Geometry g, Geometry pt, double multipleOfPi)
+  @Metadata(description="Rotate a geometry around a point by an multiple of Pi radians")
+  public static Geometry rotateByPiMultipleAroundPoint(Geometry g, Geometry pt, 
+      @Metadata(title="Angle (multiple of Pi)")
+      double multipleOfPi)
   {
     Coordinate loc;
     if (pt == null) {
@@ -123,14 +134,20 @@ public class AffineTransformationFunctions
     return trans.transform(g);    
   }
   
-  public static Geometry rotate(Geometry g, double angle)
+  @Metadata(description="Rotate a geometry by an angle in radians")
+  public static Geometry rotate(Geometry g, 
+      @Metadata(title="Angle (radians)")
+      double angle)
   {
     Coordinate centre = envelopeCentre(g);
     AffineTransformation trans = AffineTransformation.rotationInstance(angle, centre.x, centre.y);
     return trans.transform(g);    
   }
   
-  public static Geometry rotateAroundPoint(Geometry g, Geometry pt, double angle)
+  @Metadata(description="Rotate a geometry around a point by an angle in radians")
+  public static Geometry rotateAroundPoint(Geometry g, Geometry pt, 
+      @Metadata(title="Angle (radians)")
+      double angle)
   {
     Coordinate loc;
     if (pt == null) {
@@ -153,6 +170,16 @@ public class AffineTransformationFunctions
   {
     Coordinate lowerLeft = envelopeLowerLeft(g);
     AffineTransformation trans = AffineTransformation.translationInstance(-lowerLeft.x, -lowerLeft.y);
+    return trans.transform(g);    
+  }
+  @Metadata(description="Translates a geometry by an offset (dx,dy)")
+  public static Geometry translate(Geometry g, 
+      @Metadata(title="dX")
+      double dx, 
+      @Metadata(title="dY")
+      double dy)
+  {
+    AffineTransformation trans = AffineTransformation.translationInstance(dx, dy);
     return trans.transform(g);    
   }
 }

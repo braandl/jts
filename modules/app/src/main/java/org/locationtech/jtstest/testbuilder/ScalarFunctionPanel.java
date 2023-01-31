@@ -2,26 +2,32 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
  */
 package org.locationtech.jtstest.testbuilder;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.locationtech.jts.util.Stopwatch;
-import org.locationtech.jtstest.function.*;
 import org.locationtech.jtstest.geomfunction.GeometryFunction;
 import org.locationtech.jtstest.geomfunction.GeometryFunctionRegistry;
 import org.locationtech.jtstest.testbuilder.controller.JTSTestBuilderController;
@@ -37,7 +43,7 @@ import org.locationtech.jtstest.testbuilder.ui.SwingUtil;
  * @version 1.7
  */
 public class ScalarFunctionPanel 
-extends JPanel 
+extends JPanel implements FunctionPanel 
 {
   private static final String[] PARAM_DEFAULT = { "10" };
   
@@ -56,7 +62,7 @@ extends JPanel
   FlowLayout flowLayout1 = new FlowLayout();
   
   JButton execButton = new JButton();
-
+  
   private transient Vector spatialFunctionPanelListeners;
 
   private JLabel lblDistance = new JLabel();
@@ -99,9 +105,8 @@ extends JPanel
     panelParam.add(lblDistance);
     panelParam.add(txtDistance);
     
-    execButton.setText("Compute");
-    execButton.addActionListener(new java.awt.event.ActionListener() {
-
+    execButton = SwingUtil.createButton(AppIcons.EXECUTE, AppStrings.TIP_EXECUTE,
+        new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         execButton_actionPerformed(e);
       }
@@ -109,7 +114,7 @@ extends JPanel
     
     panelExec.add(execButton);
     
-    panelExecParam.add(panelExec, BorderLayout.NORTH);
+    panelExecParam.add(panelExec, BorderLayout.SOUTH);
     panelExecParam.add(panelParam, BorderLayout.CENTER);
         
     this.add(funcListPanel, BorderLayout.CENTER);
@@ -133,7 +138,7 @@ extends JPanel
     currentFunc = func;
     if (currentFunc == null)
       return;
-    fireFunctionExecuted(new SpatialFunctionPanelEvent(this));
+    JTSTestBuilderController.resultController().executeScalarFunction();
   }
   
   private void functionChanged(GeometryFunction func)
@@ -145,12 +150,12 @@ extends JPanel
   
   public Object getResult() {
     Object result = null;
-    if (currentFunc == null || JTSTestBuilderController.getGeometryA() == null)
+    if (currentFunc == null || JTSTestBuilder.controller().getGeometryA() == null)
       return null;
     
     try {
       timer = new Stopwatch();
-      result = currentFunc.invoke(JTSTestBuilderController.getGeometryA(), getFunctionParams());
+      result = currentFunc.invoke(JTSTestBuilder.controller().getGeometryA(), getFunctionParams());
       timer.stop();
     }
     catch (Exception ex) {
@@ -166,7 +171,7 @@ extends JPanel
     Class[] paramTypes = currentFunc.getParameterTypes();
     if (paramTypes.length == 1 
         && paramTypes[0] == Geometry.class)
-      return new Object[] { JTSTestBuilderController.getGeometryB() };
+      return new Object[] { JTSTestBuilder.controller().getGeometryB() };
     
     if (paramTypes.length == 1 
         && (paramTypes[0] == Double.class || paramTypes[0] == double.class))
@@ -175,7 +180,7 @@ extends JPanel
     if (paramTypes.length == 2 
         && paramTypes[0] == Geometry.class
       && (paramTypes[1] == Double.class || paramTypes[1] == double.class))
-      return new Object[] { JTSTestBuilderController.getGeometryB(), SwingUtil.getDouble(txtDistance, null) };
+      return new Object[] { JTSTestBuilder.controller().getGeometryB(), SwingUtil.getDouble(txtDistance, null) };
     
     if (paramTypes.length >= 2)
       return new Object[] { 
@@ -185,7 +190,7 @@ extends JPanel
     return null;
   }
   
-  private Object[] getFunctionParams()
+  public Object[] getFunctionParams()
   {
     if (currentFunc == null) return null;
     Class[] paramTypes = currentFunc.getParameterTypes();
@@ -200,7 +205,7 @@ extends JPanel
   
   private Object getParamValue(int index) {
     if (currentFunc.isBinary() && index == 0)
-      return JTSTestBuilderController.getGeometryB();
+      return JTSTestBuilder.controller().getGeometryB();
     
     int attrIndex = index - SpatialFunctionPanel.attributeParamOffset(currentFunc);
     
@@ -216,6 +221,10 @@ extends JPanel
     return currentFunc.getName();
   }
 
+  public GeometryFunction getFunction() {
+    return currentFunc;
+  }
+  
   public Stopwatch getTimer()
   {
     return timer;

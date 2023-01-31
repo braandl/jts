@@ -1,13 +1,10 @@
-
-
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -39,6 +36,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.Polygonal;
+import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geomgraph.index.EdgeSetIntersector;
 import org.locationtech.jts.geomgraph.index.SegmentIntersector;
 import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
@@ -75,6 +73,13 @@ public class GeometryGraph
   }
 */
 
+  /**
+   * Determine boundary
+   *
+   * @param boundaryNodeRule Boundary node rule
+   * @param boundaryCount the number of component boundaries that this point occurs in
+   * @return boundary or interior
+   */
   public static int determineBoundary(BoundaryNodeRule boundaryNodeRule, int boundaryCount)
   {
     return boundaryNodeRule.isInBoundary(boundaryCount)
@@ -138,7 +143,7 @@ public class GeometryGraph
     }
   }
 
-  /**
+  /*
    * This constructor is used by clients that wish to add Edges explicitly,
    * rather than adding a Geometry.  (An example is BufferOp).
    */
@@ -268,12 +273,12 @@ public class GeometryGraph
   private void addPolygon(Polygon p)
   {
     addPolygonRing(
-            (LinearRing) p.getExteriorRing(),
+            p.getExteriorRing(),
             Location.EXTERIOR,
             Location.INTERIOR);
 
     for (int i = 0; i < p.getNumInteriorRing(); i++) {
-    	LinearRing hole = (LinearRing) p.getInteriorRingN(i);
+    	LinearRing hole = p.getInteriorRingN(i);
     	
       // Holes are topologically labelled opposite to the shell, since
       // the interior of the polygon lies on their opposite side
@@ -300,7 +305,7 @@ public class GeometryGraph
     Edge e = new Edge(coord, new Label(argIndex, Location.INTERIOR));
     lineEdgeMap.put(line, e);
     insertEdge(e);
-    /**
+    /*
      * Add the boundary points of the LineString, if any.
      * Even if the LineString is closed, add both points as if they were endpoints.
      * This allows for the case that the node already exists and is a boundary point.
@@ -308,12 +313,13 @@ public class GeometryGraph
     Assert.isTrue(coord.length >= 2, "found LineString with single point");
     insertBoundaryPoint(argIndex, coord[0]);
     insertBoundaryPoint(argIndex, coord[coord.length - 1]);
-
   }
 
   /**
    * Add an Edge computed externally.  The label on the Edge is assumed
    * to be correct.
+   *
+   * @param e Edge
    */
   public void addEdge(Edge e)
   {
@@ -327,12 +333,14 @@ public class GeometryGraph
   /**
    * Add a point computed externally.  The point is assumed to be a
    * Point Geometry part, which has a location of INTERIOR.
+   *
+   * @param pt Coordinate
    */
   public void addPoint(Coordinate pt)
   {
     insertPoint(argIndex, pt, Location.INTERIOR);
   }
-
+  
   /**
    * Compute self-nodes, taking advantage of the Geometry type to
    * minimize the number of intersection tests.  (E.g. rings are
@@ -344,23 +352,7 @@ public class GeometryGraph
    */
   public SegmentIntersector computeSelfNodes(LineIntersector li, boolean computeRingSelfNodes)
   {
-	  return computeSelfNodes(li, computeRingSelfNodes, false);
-  }
-  
-  /**
-   * Compute self-nodes, taking advantage of the Geometry type to
-   * minimize the number of intersection tests.  (E.g. rings are
-   * not tested for self-intersection, since they are assumed to be valid).
-   * 
-   * @param li the LineIntersector to use
-   * @param computeRingSelfNodes if <code>false</code>, intersection checks are optimized to not test rings for self-intersection
-   * @param isDoneIfProperInt short-circuit the intersection computation if a proper intersection is found
-   * @return the computed SegmentIntersector containing information about the intersections found
-   */
-  public SegmentIntersector computeSelfNodes(LineIntersector li, boolean computeRingSelfNodes, boolean isDoneIfProperInt)
-  {
     SegmentIntersector si = new SegmentIntersector(li, true, false);
-    si.setIsDoneIfProperInt(isDoneIfProperInt);
     EdgeSetIntersector esi = createEdgeSetIntersector();
     // optimize intersection search for valid Polygons and LinearRings
     boolean isRings = parentGeom instanceof LinearRing

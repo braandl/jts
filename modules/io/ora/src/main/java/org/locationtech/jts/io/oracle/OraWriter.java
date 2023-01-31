@@ -1,4 +1,15 @@
 /*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+/*
  * Copyright (c) 2003 Open Source Geospatial Foundation, All rights reserved.
  *
  * This program and the accompanying materials are made available under the terms
@@ -6,18 +17,6 @@
  *
  * https://www.osgeo.org/sites/osgeo.org/files/Page/osgeo-bsd-license.txt
  */
-/*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
 package org.locationtech.jts.io.oracle;
 
 import java.sql.SQLException;
@@ -373,7 +372,7 @@ public class OraWriter
   {
     Point point = (Point) geom;
     Coordinate coord = point.getCoordinate();
-    return new double[] { coord.x, coord.y, coord.z };
+    return new double[] { coord.x, coord.y, coord.getZ() };
   }
 
   /**
@@ -670,7 +669,7 @@ public class OraWriter
 		  return outputDimension;
 	  
 	  //TODO: check dimension of a geometry CoordinateSequence to determine dimension
-  	int d = Double.isNaN(geom.getCoordinate().z) ? 2 : 3;
+  	int d = Double.isNaN(geom.getCoordinate().getZ()) ? 2 : 3;
   	return d;
   }
 

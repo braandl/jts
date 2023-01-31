@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -57,7 +57,11 @@ public class WKBTest
 	public void testPoint() throws IOException, ParseException {
 		runWKBTest("POINT (1 2)");
 	}
-
+	
+  public void testPointEmpty() throws IOException, ParseException {
+    runWKBTest("POINT EMPTY");
+  }
+  
 	public void testLineString()
       throws IOException, ParseException
   {
@@ -151,7 +155,7 @@ public class WKBTest
 
 	private void runWKBTestPackedCoordinate(String wkt) throws IOException, ParseException {
 		GeometryFactory geomFactory = new GeometryFactory(
-				new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.DOUBLE, 2));
+				new PackedCoordinateSequenceFactory(PackedCoordinateSequenceFactory.DOUBLE));
 	  WKTReader rdr = new WKTReader(geomFactory);
 		Geometry g = rdr.read(wkt);
 		
@@ -239,7 +243,7 @@ class AverageZFilter implements CoordinateFilter
 {
   public void filter(Coordinate coord)
   {
-    coord.z = (coord.x + coord.y) / 2;
+    coord.setZ((coord.x + coord.y) / 2);
   }
 }
 

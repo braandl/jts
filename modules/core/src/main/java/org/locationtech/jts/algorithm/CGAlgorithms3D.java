@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -29,12 +29,12 @@ public class CGAlgorithms3D
 	public static double distance(Coordinate p0, Coordinate p1)
 	{
 		// default to 2D distance if either Z is not set
-		if (Double.isNaN(p0.z) || Double.isNaN(p1.z))
+		if (Double.isNaN(p0.getZ()) || Double.isNaN(p1.getZ()))
 			return p0.distance(p1);
 		
 	    double dx = p0.x - p1.x;
 	    double dy = p0.y - p1.y;
-	    double dz = p0.z - p1.z;
+	    double dz = p0.getZ() - p1.getZ();
 	    return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 
@@ -58,10 +58,10 @@ public class CGAlgorithms3D
 	     *   0<r<1 P is interior to AB
 	     */
 
-	    double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.z - A.z) * (B.z - A.z);
+	    double len2 = (B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y) + (B.getZ() - A.getZ()) * (B.getZ() - A.getZ());
 	    if (Double.isNaN(len2))
 	    	throw new IllegalArgumentException("Ordinates must not be NaN");
-	    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.z - A.z) * (B.z - A.z))
+	    double r = ((p.x - A.x) * (B.x - A.x) + (p.y - A.y) * (B.y - A.y) + (p.getZ() - A.getZ()) * (B.getZ() - A.getZ()))
 	        / len2;
 
 	    if (r <= 0.0)
@@ -72,11 +72,11 @@ public class CGAlgorithms3D
 	    // compute closest point q on line segment
 	    double qx = A.x + r * (B.x - A.x);
 	    double qy = A.y + r * (B.y - A.y);
-	    double qz = A.z + r * (B.z - A.z);
+	    double qz = A.getZ() + r * (B.getZ() - A.getZ());
 	    // result is distance from p to q
 	    double dx = p.x - qx;
 	    double dy = p.y - qy;
-	    double dz = p.z - qz;
+	    double dz = p.getZ() - qz;
 	    return Math.sqrt(dx*dx + dy*dy + dz*dz);
 	}
 	
@@ -93,18 +93,18 @@ public class CGAlgorithms3D
 	public static double distanceSegmentSegment(
 			Coordinate A, Coordinate B, Coordinate C, Coordinate D) 
 	{
-		/**
-		 * This calculation is susceptible to roundoff errors when 
-		 * passed large ordinate values.
-		 * It may be possible to improve this by using {@link DD} arithmetic.
+		/*
+		  This calculation is susceptible to round off errors when
+		  passed large ordinate values.
+		  It may be possible to improve this by using {@link DD} arithmetic.
 		 */
 	    if (A.equals3D(B))
 		      return distancePointSegment(A, C, D);
 	    if (C.equals3D(B))
 		      return distancePointSegment(C, A, B);
 	    
-	    /**
-	     * Algorithm derived from http://softsurfer.com/Archive/algorithm_0106/algorithm_0106.htm
+	    /*
+	      Algorithm derived from http://softsurfer.com/Archive/algorithm_0106/algorithm_0106.htm
 	     */
 		double a = Vector3D.dot(A, B, A, B);
 		double b = Vector3D.dot(A, B, C, D);
@@ -119,9 +119,9 @@ public class CGAlgorithms3D
 		double s;
 		double t;
 		if (denom <= 0.0) {
-			/**
-			 * The lines are parallel. 
-			 * In this case solve for the parameters s and t by assuming s is 0.
+			/*
+			  The lines are parallel.
+			  In this case solve for the parameters s and t by assuming s is 0.
 			 */
 			s = 0;
 			// choose largest denominator for optimal numeric conditioning
@@ -143,17 +143,17 @@ public class CGAlgorithms3D
 		else if(t > 1) {
 			return distancePointSegment(D, A, B);
 		}
-		/**
-		 * The closest points are in interiors of segments,
-		 * so compute them directly
+		/*
+		  The closest points are in interiors of segments,
+		  so compute them directly
 		 */
 		double x1 = A.x + s * (B.x - A.x);
 		double y1 = A.y + s * (B.y - A.y);
-		double z1 = A.z + s * (B.z - A.z);
+		double z1 = A.getZ() + s * (B.getZ() - A.getZ());
 
 		double x2 = C.x + t * (D.x - C.x);
 		double y2 = C.y + t * (D.y - C.y);
-		double z2 = C.z + t * (D.z - C.z);
+		double z2 = C.getZ() + t * (D.getZ() - C.getZ());
 		
 		// length (p1-p2)
 		return distance(new Coordinate(x1, y1, z1), new Coordinate(x2, y2, z2));

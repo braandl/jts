@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -25,6 +24,19 @@ import org.locationtech.jts.geom.Point;
  * @version 1.7
  */
 public class InteriorPointPoint {
+
+  /**
+   * Computes an interior point for the
+   * puntal components of a Geometry.
+   *
+   * @param geom the geometry to compute
+   * @return the computed interior point,
+   * or <code>null</code> if the geometry has no puntal components
+   */
+  public static Coordinate getInteriorPoint(Geometry geom) {
+    InteriorPointPoint intPt = new InteriorPointPoint(geom);
+    return intPt.getInteriorPoint();
+  }
 
   private Coordinate centroid;
   private double minDistance = Double.MAX_VALUE;

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.geom.*;
 
 import org.locationtech.jts.geom.*;
+import org.locationtech.jtstest.testbuilder.geom.SegmentClipper;
 import org.locationtech.jtstest.testbuilder.ui.Viewport;
 
 
@@ -25,7 +26,6 @@ extends LineStringStyle
 
   public SegmentStyle() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   protected void paintLineString(LineString lineString, int lineType, Viewport viewport, Graphics2D graphics) throws Exception {
@@ -39,8 +39,17 @@ extends LineStringStyle
 
   protected void paint(int index, Coordinate p0, Coordinate p1, int lineType, Viewport viewport, Graphics2D g
       ) throws Exception {
-      paint(index, viewport.toView(new Point2D.Double(p0.x, p0.y)),
-          viewport.toView(new Point2D.Double(p1.x, p1.y)), lineType, viewport, g);
+    // cull non-visible segments
+    if (! viewport.intersectsInModel(p0, p1)) return;
+    
+    // clip to viewport if needed
+    if (! viewport.containsInModel(p0, p1)) {
+      p0 = new Coordinate(p0);
+      p1 = new Coordinate(p1);
+      SegmentClipper.clip(p0, p1, viewport.getModelEnv());
+    }
+    paint(index, viewport.toView(new Point2D.Double(p0.x, p0.y)),
+        viewport.toView(new Point2D.Double(p1.x, p1.y)), lineType, viewport, g);
   }
 
   /**

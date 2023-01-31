@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -39,14 +39,14 @@ public class StaticMethodGeometryFunction
 	{
 		Assert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[0]));
 		
-		Class clz = method.getDeclaringClass();
+		Class<?> clz = method.getDeclaringClass();
 		
 		String category = extractCategory(ClassUtil.getClassname(clz));
 		String funcName = method.getName();
 		String description = extractDescription(method);
 		String[] paramNames = extractParamNames(method);
-		Class[] paramTypes = extractParamTypes(method);
-		Class returnType = method.getReturnType();
+		Class<?>[] paramTypes = extractParamTypes(method);
+		Class<?> returnType = method.getReturnType();
 		
 		return new StaticMethodGeometryFunction(category, funcName, 
 				description,
@@ -119,15 +119,27 @@ public class StaticMethodGeometryFunction
     return desc;
 	}
 	
-	private static Class[] extractParamTypes(Method method)
+	private static Class<?>[] extractParamTypes(Method method)
 	{
-		Class[] methodParamTypes = method.getParameterTypes();
-		Class[] types = new Class[methodParamTypes.length - 1];
+		Class<?>[] methodParamTypes = method.getParameterTypes();
+		Class<?>[] types = new Class[methodParamTypes.length - 1];
 		for (int i = 1; i < methodParamTypes.length; i++)
 			types[i-1] = methodParamTypes[i];
 		return types;
 	}
 
+	 
+  private static boolean extractRequiredB(Method method) {
+    Annotation[][] anno = method.getParameterAnnotations();
+    if (anno.length <= 1) return false;
+    Class<?>[] methodParamTypes = method.getParameterTypes();
+    boolean isRequired = false;
+    if (methodParamTypes[1] == Geometry.class) {
+      isRequired = MetadataUtil.isRequired(anno[1]);
+    }
+    return isRequired;
+  }
+  
   private Method method;
 
 	public StaticMethodGeometryFunction(
@@ -135,14 +147,15 @@ public class StaticMethodGeometryFunction
 			String name, 
 			String description,
 			String[] parameterNames, 
-			Class[] parameterTypes, 
-			Class returnType,
+			Class<?>[] parameterTypes, 
+			Class<?> returnType,
 			Method method)
 	{
 		super(category, name, description, parameterNames, parameterTypes, returnType);
     this.method = method;
+    isRequiredB = extractRequiredB(method);
 	}
-	
+
   public Object invoke(Geometry g, Object[] arg) 
   {
     return invoke(method, null, createFullArgs(g, arg));
@@ -178,7 +191,7 @@ public class StaticMethodGeometryFunction
       Throwable t = ex.getCause();
       if (t instanceof RuntimeException)
       	throw (RuntimeException) t;
-      throw new RuntimeException(invocationErrMsg(ex));
+      throw new RuntimeException(invocationErrMsg(ex), ex);
     }
     catch (Exception ex) {
       System.out.println(ex.getMessage());
@@ -196,7 +209,7 @@ public class StaticMethodGeometryFunction
     return msg;
   }
   
-  public static String getClassname(Class javaClass)
+  public static String getClassname(Class<?> javaClass)
   {
     String jClassName = javaClass.getName();
     int lastDotPos = jClassName.lastIndexOf(".");

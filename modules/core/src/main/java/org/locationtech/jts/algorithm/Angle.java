@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -17,10 +17,19 @@ import org.locationtech.jts.geom.Coordinate;
  * Utility functions for working with angles.
  * Unless otherwise noted, methods in this class express angles in radians.
  */
-public class Angle
+@SuppressWarnings("DuplicatedCode") public class Angle
 {
+  /**
+   * The value of 2*Pi
+   */
   public static final double PI_TIMES_2 = 2.0 * Math.PI;
+  /**
+   * The value of Pi/2
+   */
   public static final double PI_OVER_2 = Math.PI / 2.0;
+  /**
+   * The value of Pi/4
+   */
   public static final double PI_OVER_4 = Math.PI / 4.0;
 
   /** Constant representing counterclockwise orientation */
@@ -59,6 +68,8 @@ public class Angle
    * relative to the positive X-axis.
    * The angle is normalized to be in the range [ -Pi, Pi ].
    *
+   * @param p0 the initial point of the vector
+   * @param p1 the terminal point of the vector
    * @return the normalized angle (in radians) that p0-p1 makes with the positive x-axis.
    */
   public static double angle(Coordinate p0, Coordinate p1) {
@@ -68,10 +79,11 @@ public class Angle
   }
 
   /**
-   * Returns the angle that the vector from (0,0) to p,
+   * Returns the angle of the vector from (0,0) to p,
    * relative to the positive X-axis.
    * The angle is normalized to be in the range ( -Pi, Pi ].
    *
+   * @param p the terminal point of the vector
    * @return the normalized angle (in radians) that p makes with the positive x-axis.
    */
   public static double angle(Coordinate p) {
@@ -88,10 +100,11 @@ public class Angle
    * @param p0 an endpoint of the angle
    * @param p1 the base of the angle
    * @param p2 the other endpoint of the angle
+   * @return true if the angle is acute
    */
   public static boolean isAcute(Coordinate p0, Coordinate p1, Coordinate p2)
   {
-    // relies on fact that A dot B is positive iff A ang B is acute
+    // relies on fact that A dot B is positive if A ang B is acute
     double dx0 = p0.x - p1.x;
     double dy0 = p0.y - p1.y;
     double dx1 = p2.x - p1.x;
@@ -109,10 +122,11 @@ public class Angle
    * @param p0 an endpoint of the angle
    * @param p1 the base of the angle
    * @param p2 the other endpoint of the angle
+   * @return true if the angle is obtuse
    */
   public static boolean isObtuse(Coordinate p0, Coordinate p1, Coordinate p2)
   {
-    // relies on fact that A dot B is negative iff A ang B is obtuse
+    // relies on fact that A dot B is negative if A ang B is obtuse
     double dx0 = p0.x - p1.x;
     double dy0 = p0.y - p1.y;
     double dx1 = p2.x - p1.x;
@@ -166,6 +180,24 @@ public class Angle
 			return angDel - PI_TIMES_2;
 		return angDel;
   }
+  
+  /**
+   * Computes the angle of the unoriented bisector 
+   * of the smallest angle between two vectors.
+   * The computed angle will be in the range (-Pi, Pi].
+   * 
+   * @param tip1 the tip of v1
+   * @param tail the tail of each vector
+   * @param tip2 the tip of v2
+   * @return the angle of the bisector between v1 and v2
+   */
+  public static double bisector(Coordinate tip1, Coordinate tail,
+      Coordinate tip2)
+  {
+    double angDel = angleBetweenOriented(tip1, tail, tip2);
+    double angBi = angle(tail, tip1) + angDel / 2;
+    return normalize(angBi);
+  }
 
   /**
 	 * Computes the interior angle between two segments of a ring. The ring is
@@ -178,13 +210,13 @@ public class Angle
 	 *          the next point of the ring
 	 * @param p2
 	 *          the next point of the ring
-	 * @return the interior angle based at <code>p1</code>
+	 * @return the interior angle based at {@code p1}
 	 */
   public static double interiorAngle(Coordinate p0, Coordinate p1, Coordinate p2)
   {
     double anglePrev = Angle.angle(p1, p0);
     double angleNext = Angle.angle(p1, p2);
-    return Math.abs(angleNext - anglePrev);
+    return normalizePositive(angleNext - anglePrev);
   }
 
   /**
@@ -285,5 +317,19 @@ public class Angle
     }
 
     return delAngle;
+  }
+  
+  /**
+   * Projects a point by a given angle and distance.
+   * 
+   * @param p the point to project
+   * @param angle the angle at which to project
+   * @param dist the distance to project
+   * @return the projected point
+   */
+  public static Coordinate project(Coordinate p, double angle, double dist) {
+    double x = p.getX() + dist * Math.cos(angle);
+    double y = p.getY() + dist * Math.sin(angle);
+    return new Coordinate(x, y);
   }
 }

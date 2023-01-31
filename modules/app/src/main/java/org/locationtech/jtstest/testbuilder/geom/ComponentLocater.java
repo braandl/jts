@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -26,8 +26,14 @@ import org.locationtech.jts.geom.*;
  */
 public class ComponentLocater {
 
+  public static List<GeometryLocation> getComponents(Geometry parentGeom, Coordinate queryPt, double tolerance) {
+    ComponentLocater locater = new ComponentLocater(parentGeom);
+    return locater.getComponents(queryPt, tolerance);
+  }
+
+  
   private Geometry parentGeom;
-  private List components = new ArrayList();
+  private List<GeometryLocation> components = new ArrayList();
   private Geometry aoi;
 
   public ComponentLocater(Geometry parentGeom) {
@@ -40,7 +46,7 @@ public class ComponentLocater {
    * @param tolerance
    * @return a List of the component Geometrys
    */
-  public List getComponents(Coordinate queryPt, double tolerance)
+  public List<GeometryLocation> getComponents(Coordinate queryPt, double tolerance)
   {
     //Coordinate queryPt = queryPt;
     //this.tolerance = tolerance;
@@ -48,7 +54,7 @@ public class ComponentLocater {
     return getComponents(aoi);
   }
 
-  public List getComponents(Geometry aoi)
+  public List<GeometryLocation> getComponents(Geometry aoi)
   {
     //Coordinate queryPt = queryPt;
     //this.tolerance = tolerance;
@@ -69,7 +75,7 @@ public class ComponentLocater {
     if (geom instanceof GeometryCollection) {
       for (int i = 0; i < geom.getNumGeometries(); i++ ) {
         Geometry subGeom = geom.getGeometryN(i);
-  			path.push(new Integer(i));
+  			path.push(i);
         findComponents(path, subGeom, components);
         path.pop();
       }

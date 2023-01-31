@@ -1,23 +1,22 @@
 /*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+/*
  * Copyright (c) 2003 Open Source Geospatial Foundation, All rights reserved.
- * 
+ *
  * This program and the accompanying materials are made available under the terms
  * of the OSGeo BSD License v1.0 available at:
  *
  * https://www.osgeo.org/sites/osgeo.org/files/Page/osgeo-bsd-license.txt
  */
-/*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
 package org.locationtech.jtstest.testbuilder.io.shapefile;
 
 import java.io.*;
@@ -106,7 +105,7 @@ public class Shapefile
         if(mainHeader.getVersion() > VERSION){System.err.println("Sf-->Warning, Shapefile format ("+mainHeader.getVersion()+") newer that supported ("+VERSION+"), attempting to read anyway");}
 
         Geometry body;
-        ArrayList list = new ArrayList();
+        ArrayList<Geometry> list = new ArrayList<Geometry>();
         int type=mainHeader.getShapeType();
         ShapeHandler handler = getShapeHandler(type);
         if(handler==null)throw new ShapeTypeNotSupportedException("Unsuported shape type:"+type);
@@ -123,13 +122,15 @@ public class Shapefile
                     list.add(body);
                    // System.out.println("Done record: " + recordNumber);
                 }catch(IllegalArgumentException r2d2){
+                    geomFactory = new GeometryFactory(null, -1);
                     //System.out.println("Record " +recordNumber+ " has is NULL Shape");
-                    list.add(new GeometryCollection(null,null,-1));
+                    list.add(geomFactory.createGeometryCollection(null));
                 }catch(Exception c3p0){
+                    geomFactory = new GeometryFactory(null, -1);
                     System.out.println("Error processing record (a):" +recordNumber);
                     System.out.println(c3p0.getMessage());
                     c3p0.printStackTrace();
-                    list.add(new GeometryCollection(null,null,-1));
+                    list.add(geomFactory.createGeometryCollection(null));
                 }
                // System.out.println("processing:" +recordNumber);
             }
@@ -184,12 +185,14 @@ public class Shapefile
           // System.out.println("Done record: " + recordNumber);
         }catch(IllegalArgumentException r2d2){
           //System.out.println("Record " +recordNumber+ " has is NULL Shape");
-          geom = new GeometryCollection(null,null,-1);
+          geomFactory = new GeometryFactory(null, -1);
+          geom = geomFactory.createGeometryCollection(null);
         }catch(Exception c3p0){
+          geomFactory = new GeometryFactory(null, -1);
           System.out.println("Error processing record (a):" +recordNumber);
           System.out.println(c3p0.getMessage());
           c3p0.printStackTrace();
-          geom = new GeometryCollection(null,null,-1);
+          geom = geomFactory.createGeometryCollection(null);
         }
         // System.out.println("processing:" +recordNumber);
       }

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -43,10 +43,29 @@ public class AffineTransformationTest
     checkTransformation(-10, -10, t, 10, -10);
   }
 
+  public void testRotate2()
+      throws IOException, ParseException
+  {
+    AffineTransformation t = AffineTransformation.rotationInstance(1, 0);
+    checkTransformation(10, 0, t, 0, 10);
+    checkTransformation(0, 10, t, -10, 0);
+    checkTransformation(-10, -10, t, 10, -10);
+  }
+
   public void testRotateAroundPoint1()
   throws IOException, ParseException
   {
     AffineTransformation t = AffineTransformation.rotationInstance(Math.PI/2, 1, 1);
+    checkTransformation(1, 1, t, 1, 1);
+    checkTransformation(10, 0, t, 2, 10);
+    checkTransformation(0, 10, t, -8, 0);
+    checkTransformation(-10, -10, t, 12, -10);
+  }
+
+  public void testRotateAroundPoint2()
+      throws IOException, ParseException
+  {
+    AffineTransformation t = AffineTransformation.rotationInstance(1, 0, 1, 1);
     checkTransformation(1, 1, t, 1, 1);
     checkTransformation(10, 0, t, 2, 10);
     checkTransformation(0, 10, t, -8, 0);

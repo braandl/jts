@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -19,6 +19,8 @@ package org.locationtech.jts.io.geojson;
  */
 public class GeoJsonConstants {
 
+  public static final String NAME_GEOMETRY = "geometry";
+  public static final String NAME_FEATURES = "features";
   public static final String NAME_GEOMETRIES = "geometries";
   public static final String NAME_CRS = "crs";
   public static final String NAME_PROPERTIES = "properties";
@@ -32,5 +34,7 @@ public class GeoJsonConstants {
   public static final String NAME_MULTIPOLYGON = "MultiPolygon";
   public static final String NAME_MULTILINESTRING = "MultiLineString";
   public static final String NAME_MULTIPOINT = "MultiPoint";
+  public static final String NAME_FEATURE = "Feature";
+  public static final String NAME_FEATURECOLLECTION = "FeatureCollection";
 
 }

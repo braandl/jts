@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -15,10 +15,7 @@ package org.locationtech.jtstest.testbuilder;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
-
 import org.locationtech.jts.awt.FontGlyphReader;
-import org.locationtech.jtstest.testbuilder.model.GeometryDepiction;
 import org.locationtech.jtstest.testbuilder.ui.ColorUtil;
 
 
@@ -56,18 +53,6 @@ public class AppConstants
 	public static final Color GRID_MINOR_CLR = ColorUtil.gray(190);
   public static int TOLERANCE_PIXELS = 5;
 
-  public final static ImageIcon ICON_COLLECTION 	= new ImageIcon(AppConstants.class.getResource("Icon_GeomCollection.png"));
-  public final static ImageIcon ICON_COLLECTION_B 	= new ImageIcon(AppConstants.class.getResource("Icon_GeomCollection_B.png"));
-  public final static ImageIcon ICON_POLYGON 	= new ImageIcon(AppConstants.class.getResource("Icon_Polygon.png"));
-  public final static ImageIcon ICON_POLYGON_B 	= new ImageIcon(AppConstants.class.getResource("Icon_Polygon_B.png"));
-  public final static ImageIcon ICON_LINEARRING 	= new ImageIcon(AppConstants.class.getResource("Icon_LinearRing.png"));
-  public final static ImageIcon ICON_LINEARRING_B 	= new ImageIcon(AppConstants.class.getResource("Icon_LinearRing_B.png"));
-  public final static ImageIcon ICON_LINESTRING 	= new ImageIcon(AppConstants.class.getResource("Icon_LineString.png"));
-  public final static ImageIcon ICON_LINESTRING_B 	= new ImageIcon(AppConstants.class.getResource("Icon_LineString_B.png"));
-  public final static ImageIcon ICON_POINT 		= new ImageIcon(AppConstants.class.getResource("Icon_Point.png"));
-  public final static ImageIcon ICON_POINT_B 	= new ImageIcon(AppConstants.class.getResource("Icon_Point_B.png"));
-  
-  
   public final static Font FONT_LABEL = new Font(FontGlyphReader.FONT_SANSSERIF, Font.BOLD, 12);
 
 

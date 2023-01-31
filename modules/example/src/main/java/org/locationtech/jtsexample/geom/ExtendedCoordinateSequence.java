@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -86,7 +85,19 @@ public class ExtendedCoordinateSequence
    * @see org.locationtech.jts.geom.CoordinateSequence#getDimension()
    */
   public int getDimension() { return 4; }
-
+  
+  @Override
+  public int getMeasures()
+  {
+    return 1;
+  }
+  
+  @Override
+  public Coordinate createCoordinate()
+  {
+    return new ExtendedCoordinate();
+  }
+  
   public Coordinate getCoordinate(int i) {
     return coordinates[i];
   }
@@ -103,6 +114,8 @@ public class ExtendedCoordinateSequence
   public void getCoordinate(int index, Coordinate coord) {
     coord.x = coordinates[index].x;
     coord.y = coordinates[index].y;
+    coord.setZ( coordinates[index].getZ());
+    coord.setM( coordinates[index].getM());
   }
 
 
@@ -128,7 +141,7 @@ public class ExtendedCoordinateSequence
     switch (ordinateIndex) {
       case CoordinateSequence.X:  return coordinates[index].x;
       case CoordinateSequence.Y:  return coordinates[index].y;
-      case CoordinateSequence.Z:  return coordinates[index].z;
+      case CoordinateSequence.Z:  return coordinates[index].getZ();
       case CoordinateSequence.M:  return coordinates[index].getM();
     }
     return Double.NaN;
@@ -147,7 +160,7 @@ public class ExtendedCoordinateSequence
         coordinates[index].y = value;
         break;
       case CoordinateSequence.Z:  
-        coordinates[index].z = value;
+        coordinates[index].setZ(value);
         break;
       case CoordinateSequence.M:  
         coordinates[index].setM(value);

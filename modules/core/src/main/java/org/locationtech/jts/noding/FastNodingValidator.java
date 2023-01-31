@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -25,24 +24,37 @@ import org.locationtech.jts.io.WKTWriter;
 /**
  * Validates that a collection of {@link SegmentString}s is correctly noded.
  * Indexing is used to improve performance.
- * In the most common use case, validation stops after a single 
- * non-noded intersection is detected, 
- * but the class can be requested to detect all intersections
- * by using the {@link #setFindAllIntersections(boolean)} method.
+ * By default validation stops after a single 
+ * non-noded intersection is detected. 
+ * Alternatively, it can be requested to detect all intersections
+ * by using {@link #setFindAllIntersections(boolean)}.
  * <p>
- * The validator does not check for a-b-a topology collapse situations.
+ * The validator does not check for topology collapse situations
+ * (e.g. where two segment strings are fully co-incident).
  * <p> 
- * The validator does not check for endpoint-interior vertex intersections.
- * This should not be a problem, since the JTS noders should be
- * able to compute intersections between vertices correctly.
+ * The validator checks for the following situations which indicated incorrect noding:
+ * <ul>
+ * <li>Proper intersections between segments (i.e. the intersection is interior to both segments)
+ * <li>Intersections at an interior vertex (i.e. with an endpoint or another interior vertex)
+ * </ul>
  * <p>
  * The client may either test the {@link #isValid()} condition, 
  * or request that a suitable {@link TopologyException} be thrown.
  *
  * @version 1.7
+ * 
+ * @see NodingIntersectionFinder
  */
 public class FastNodingValidator 
 {
+  /**
+   * Gets a list of all intersections found.
+   * Intersections are represented as {@link Coordinate}s.
+   * List is empty if none were found.
+   * 
+   * @param segStrings a collection of SegmentStrings
+   * @return a list of Coordinate
+   */
   public static List computeIntersections(Collection segStrings)
   {
     FastNodingValidator nv = new FastNodingValidator(segStrings);
@@ -55,7 +67,7 @@ public class FastNodingValidator
 
   private Collection segStrings;
   private boolean findAllIntersections = false;
-  private InteriorIntersectionFinder segInt = null;
+  private NodingIntersectionFinder segInt = null;
   private boolean isValid = true;
   
   /**
@@ -124,7 +136,7 @@ public class FastNodingValidator
   {
   	execute();
   	if (! isValid)
-  		throw new TopologyException(getErrorMessage(), segInt.getInteriorIntersection());
+  		throw new TopologyException(getErrorMessage(), segInt.getIntersection());
   }
 
   private void execute()
@@ -142,7 +154,7 @@ public class FastNodingValidator
   	 * since noding should have split any true interior intersections already.
   	 */
   	isValid = true;
-  	segInt = new InteriorIntersectionFinder(li);
+  	segInt = new NodingIntersectionFinder(li);
     segInt.setFindAllIntersections(findAllIntersections);
   	MCIndexNoder noder = new MCIndexNoder();
   	noder.setSegmentIntersector(segInt);

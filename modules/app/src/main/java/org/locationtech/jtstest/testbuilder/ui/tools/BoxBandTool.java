@@ -1,12 +1,10 @@
-
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -25,9 +23,7 @@ import javax.swing.SwingUtilities;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jtstest.testbuilder.GeometryEditPanel;
 import org.locationtech.jtstest.testbuilder.JTSTestBuilder;
-import org.locationtech.jtstest.testbuilder.JTSTestBuilderFrame;
 
 
 
@@ -39,6 +35,8 @@ public abstract class BoxBandTool extends IndicatorTool
   
   private Point zoomBoxStart = null;
   private Point zoomBoxEnd = null;
+  private boolean isControlKeyDown = false;
+  private boolean isRightButton;
   
   public BoxBandTool() { }
 
@@ -50,6 +48,8 @@ public abstract class BoxBandTool extends IndicatorTool
   {
   	zoomBoxStart = e.getPoint();
   	zoomBoxEnd = null;
+  	isControlKeyDown = e.isControlDown();
+  	isRightButton = SwingUtilities.isRightMouseButton(e);
   }
   
   public void mouseReleased(MouseEvent e)
@@ -58,7 +58,8 @@ public abstract class BoxBandTool extends IndicatorTool
   	// don't process this event if the mouse was clicked or dragged a very short distance
   	if (! isSignificantMouseMove())
   		return;
-  	
+  	isControlKeyDown = e.isControlDown();
+  	isRightButton = SwingUtilities.isRightMouseButton(e);
     gestureFinished();
   }
   
@@ -93,6 +94,14 @@ public abstract class BoxBandTool extends IndicatorTool
       return false;
     return true;
   }  
+  
+  protected boolean isRightButton() {
+    return isRightButton;
+  }
+  
+  protected boolean isControlKeyDown() {
+    return isControlKeyDown;
+  }
   
   /**
    * Gets the envelope of the indicated rectangle,

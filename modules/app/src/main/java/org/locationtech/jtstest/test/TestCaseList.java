@@ -1,12 +1,10 @@
-
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -22,11 +20,11 @@ import org.locationtech.jtstest.testbuilder.model.TestCaseEdit;
  * @version 1.7
  */
 public class TestCaseList {
-  ArrayList tests = new ArrayList();
+  ArrayList<Object> tests = new ArrayList<Object>();
 
   public TestCaseList() { }
 
-  public List getList() {
+  public List<Object> getList() {
     return tests;
   }
   public int size() {
@@ -42,7 +40,7 @@ public class TestCaseList {
     arrayAdd(tests, tc, i);
   }
   public void add(TestCaseList tcl) {
-    for (Iterator i = tcl.tests.iterator(); i.hasNext(); ) {
+    for (Iterator<Object> i = tcl.tests.iterator(); i.hasNext(); ) {
       tests.add((Testable) i.next());
     }
   }
@@ -57,7 +55,7 @@ public class TestCaseList {
    * @param o object to add
    * @param index index to add at
    */
-  private static void arrayAdd(ArrayList list, Object o, int index) {
+  private static void arrayAdd(ArrayList<Object> list, Object o, int index) {
     list.add(o);
     // adding at or after end of array?
     if (index >= list.size()) {

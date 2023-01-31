@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -58,7 +58,7 @@ extends JPanel
 
     txtResult.setWrapStyleWord(true);
     txtResult.setLineWrap(true);
-    txtResult.setBackground(SystemColor.control);
+    txtResult.setBackground(AppColors.BACKGROUND);
 
     labelPanel.setLayout(labelPanelLayout);
     labelPanel.setBorder(BorderFactory.createEmptyBorder(0,4,2,2));
@@ -97,7 +97,7 @@ extends JPanel
   public void setString(String s)
   {
     txtResult.setText(s);
-    txtResult.setBackground(SystemColor.control);
+    txtResult.setBackground(AppColors.BACKGROUND);
   }
   
   public void setError(Throwable ex)

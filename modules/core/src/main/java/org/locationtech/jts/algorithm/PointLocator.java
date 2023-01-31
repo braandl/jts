@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -186,14 +186,14 @@ public class PointLocator
   {
     if (poly.isEmpty()) return Location.EXTERIOR;
 
-    LinearRing shell = (LinearRing) poly.getExteriorRing();
+    LinearRing shell = poly.getExteriorRing();
 
     int shellLoc = locateInPolygonRing(p, shell);
     if (shellLoc == Location.EXTERIOR) return Location.EXTERIOR;
     if (shellLoc == Location.BOUNDARY) return Location.BOUNDARY;
     // now test if the point lies in or on the holes
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {
-      LinearRing hole = (LinearRing) poly.getInteriorRingN(i);
+      LinearRing hole = poly.getInteriorRingN(i);
       int holeLoc = locateInPolygonRing(p, hole);
       if (holeLoc == Location.INTERIOR) return Location.EXTERIOR;
       if (holeLoc == Location.BOUNDARY) return Location.BOUNDARY;

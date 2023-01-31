@@ -5,12 +5,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class GeoJsonTestUtils {
 	public static String readGeoJsonFile(String name) throws IOException {
 		InputStream is = GeoJsonReaderTest.class.getResourceAsStream(name
 				+ ".geo.json");
-		Reader r = new InputStreamReader(is, Charset.forName("UTF-8"));
+		assert is != null;
+		Reader r = new InputStreamReader(is, StandardCharsets.UTF_8);
 
 		StringBuilder sb = new StringBuilder();
 

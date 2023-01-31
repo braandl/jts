@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.locationtech.jts</groupId>
     <artifactId>jts</artifactId>
-    <version>1.15.10-SNAPSHOT</version>
+    <version>1.19.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>JTS Topology Suite</name>
@@ -20,34 +20,41 @@
 
     Setup for eclipse development:
        mvn eclipse:eclipse
-       
+
     To build with jts-ora:
        mvn install -Poracle
 
     To build with jts-sde:
        mvn install -Parcsde
-       
+
     To build the release (for Maven Central; committers only)
        mvn install -Drelease
     -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit-version>3.7</junit-version>
+        <junit-version>4.13.1</junit-version>
         <jdom-version>2.0.6</jdom-version>
         <jump.version>1.2</jump.version>
         <json-simple-version>1.1.1</json-simple-version>
         <sde-version>9.1</sde-version>
         <gwt.version>2.8.0-beta1</gwt.version>
+        <!-- build environment target versions -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <pmd.version>6.36.0</pmd.version>
+        <checkstyle.version>8.44</checkstyle.version>
+        <!--cast, deprecation, divzero, empty, fallthrough, finally, overrides, path, serial, and unchecked -->
+        <lint>unchecked</lint>
+        <!-- none, accessibility, html, missing, reference, syntax, all -->
+        <doclint>none</doclint>
     </properties>
 
     <!-- PROJECT INFORMATION -->
     <licenses>
         <license>
-            <name>Eclipse Publish License, Version 1.0</name>
-            <url>https://github.com/locationtech/jts/blob/master/LICENSE_EPLv1.txt</url>
+            <name>Eclipse Public License, Version 2.0</name>
+            <url>https://github.com/locationtech/jts/blob/master/LICENSE_EPLv2.txt</url>
         </license>
         <license>
             <name>Eclipse Distribution License - v 1.0</name>
@@ -59,13 +66,13 @@
             <name>Martin Davis</name>
             <email>mbdavis@VividSolutions.com</email>
             <organization>Vivid Solutions Inc.</organization>
-            <organizationUrl>http://www.vividsolutions.com/</organizationUrl>
+            <organizationUrl>https://www.vividsolutions.com/</organizationUrl>
         </developer>
         <developer>
             <name>Martin Davis</name>
             <email>mtnclimb@gmail.com</email>
             <organization>Individual</organization>
-            <organizationUrl>http://tsusiatsoftware.net</organizationUrl>
+            <organizationUrl>https://tsusiatsoftware.net</organizationUrl>
         </developer>
     </developers>
 
@@ -86,6 +93,10 @@
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
+        <site>
+          <id>jts</id>
+          <url>https://locationtech.github.io/jts</url>
+        </site>
     </distributionManagement>
     <dependencyManagement>
         <dependencies>
@@ -103,6 +114,12 @@
                 <groupId>com.googlecode.json-simple</groupId>
                 <artifactId>json-simple</artifactId>
                 <version>${json-simple-version}</version>
+                <exclusions>
+                  <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                  </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -110,9 +127,15 @@
                 <version>3.7</version>
             </dependency>
             <dependency>
-                <groupId>com.oracle</groupId>
-                <artifactId>ojdbc7</artifactId>
-                <version>11.1.0.7.0</version>
+                <groupId>com.oracle.database.jdbc</groupId>
+                <artifactId>ojdbc8</artifactId>
+                <version>19.10.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-csv</artifactId>
+                <version>1.7</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.google.gwt</groupId>
@@ -137,7 +160,7 @@
         <repository>
             <id>central.maven.org</id>
             <name>Central Maven repository</name>
-            <url>http://central.maven.org/maven2</url>
+            <url>https://central.maven.org/maven2</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -165,7 +188,6 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -175,9 +197,7 @@
                     </plugin>
 
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -192,18 +212,97 @@
                 </plugins>
             </build>
         </profile>
+
     </profiles>
 
     <!-- =========================================================== -->
     <!--     Build Configuration                                     -->
     <!-- =========================================================== -->
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version> <!-- 3.3.0 -->
+                </plugin>
+                <plugin>
+                  <artifactId>maven-checkstyle-plugin</artifactId>
+                  <version>3.1.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.5</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                  <artifactId>maven-pmd-plugin</artifactId>
+                  <version>3.14.0</version>
+                </plugin>
+                <plugin>
+                  <artifactId>maven-project-info-reports-plugin</artifactId>
+                  <version>3.1.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version> <!-- 3.0.0-M4 -->
+                </plugin>
+                <plugin>
+                  <artifactId>maven-site-plugin</artifactId>
+                  <version>3.9.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.2.1</version> <!-- 3.2.0 -->
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.15</version> <!-- 3.0.0-M5 -->
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>1.6.7</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                    <compilerArgs>
+                        <arg>-Xlint:${lint}</arg>
+                        <!--arg>-Werror</arg-->
+                    </compilerArgs>
+                </configuration>
+            </plugin>
             <!-- test configuration -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.15</version>
                 <configuration>
                     <includes>
                         <include>**/*Test.java</include>
@@ -216,17 +315,15 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0-M1</version>
                 <configuration>
+                    <quiet>true</quiet>
                     <show>public</show>
                     <header>${project.name} ${project.version}</header>
                     <footer>${project.name} ${project.version}</footer>
                     <overview>${basedir}/modules/core/src/main/javadoc/overview.html</overview>
 
                     <excludePackageNames>org.locationtech.jtsexample.*,org.locationtech.jtstest,org.locationtech.jtstest.*</excludePackageNames>
-                    <failOnError>false</failOnError>
                     <groups>
                         <group>
                             <title>Core - Geometry</title>
@@ -249,6 +346,9 @@
                             <packages>org.locationtech.jts.io.*</packages>
                         </group>
                     </groups>
+                    <doclint>${doclint}</doclint>
+                    <failOnError>false</failOnError>
+                    <failOnWarnings>false</failOnWarnings>
                 </configuration>
                 <executions>
                     <execution>
@@ -260,9 +360,7 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -273,18 +371,151 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.1</version>
+            </plugin>
+            <plugin>
+              <artifactId>maven-pmd-plugin</artifactId>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>check</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <dependencies>
+                <!-- shared pmd ruleset -->
+                <dependency>
+                  <groupId>org.locationtech.jts</groupId>
+                  <artifactId>build-tools</artifactId>
+                  <version>${project.version}</version>
+                </dependency>
+                <!-- user newer version of pmd -->
+                <dependency>
+                  <groupId>net.sourceforge.pmd</groupId>
+                  <artifactId>pmd-core</artifactId>
+                  <version>${pmd.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>net.sourceforge.pmd</groupId>
+                  <artifactId>pmd-java</artifactId>
+                  <version>${pmd.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>net.sourceforge.pmd</groupId>
+                  <artifactId>pmd-javascript</artifactId>
+                  <version>${pmd.version}</version>
+                </dependency>
+                <dependency>
+                  <groupId>net.sourceforge.pmd</groupId>
+                  <artifactId>pmd-jsp</artifactId>
+                  <version>${pmd.version}</version>
+                </dependency>
+              </dependencies>
+              <configuration>
+                <rulesets>
+                  <ruleset>jts/pmd-ruleset.xml</ruleset>
+                </rulesets>
+                <failurePriority>2</failurePriority>
+                <verbose>false</verbose>
+                <printFailingErrors>true</printFailingErrors>
+              </configuration>
+            </plugin>
+            <plugin>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <dependencies>
+                <!-- shared checkstlye config -->
+                <dependency>
+                  <groupId>org.locationtech.jts</groupId>
+                  <artifactId>build-tools</artifactId>
+                  <version>${project.version}</version>
+                </dependency>
+                <!-- user newer checkstyle -->
+                <dependency>
+                  <groupId>com.puppycrawl.tools</groupId>
+                  <artifactId>checkstyle</artifactId>
+                  <version>${checkstyle.version}</version>
+                </dependency>
+              </dependencies>
+              <configuration>
+                <logViolationsToConsole>true</logViolationsToConsole>
+                <configLocation>jts/checkstyle.xml</configLocation>
+                <headerLocation>jts/header.txt</headerLocation>
+                <suppressionsLocation>jts/suppressions.xml</suppressionsLocation>
+                <suppressionsFileExpression>checkstyle.suppressions.file</suppressionsFileExpression>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>validate</id>
+                      <phase>validate</phase>
+                      <goals>
+                          <goal>check</goal>
+                      </goals>
+                  </execution>
+              </executions>
+            </plugin>
         </plugins>
     </build>
 
+    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <reportSets>
+              <reportSet>
+                  <reports>
+                      <report>index</report>
+                      <report>licenses</report>
+                      <report>dependency-info</report>
+                  </reports>
+              </reportSet>
+          </reportSets>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <configuration>
+            <configLocation>jts/checkstyle.xml</configLocation>
+            <headerLocation>jts/header.txt</headerLocation>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <reportSets>
+            <reportSet>
+              <reports>
+                <report>jxr</report>
+              </reports>
+            </reportSet>
+          </reportSets>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <configuration>
+            <rulesets>
+              <ruleset>jts/pmd-ruleset.xml</ruleset>
+            </rulesets>
+          </configuration>
+        </plugin>
+      </plugins>
+    </reporting>
+
     <!-- Modules to build in appropriate dependency order -->
     <modules>
+        <module>build-tools</module>
         <module>modules</module>
     </modules>
 

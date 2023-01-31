@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -140,7 +140,7 @@ public class Viewport implements PointTransformation
     double pow10 = Math.floor(MathUtil.log10(scaleRaw) + ROUND_ERROR_REMOVAL);
     double nearestLowerPow10 = Math.pow(10, pow10);
     
-    int scaleDigit = (int) (scaleRaw / nearestLowerPow10);
+    int scaleDigit = (int) ( (scaleRaw +   + ROUND_ERROR_REMOVAL) / nearestLowerPow10);
     double scale = scaleDigit * nearestLowerPow10;
     
     //System.out.println("requested scale = " + scaleRaw + " scale = " + scale  + "   Pow10 = " + pow10);
@@ -176,6 +176,11 @@ public class Viewport implements PointTransformation
   public boolean intersectsInModel(Envelope env)
   {
   	return viewEnvInModel.intersects(env);
+  }
+  
+  public boolean intersectsInModel(Coordinate p0, Coordinate p1)
+  {
+    return viewEnvInModel.intersects(p0, p1);
   }
   
   public Point2D toModel(Point2D viewPt) {
@@ -344,6 +349,19 @@ public class Viewport implements PointTransformation
   public boolean containsInModel(Coordinate p)
   {
     return viewEnvInModel.contains(p);
+  }
+  
+  public boolean containsInModel(Coordinate p0, Coordinate p1)
+  {
+    return viewEnvInModel.contains(p0) && viewEnvInModel.contains(p1);
+  }
+
+  public boolean contains(Point2D p)
+  {
+    if (p.getX() < 0 || p.getY() < 0) return false;
+    if (p.getX() > viewSize.getWidth()) return false;
+    if (p.getY() > viewSize.getHeight()) return false;
+    return true;
   }
 
   private static final int MIN_GRID_RESOLUTION_PIXELS = 2;

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -88,7 +88,7 @@ public class ScaledNoder
       roundPts[i] = new Coordinate(
           Math.round((pts[i].x - offsetX) * scaleFactor),
           Math.round((pts[i].y - offsetY) * scaleFactor),
-          pts[i].z
+          pts[i].getZ()
         );
     }
     Coordinate[] roundPtsNoDup = CoordinateArrays.removeRepeatedPoints(roundPts);
@@ -107,22 +107,15 @@ public class ScaledNoder
 
   private void rescale(Coordinate[] pts)
   {
-    Coordinate p0 = null;
-    Coordinate p1 = null;
-    
-    if (pts.length == 2) {
-      p0 = new Coordinate(pts[0]);
-      p1 = new Coordinate(pts[1]);
-    }
-
     for (int i = 0; i < pts.length; i++) {
       pts[i].x = pts[i].x / scaleFactor + offsetX;
       pts[i].y = pts[i].y / scaleFactor + offsetY;
     }
-    
+    /*
     if (pts.length == 2 && pts[0].equals2D(pts[1])) {
       System.out.println(pts);
     }
+    */
   }
 
   //private double rescale(double val) { return val / scaleFactor; }

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -15,6 +15,7 @@ package org.locationtech.jtstest.function;
 import java.util.*;
 
 import org.locationtech.jts.geom.*;
+import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
 
 
@@ -137,6 +138,35 @@ public class SelectionFunctions
     });
   }
   
+  public static Geometry interiorPointWithin(Geometry a, final Geometry mask)
+  {
+    return select(a, new GeometryPredicate() {
+      public boolean isTrue(Geometry g) {
+        return g.getInteriorPoint().within(mask);
+      }
+    });
+  }
+  
+  public static Geometry withinDistance(Geometry a, final Geometry mask, double maximumDistance)
+  {
+    return select(a, new GeometryPredicate() {
+      public boolean isTrue(Geometry g) {
+        return mask.isWithinDistance(g, maximumDistance);
+      }
+    });
+  }
+
+  public static Geometry withinDistanceIndexed(Geometry a, final Geometry mask, double maximumDistance)
+  {
+    IndexedFacetDistance indexedDist = new IndexedFacetDistance(mask);
+    return select(a, new GeometryPredicate() {
+      public boolean isTrue(Geometry g) {
+        boolean isWithinDist = indexedDist.isWithinDistance(g, maximumDistance);
+        return isWithinDist;
+      }
+    });
+  }
+
   private static Geometry select(Geometry geom, GeometryPredicate pred)
   {
     List selected = new ArrayList();

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -15,6 +15,7 @@ package org.locationtech.jtstest.testbuilder.model;
 import java.util.*;
 
 import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.util.Assert;
 import org.locationtech.jtstest.*;
@@ -41,6 +42,8 @@ public class GeometryEditModel
   private TestCaseEdit testCase;
   
   private transient Vector geometryListeners;
+
+  private UndoBuffer[] undoBuffers = new UndoBuffer[] { new UndoBuffer(), new UndoBuffer() };
 
   public GeometryEditModel()
   {
@@ -139,6 +142,7 @@ public class GeometryEditModel
 
   public static String toStringVeryLarge(Geometry g)
   {
+    if (g == null) return "";
     return "[[ " + GeometryUtil.structureSummary(g) + " ]]";
   }
   
@@ -147,6 +151,7 @@ public class GeometryEditModel
 
   public Geometry getResult() {
 //    return result;
+    if (testCase == null) return null;
     return testCase.getResult();
   }
 
@@ -157,15 +162,17 @@ public class GeometryEditModel
   
   public Geometry getGeometry(int i)
   {
+    if (testCase == null) return null;
     return testCase.getGeometry(i);
   }
   
   public void setTestCase(TestCaseEdit testCase)
   {
     this.testCase = testCase;
+    undoClear();
     geomChanged();
   }
-  
+
   public void setGeometry(Geometry g)
   {
     setGeometry(editGeomIndex, g);
@@ -174,7 +181,27 @@ public class GeometryEditModel
   
   public void setGeometry(int i, Geometry g)
   {
+    undoSave(i, g);
+    setGeometryInternal(i, g);
+  }
+  
+  private void setGeometryInternal(int i, Geometry g)
+  {
     testCase.setGeometry(i, g);
+    geomChanged();
+  }
+  
+  public void exchangeGeometry() {
+    Geometry g0 = getGeometry(0);
+    Geometry g1 = getGeometry(1);
+    setGeometryInternal(0, g1);
+    setGeometryInternal(1, g0);
+    
+    UndoBuffer undo0 = undoBuffers[0];
+    UndoBuffer undo1 = undoBuffers[1];
+    undoBuffers[0] = undo1;
+    undoBuffers[1] = undo0;
+    
     geomChanged();
   }
   
@@ -182,6 +209,41 @@ public class GeometryEditModel
   {
     setGeometry(i, null);
     geomChanged();
+  }
+  
+  private void undoSave(int i, Geometry g) {
+    UndoBuffer undoBuf = undoBuffers[i];
+    /**
+     * If for some reason old geom is not saved, save it first
+     */
+    if (undoBuf.isEmpty()) {
+      undoBuf.save(getGeometry(i));
+    }
+    undoBuf.save(g);
+  }
+  
+  private void undoClear() {
+    undoBuffers[0].clear();
+    undoBuffers[1].clear();
+  }
+
+  public void undo() {
+    UndoBuffer undoBuf = undoBuffers[editGeomIndex];
+    
+    if (undoBuf.isEmpty()) return;
+    
+    /**
+     * The reason for this odd-looking semantics is that
+     * Undo transactions are captured whenever the geometry
+     * is modified.  So the current geometry
+     * may be on the stack, in which case it needs to be discarded. 
+     */;
+     undoBuf.pop(getGeometry());
+    if (undoBuf.isEmpty()) return;
+    
+    Geometry geom = undoBuf.peek();
+    
+    setGeometryInternal(editGeomIndex, geom);
   }
   
   /**
@@ -263,6 +325,13 @@ public class GeometryEditModel
     Geometry geom = getGeometry();
     if (geom == null) return null;
     return GeometryPointLocater.locateVertex(getGeometry(), testPt, tolerance);
+  }
+  
+  public List<GeometryLocation> getComponents(Coordinate testPt, double tolerance)
+  {
+    Geometry geom = getGeometry();
+    if (geom == null) return null;
+    return ComponentLocater.getComponents(getGeometry(), testPt, tolerance);
   }
   
   public Coordinate locateVertexPt(Coordinate testPt, double tolerance)

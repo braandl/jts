@@ -1,29 +1,27 @@
 /*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+/*
  * Copyright (c) 2003 Open Source Geospatial Foundation, All rights reserved.
- * 
+ *
  * This program and the accompanying materials are made available under the terms
  * of the OSGeo BSD License v1.0 available at:
  *
  * https://www.osgeo.org/sites/osgeo.org/files/Page/osgeo-bsd-license.txt
  */
 /*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
-/*
  * MultiPointHandler.java
  *
  * Created on July 17, 2002, 4:13 PM
  */
-
 package org.locationtech.jtstest.testbuilder.io.shapefile;
 
 import java.io.IOException;
@@ -37,6 +35,8 @@ import org.locationtech.jts.geom.*;
  */
 public class MultiPointHandler  implements ShapeHandler  {
     int myShapeType= -1;
+    private PrecisionModel precisionModel = new PrecisionModel();
+    private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
     
     /** Creates new MultiPointHandler */
     public MultiPointHandler() {
@@ -60,7 +60,7 @@ public class MultiPointHandler  implements ShapeHandler  {
 		actualReadWords += 2;
         
         if (shapeType ==0)
-            return  new MultiPoint(null,new PrecisionModel(),0);
+            return geometryFactory.createMultiPointFromCoords(null);
         if (shapeType != myShapeType)
         {
             throw new InvalidShapefileException("Multipointhandler.read() - expected type code "+myShapeType+" but got "+shapeType);
@@ -94,7 +94,7 @@ public class MultiPointHandler  implements ShapeHandler  {
             { 
                        double z =  file.readDoubleLE();//z
 						actualReadWords += 4;
-                       coords[t].z = z;
+                       coords[t].setZ(z);
             }
         }
         
@@ -134,7 +134,7 @@ public class MultiPointHandler  implements ShapeHandler  {
 		  actualReadWords += 1;
 	}
 	
-        return geometryFactory.createMultiPoint(coords);
+        return geometryFactory.createMultiPointFromCoords(coords);
     }
     
     double[] zMinMax(Geometry g)
@@ -150,7 +150,7 @@ public class MultiPointHandler  implements ShapeHandler  {
         
         for (int t=0;t<cs.length; t++)
         {
-            z= cs[t].z ;
+            z= cs[t].getZ();
             if (!(Double.isNaN( z ) ))
             {
                 if (validZFound)

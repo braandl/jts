@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -72,10 +72,29 @@ public final class CoordinateArraySequenceFactory
     if (dimension > 3)
       dimension = 3;
       //throw new IllegalArgumentException("dimension must be <= 3");
+    
     // handle bogus dimension
     if (dimension < 2)
-    	// TODO: change to dimension = 2  ???
-      return new CoordinateArraySequence(size);
+      dimension = 2;      
+    
     return new CoordinateArraySequence(size, dimension);
+  }
+  
+  public CoordinateSequence create(int size, int dimension, int measures) {
+    int spatial = dimension - measures;
+    
+    if (measures > 1) {
+      measures = 1; // clip measures
+      //throw new IllegalArgumentException("measures must be <= 1");
+    }
+    if ((spatial) > 3) {
+      spatial = 3; // clip spatial dimension
+      //throw new IllegalArgumentException("spatial dimension must be <= 3");
+    }
+    
+    if (spatial < 2)
+      spatial = 2; // handle bogus spatial dimension
+    
+    return new CoordinateArraySequence(size, spatial+measures, measures);
   }
 }

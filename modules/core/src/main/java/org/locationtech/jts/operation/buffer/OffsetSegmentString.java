@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -104,9 +104,6 @@ class OffsetSegmentString
     if (ptList.size() < 1) return;
     Coordinate startPt = new Coordinate((Coordinate) ptList.get(0));
     Coordinate lastPt = (Coordinate) ptList.get(ptList.size() - 1);
-    Coordinate last2Pt = null;
-    if (ptList.size() >= 2)
-      last2Pt = (Coordinate) ptList.get(ptList.size() - 2);
     if (startPt.equals(lastPt)) return;
     ptList.add(startPt);
   }

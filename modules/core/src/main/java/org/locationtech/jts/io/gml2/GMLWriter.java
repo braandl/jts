@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -54,7 +54,7 @@ import org.locationtech.jts.util.Assert;
  * @author Martin Davis 
  */
 public class GMLWriter {
-	private final String INDENT = "  ";
+	private static final String INDENT = "  ";
 
 	private int startingIndentIndex = 0;
 
@@ -270,7 +270,7 @@ public class GMLWriter {
 		startLine(level + 1, writer);
 		startGeomTag(GMLConstants.GML_OUTER_BOUNDARY_IS, null, writer);
 
-		writeLinearRing((LinearRing) p.getExteriorRing(), writer, level + 2);
+		writeLinearRing(p.getExteriorRing(), writer, level + 2);
 
 		startLine(level + 1, writer);
 		endGeomTag(GMLConstants.GML_OUTER_BOUNDARY_IS, writer);
@@ -279,7 +279,7 @@ public class GMLWriter {
 			startLine(level + 1, writer);
 			startGeomTag(GMLConstants.GML_INNER_BOUNDARY_IS, null, writer);
 
-			writeLinearRing((LinearRing) p.getInteriorRingN(t), writer, level + 2);
+			writeLinearRing(p.getInteriorRingN(t), writer, level + 2);
 
 			startLine(level + 1, writer);
 			endGeomTag(GMLConstants.GML_INNER_BOUNDARY_IS, writer);
@@ -380,7 +380,7 @@ public class GMLWriter {
 		int dim = 2;
 
 		if (coords.length > 0) {
-			if (!(Double.isNaN(coords[0].z)))
+			if (!(Double.isNaN(coords[0].getZ())))
 				dim = 3;
 		}
 
@@ -399,7 +399,7 @@ public class GMLWriter {
 				writer.write(coordinateSeparator);
 				writer.write("" + coords[i].y);
 				writer.write(coordinateSeparator);
-				writer.write("" + coords[i].z);
+				writer.write("" + coords[i].getZ());
 			}
 			writer.write(tupleSeparator);
 

@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -47,7 +46,7 @@ public class EnhancedPrecisionOp
     try {
       CommonBitsOp cbo = new CommonBitsOp(true);
       Geometry resultEP = cbo.intersection(geom0, geom1);
-      // check that result is a valid geometry after the reshift to orginal precision
+      // check that result is a valid geometry after the reshift to original precision
       if (! resultEP.isValid())
         throw originalEx;
       return resultEP;
@@ -82,7 +81,7 @@ public class EnhancedPrecisionOp
     try {
       CommonBitsOp cbo = new CommonBitsOp(true);
       Geometry resultEP = cbo.union(geom0, geom1);
-      // check that result is a valid geometry after the reshift to orginal precision
+      // check that result is a valid geometry after the reshift to original precision
       if (! resultEP.isValid())
         throw originalEx;
       return resultEP;
@@ -117,7 +116,7 @@ public class EnhancedPrecisionOp
     try {
       CommonBitsOp cbo = new CommonBitsOp(true);
       Geometry resultEP = cbo.difference(geom0, geom1);
-      // check that result is a valid geometry after the reshift to orginal precision
+      // check that result is a valid geometry after the reshift to original precision
       if (! resultEP.isValid())
         throw originalEx;
       return resultEP;
@@ -152,7 +151,7 @@ public class EnhancedPrecisionOp
     try {
       CommonBitsOp cbo = new CommonBitsOp(true);
       Geometry resultEP = cbo.symDifference(geom0, geom1);
-      // check that result is a valid geometry after the reshift to orginal precision
+      // check that result is a valid geometry after the reshift to original precision
       if (! resultEP.isValid())
         throw originalEx;
       return resultEP;
@@ -190,7 +189,7 @@ public class EnhancedPrecisionOp
     try {
       CommonBitsOp cbo = new CommonBitsOp(true);
       Geometry resultEP = cbo.buffer(geom, distance);
-      // check that result is a valid geometry after the reshift to orginal precision
+      // check that result is a valid geometry after the reshift to original precision
       if (! resultEP.isValid())
         throw originalEx;
       return resultEP;

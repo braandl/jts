@@ -1,12 +1,10 @@
-
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -35,7 +33,7 @@ public class TestCase implements Testable {
   private Geometry expectedUnion = null;
   private Geometry expectedDifference = null;
   private Geometry expectedSymDifference = null;
-  private Geometry expectedCentroid = null;
+  //private Geometry expectedCentroid = null;
   private IntersectionMatrix im;
   private Geometry[] geom = new Geometry[2];
   private String wkta;
@@ -141,10 +139,6 @@ public class TestCase implements Testable {
 
   public void setExpectedSymDifference(Geometry expectedSymDifference) {
     this.expectedSymDifference = expectedSymDifference;
-  }
-
-  public void setExpectedCentroid(Geometry expectedCentroid) {
-    this.expectedCentroid = expectedCentroid;
   }
 
   public TestCase setExpectedIntersection(String wkt) {
@@ -333,8 +327,8 @@ public class TestCase implements Testable {
   }
 
   void assertEqualsExact(Geometry g1, Geometry g2, String msg) {
-    Geometry g1Clone = (Geometry) g1.clone();
-    Geometry g2Clone = (Geometry) g2.clone();
+    Geometry g1Clone = g1.copy();
+    Geometry g2Clone = g2.copy();
     g1Clone.normalize();
     g2Clone.normalize();
     assertTrue(g1Clone.equalsExact(g2Clone), msg);

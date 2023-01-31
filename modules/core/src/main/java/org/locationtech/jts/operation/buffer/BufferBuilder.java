@@ -1,12 +1,10 @@
-
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -29,6 +27,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Location;
+import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.geomgraph.Edge;
@@ -36,7 +35,7 @@ import org.locationtech.jts.geomgraph.EdgeList;
 import org.locationtech.jts.geomgraph.Label;
 import org.locationtech.jts.geomgraph.Node;
 import org.locationtech.jts.geomgraph.PlanarGraph;
-import org.locationtech.jts.geomgraph.Position;
+import org.locationtech.jts.noding.FastNodingValidator;
 import org.locationtech.jts.noding.IntersectionAdder;
 import org.locationtech.jts.noding.MCIndexNoder;
 import org.locationtech.jts.noding.Noder;
@@ -83,8 +82,13 @@ class BufferBuilder
   private PlanarGraph graph;
   private EdgeList edgeList     = new EdgeList();
 
+  private boolean isInvertOrientation = false;
+
   /**
-   * Creates a new BufferBuilder
+   * Creates a new BufferBuilder,
+   * using the given parameters.
+   * 
+   * @param bufParams the buffer parameters to use
    */
   public BufferBuilder(BufferParameters bufParams)
   {
@@ -113,6 +117,17 @@ class BufferBuilder
    */
   public void setNoder(Noder noder) { workingNoder = noder; }
 
+  /**
+   * Sets whether the offset curve is generated 
+   * using the inverted orientation of input rings.
+   * This allows generating a buffer(0) polygon from the smaller lobes
+   * of self-crossing rings.
+   * 
+   * @param isInvertOrientation true if input ring orientation should be inverted
+   */
+  void setInvertOrientation(boolean isInvertOrientation) {
+    this.isInvertOrientation = isInvertOrientation;
+  }
 
   public Geometry buffer(Geometry g, double distance)
   {
@@ -123,10 +138,9 @@ class BufferBuilder
     // factory must be the same as the one used by the input
     geomFact = g.getFactory();
 
-    OffsetCurveBuilder curveBuilder = new OffsetCurveBuilder(precisionModel, bufParams);
+    BufferCurveSetBuilder curveSetBuilder = new BufferCurveSetBuilder(g, distance, precisionModel, bufParams);
+    curveSetBuilder.setInvertOrientation(isInvertOrientation);
     
-    OffsetCurveSetBuilder curveSetBuilder = new OffsetCurveSetBuilder(g, distance, curveBuilder);
-
     List bufferSegStrList = curveSetBuilder.getCurves();
 
     // short-circuit test
@@ -144,7 +158,15 @@ class BufferBuilder
 //wktWriter.setMaxCoordinatesPerLine(10);
 //System.out.println(wktWriter.writeFormatted(convertSegStrings(bufferSegStrList.iterator())));
 
-    computeNodedEdges(bufferSegStrList, precisionModel);
+    /**
+     * Currently only zero-distance buffers are validated, 
+     * to avoid reducing performance for other buffers.
+     * This fixes some noding failure cases found via GeometryFixer
+     * (see JTS-852).
+     */
+    boolean isNodingValidated = distance == 0.0;
+    computeNodedEdges(bufferSegStrList, precisionModel, isNodingValidated);
+    
     graph = new PlanarGraph(new OverlayNodeFactory());
     graph.addEdges(edgeList.getEdges());
 
@@ -179,11 +201,17 @@ class BufferBuilder
 //                                  precisionModel.getScale());
   }
 
-  private void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel)
+  private void computeNodedEdges(List bufferSegStrList, PrecisionModel precisionModel, boolean isNodingValidated)
   {
     Noder noder = getNoder(precisionModel);
     noder.computeNodes(bufferSegStrList);
     Collection nodedSegStrings = noder.getNodedSubstrings();
+    
+    if (isNodingValidated) {
+      FastNodingValidator nv = new FastNodingValidator(nodedSegStrings);
+      nv.checkValid();
+    }
+    
 // DEBUGGING ONLY
 //BufferDebug.saveEdges(nodedEdges, "run" + BufferDebug.runCount + "_nodedEdges");
 

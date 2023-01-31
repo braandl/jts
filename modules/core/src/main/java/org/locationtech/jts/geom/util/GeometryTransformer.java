@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -187,6 +187,9 @@ public class GeometryTransformer
       if (transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
     }
+    if (transGeomList.isEmpty()) {
+      return factory.createMultiPoint();
+    }
     return factory.buildGeometry(transGeomList);
   }
 
@@ -235,21 +238,28 @@ public class GeometryTransformer
       if (transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
     }
+    if (transGeomList.isEmpty()) {
+      return factory.createMultiLineString();
+    }
     return factory.buildGeometry(transGeomList);
   }
 
   protected Geometry transformPolygon(Polygon geom, Geometry parent) {
     boolean isAllValidLinearRings = true;
-    Geometry shell = transformLinearRing((LinearRing) geom.getExteriorRing(), geom);
+    Geometry shell = transformLinearRing(geom.getExteriorRing(), geom);
 
-    if (shell == null
-        || ! (shell instanceof LinearRing)
-        || shell.isEmpty() )
+    // handle empty inputs, or inputs which are made empty
+    boolean shellIsNullOrEmpty = shell == null || shell.isEmpty();
+    if (geom.isEmpty() && shellIsNullOrEmpty ) {
+      return factory.createPolygon();
+    }
+    
+    if (shellIsNullOrEmpty || ! (shell instanceof LinearRing))
       isAllValidLinearRings = false;
 
     ArrayList holes = new ArrayList();
     for (int i = 0; i < geom.getNumInteriorRing(); i++) {
-      Geometry hole = transformLinearRing((LinearRing) geom.getInteriorRingN(i), geom);
+      Geometry hole = transformLinearRing(geom.getInteriorRingN(i), geom);
       if (hole == null || hole.isEmpty()) {
         continue;
       }
@@ -277,6 +287,9 @@ public class GeometryTransformer
       if (transformGeom == null) continue;
       if (transformGeom.isEmpty()) continue;
       transGeomList.add(transformGeom);
+    }
+    if (transGeomList.isEmpty()) {
+      return factory.createMultiPolygon();
     }
     return factory.buildGeometry(transGeomList);
   }

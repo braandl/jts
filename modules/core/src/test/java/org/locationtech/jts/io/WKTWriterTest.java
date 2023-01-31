@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -12,23 +12,13 @@
 
 package org.locationtech.jts.io;
 
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 
 /**
@@ -42,14 +32,38 @@ public class WKTWriterTest extends TestCase {
   GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
   WKTWriter writer = new WKTWriter();
   WKTWriter writer3D = new WKTWriter(3);
+  WKTWriter writer2DM = new WKTWriter(3);
 
   public static void main(String args[]) {
     TestRunner.run(suite());
   }
 
-  public WKTWriterTest(String name) { super(name); }
+  public WKTWriterTest(String name) { super(name);
+    writer2DM.setOutputOrdinates(Ordinate.createXYM());
+  }
 
   public static Test suite() { return new TestSuite(WKTWriterTest.class); }
+
+  public void testProperties() {
+    assertEquals(Ordinate.createXY(), writer.getOutputOrdinates());
+    assertEquals(Ordinate.createXYZ(), writer3D.getOutputOrdinates());
+    assertEquals(Ordinate.createXYM(), writer2DM.getOutputOrdinates());
+
+    GeometryFactory gf = new GeometryFactory(
+            PackedCoordinateSequenceFactory.DOUBLE_FACTORY);
+    WKTWriter writer3DM = new WKTWriter(4);
+    assertEquals(Ordinate.createXYZM(), writer3DM.getOutputOrdinates());
+
+    writer3DM.setOutputOrdinates(Ordinate.createXY());
+    assertEquals(Ordinate.createXY(), writer3DM.getOutputOrdinates());
+    writer3DM.setOutputOrdinates(Ordinate.createXYZ());
+    assertEquals(Ordinate.createXYZ(), writer3DM.getOutputOrdinates());
+    writer3DM.setOutputOrdinates(Ordinate.createXYM());
+    assertEquals(Ordinate.createXYM(), writer2DM.getOutputOrdinates());
+    writer3DM.setOutputOrdinates(Ordinate.createXYZM());
+    assertEquals(Ordinate.createXYZM(), writer3DM.getOutputOrdinates());
+
+  }
 
   public void testWritePoint() {
     Point point = geometryFactory.createPoint(new Coordinate(10, 10));
@@ -151,7 +165,9 @@ public class WKTWriterTest extends TestCase {
     GeometryFactory geometryFactory = new GeometryFactory();
     Point point = geometryFactory.createPoint(new Coordinate(1, 1, 1));
     String wkt = writer3D.write(point);
-    assertEquals("POINT (1 1 1)", wkt);
+    assertEquals("POINT Z(1 1 1)", wkt);
+    wkt = writer2DM.write(point);
+    assertEquals("POINT (1 1)", wkt);
   }
 
   public void testWrite3D_withNaN() {
@@ -160,7 +176,9 @@ public class WKTWriterTest extends TestCase {
                                  new Coordinate(2, 2, 2) };
     LineString line = geometryFactory.createLineString(coordinates);
     String wkt = writer3D.write(line);
-    assertEquals("LINESTRING (1 1, 2 2 2)", wkt);
+    assertEquals("LINESTRING Z(1 1 NaN, 2 2 2)", wkt);
+    wkt = writer2DM.write(line);
+    assertEquals("LINESTRING (1 1, 2 2)", wkt);
   }
 
 }

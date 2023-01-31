@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -41,5 +40,13 @@ public class BasicExample
     // compute the intersection of the two geometries
     Geometry g3 = g1.intersection(g2);
     System.out.println("G1 intersection G2: " + g3);
+
+    // create a point
+    Geometry point = new GeometryFactory().createPoint(new Coordinate(1,1));
+    System.out.println("Point Geometry: " + point);
+
+    // compute whether point is on g1
+    System.out.println("Point within g1: " + g1.contains(point));
+
   }
 }

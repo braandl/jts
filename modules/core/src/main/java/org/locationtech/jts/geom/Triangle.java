@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -14,6 +14,7 @@ package org.locationtech.jts.geom;
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.algorithm.HCoordinate;
 import org.locationtech.jts.algorithm.Orientation;
+import org.locationtech.jts.math.DD;
 
 /**
  * Represents a planar triangle, and provides methods for calculating various
@@ -25,19 +26,16 @@ public class Triangle
 {
 
   /**
-   * Tests whether a triangle is acute. A triangle is acute iff all interior
+   * Tests whether a triangle is acute. A triangle is acute if all interior
    * angles are acute. This is a strict test - right triangles will return
-   * <tt>false</tt> A triangle which is not acute is either right or obtuse.
+   * <tt>false</tt>. A triangle which is not acute is either right or obtuse.
    * <p>
    * Note: this implementation is not robust for angles very close to 90
    * degrees.
    * 
-   * @param a
-   *          a vertex of the triangle
-   * @param b
-   *          a vertex of the triangle
-   * @param c
-   *          a vertex of the triangle
+   * @param a a vertex of the triangle
+   * @param b a vertex of the triangle
+   * @param c a vertex of the triangle
    * @return true if the triangle is acute
    */
   public static boolean isAcute(Coordinate a, Coordinate b, Coordinate c)
@@ -48,6 +46,38 @@ public class Triangle
       return false;
     if (!Angle.isAcute(c, a, b))
       return false;
+    return true;
+  }
+  
+  /**
+   * Tests whether a triangle is oriented counter-clockwise.
+   * 
+   * @param a a vertex of the triangle
+   * @param b a vertex of the triangle
+   * @param c a vertex of the triangle
+   * @return true if the triangle orientation is counter-clockwise
+   */
+  public static boolean isCCW(Coordinate a, Coordinate b, Coordinate c)
+  {
+    return Orientation.COUNTERCLOCKWISE == Orientation.index(a, b, c);
+  }
+  
+  /**
+   * Tests whether a triangle intersects a point.
+   * 
+   * @param a a vertex of the triangle
+   * @param b a vertex of the triangle
+   * @param c a vertex of the triangle
+   * @param p the point to test
+   * @return true if the triangle intersects the point
+   */
+  public static boolean intersects(Coordinate a, Coordinate b, Coordinate c, Coordinate p)
+  {
+    int exteriorIndex = isCCW(a, b, c) ? 
+        Orientation.CLOCKWISE : Orientation.COUNTERCLOCKWISE;
+    if (exteriorIndex == Orientation.index(a, b, p)) return false;
+    if (exteriorIndex == Orientation.index(b, c, p)) return false;
+    if (exteriorIndex == Orientation.index(c, a, p)) return false;
     return true;
   }
 
@@ -148,6 +178,46 @@ public class Triangle
   }
 
   /**
+   * Computes the circumcentre of a triangle. The circumcentre is the centre of
+   * the circumcircle, the smallest circle which encloses the triangle. It is
+   * also the common intersection point of the perpendicular bisectors of the
+   * sides of the triangle, and is the only point which has equal distance to
+   * all three vertices of the triangle.
+   * <p>
+   * The circumcentre does not necessarily lie within the triangle. For example,
+   * the circumcentre of an obtuse isosceles triangle lies outside the triangle.
+   * <p>
+   * This method uses {@link DD} extended-precision arithmetic to 
+   * provide more accurate results than {@link #circumcentre(Coordinate, Coordinate, Coordinate)}
+   * 
+   * @param a
+   *          a vertex of the triangle
+   * @param b
+   *          a vertex of the triangle
+   * @param c
+   *          a vertex of the triangle
+   * @return the circumcentre of the triangle
+   */
+  public static Coordinate circumcentreDD(Coordinate a, Coordinate b, Coordinate c)
+  {
+    DD ax = DD.valueOf(a.x).subtract(c.x);
+    DD ay = DD.valueOf(a.y).subtract(c.y);
+    DD bx = DD.valueOf(b.x).subtract(c.x);
+    DD by = DD.valueOf(b.y).subtract(c.y);
+
+    DD denom = DD.determinant(ax, ay, bx, by).multiply(2);
+    DD asqr = ax.sqr().add( ay.sqr());
+    DD bsqr = bx.sqr().add( by.sqr());
+    DD numx = DD.determinant(ay, asqr, by, bsqr);
+    DD numy = DD.determinant(ax, asqr, bx, bsqr);
+
+    double ccx = DD.valueOf(c.x).subtract( numx.divide(denom) ).doubleValue();
+    double ccy = DD.valueOf(c.y).add( numy.divide(denom) ).doubleValue();
+
+    return new Coordinate(ccx, ccy);
+  }
+
+  /**
    * Computes the determinant of a 2x2 matrix. Uses standard double-precision
    * arithmetic, so is susceptible to round-off error.
    * 
@@ -220,6 +290,19 @@ public class Triangle
     return new Coordinate(x, y);
   }
 
+  /**
+   * Compute the length of the perimeter of a triangle
+   * 
+   * @param a a vertex of the triangle
+   * @param b a vertex of the triangle
+   * @param c a vertex of the triangle
+   * @return the length of the triangle perimeter
+   */
+  public static double length(Coordinate a, Coordinate b, Coordinate c)
+  {
+    return a.distance(b) + b.distance(c) + c.distance(a);
+  }
+  
   /**
    * Computes the length of the longest side of a triangle
    * 
@@ -343,11 +426,11 @@ public class Triangle
     // side vectors u and v
     double ux = b.x - a.x;
     double uy = b.y - a.y;
-    double uz = b.z - a.z;
+    double uz = b.getZ() - a.getZ();
 
     double vx = c.x - a.x;
     double vy = c.y - a.y;
-    double vz = c.z - a.z;
+    double vz = c.getZ() - a.getZ();
 
     // cross-product = u x v
     double crossx = uy * vz - uz * vy;
@@ -360,7 +443,7 @@ public class Triangle
 
     return area3D;
   }
-
+  
   /**
    * Computes the Z-value (elevation) of an XY point on a three-dimensional
    * plane defined by a triangle whose vertices have Z-values. The defining
@@ -394,10 +477,10 @@ public class Triangle
     double dy = p.y - y0;
     double t = (d * dx - b * dy) / det;
     double u = (-c * dx + a * dy) / det;
-    double z = v0.z + t * (v1.z - v0.z) + u * (v2.z - v0.z);
+    double z = v0.getZ() + t * (v1.getZ() - v0.getZ()) + u * (v2.getZ() - v0.getZ());
     return z;
-  }
-
+  }  
+  
   /**
    * The coordinates of the vertices of the triangle
    */
@@ -435,9 +518,9 @@ public class Triangle
   }
 
   /**
-   * Tests whether this triangle is acute. A triangle is acute iff all interior
+   * Tests whether this triangle is acute. A triangle is acute if all interior
    * angles are acute. This is a strict test - right triangles will return
-   * <tt>false</tt> A triangle which is not acute is either right or obtuse.
+   * <tt>false</tt>. A triangle which is not acute is either right or obtuse.
    * <p>
    * Note: this implementation is not robust for angles very close to 90
    * degrees.
@@ -446,9 +529,18 @@ public class Triangle
    */
   public boolean isAcute()
   {
-    return isAcute(this.p0, this.p1, this.p2);
+    return isAcute(p0, p1, p2);
   }
 
+  /**
+   * Tests whether this triangle is oriented counter-clockwise.
+   * 
+   * @return true if the triangle orientation is counter-clockwise
+   */
+  public boolean isCCW() {
+    return isCCW(p0, p1, p2);
+  }
+  
   /**
    * Computes the circumcentre of this triangle. The circumcentre is the centre
    * of the circumcircle, the smallest circle which encloses the triangle. It is
@@ -466,7 +558,7 @@ public class Triangle
    */
   public Coordinate circumcentre()
   {
-    return circumcentre(this.p0, this.p1, this.p2);
+    return circumcentre(p0, p1, p2);
   }
 
   /**
@@ -481,9 +573,19 @@ public class Triangle
    */
   public Coordinate centroid()
   {
-    return centroid(this.p0, this.p1, this.p2);
+    return centroid(p0, p1, p2);
   }
 
+  /**
+   * Computes the length of the perimeter of this triangle.
+   * 
+   * @return the length of the perimeter
+   */
+  public double length()
+  {
+    return length(p0, p1, p2);
+  }
+  
   /**
    * Computes the length of the longest side of this triangle
    * 
@@ -491,7 +593,7 @@ public class Triangle
    */
   public double longestSideLength()
   {
-    return longestSideLength(this.p0, this.p1, this.p2);
+    return longestSideLength(p0, p1, p2);
   }
 
   /**
@@ -504,7 +606,7 @@ public class Triangle
    */
   public double area()
   {
-    return area(this.p0, this.p1, this.p2);
+    return area(p0, p1, p2);
   }
 
   /**
@@ -522,7 +624,7 @@ public class Triangle
    */
   public double signedArea()
   {
-    return signedArea(this.p0, this.p1, this.p2);
+    return signedArea(p0, p1, p2);
   }
 
   /**
@@ -533,7 +635,7 @@ public class Triangle
    */
   public double area3D()
   {
-    return area3D(this.p0, this.p1, this.p2);
+    return area3D(p0, p1, p2);
   }
 
   /**

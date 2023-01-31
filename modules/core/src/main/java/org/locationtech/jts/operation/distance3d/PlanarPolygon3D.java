@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -84,13 +84,13 @@ public class PlanarPolygon3D {
 		for (int i = 0; i < n - 1; i++) {
 			seq.getCoordinate(i, p1);
 			seq.getCoordinate(i+1, p2);
-			sum.x += (p1.y - p2.y)*(p1.z + p2.z);
-			sum.y += (p1.z - p2.z)*(p1.x + p2.x);
-			sum.z += (p1.x - p2.x)*(p1.y + p2.y);
+			sum.x += (p1.y - p2.y)*(p1.getZ() + p2.getZ());
+			sum.y += (p1.getZ() - p2.getZ())*(p1.x + p2.x);
+			sum.setZ(sum.getZ() + (p1.x - p2.x)*(p1.y + p2.y));
 		}
 		sum.x /= n;
 		sum.y /= n;
-		sum.z /= n;
+		sum.setZ(sum.getZ() / n);
 		Vector3D norm = Vector3D.create(sum).normalize();
 		return norm;
 	}
@@ -110,11 +110,11 @@ public class PlanarPolygon3D {
 		for (int i = 0; i < n; i++) {
 			a.x += seq.getOrdinate(i, CoordinateSequence.X);
 			a.y += seq.getOrdinate(i, CoordinateSequence.Y);
-			a.z += seq.getOrdinate(i, CoordinateSequence.Z);
+			a.setZ(a.getZ() + seq.getOrdinate(i, CoordinateSequence.Z));
 		}
 		a.x /= n;
 		a.y /= n;
-		a.z /= n;
+		a.setZ(a.getZ() / n);
 		return a;
 	}
 
@@ -164,9 +164,9 @@ public class PlanarPolygon3D {
 	{
 		switch (facingPlane) {
 		case Plane3D.XY_PLANE: return new Coordinate(p.x, p.y);
-		case Plane3D.XZ_PLANE: return new Coordinate(p.x, p.z);
+		case Plane3D.XZ_PLANE: return new Coordinate(p.x, p.getZ());
 		// Plane3D.YZ
-		default: return new Coordinate(p.y, p.z);
+		default: return new Coordinate(p.y, p.getZ());
 		}
 	}
 	

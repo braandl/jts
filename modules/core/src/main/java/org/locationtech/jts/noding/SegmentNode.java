@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -70,6 +70,11 @@ public class SegmentNode
 
     if (coord.equals2D(other.coord)) return 0;
 
+    // an exterior node is the segment start point, so always sorts first
+    // this guards against a robustness problem where the octants are not reliable
+    if (! isInterior) return -1;
+    if (! other.isInterior) return 1;
+    
     return SegmentPointComparator.compare(segmentOctant, coord, other.coord);
     //return segment.compareNodePosition(this, other);
   }
@@ -78,5 +83,9 @@ public class SegmentNode
   {
     out.print(coord);
     out.print(" seg # = " + segmentIndex);
+  }
+  
+  public String toString() {
+    return segmentIndex + ":" + coord.toString();
   }
 }

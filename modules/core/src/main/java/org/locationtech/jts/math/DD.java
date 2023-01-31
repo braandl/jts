@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Martin Davis.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -851,6 +851,34 @@ public strictfp final class DD
     return s;
   }
   
+  /**
+   * Computes the determinant of the 2x2 matrix with the given entries.
+   * 
+   * @param x1 a double value
+   * @param y1 a double value
+   * @param x2 a double value
+   * @param y2 a double value
+   * @return the determinant of the values
+   */
+  public static DD determinant(double x1, double y1, double x2, double y2)
+  {
+    return determinant(valueOf(x1), valueOf(y1), valueOf(x2), valueOf(y2) );
+  }
+  
+  /**
+   * Computes the determinant of the 2x2 matrix with the given entries.
+   * 
+   * @param x1 a matrix entry
+   * @param y1 a matrix entry
+   * @param x2 a matrix entry
+   * @param y2 a matrix entry
+   * @return the determinant of the matrix of values
+   */
+  public static DD determinant(DD x1, DD y1, DD x2, DD y2)
+  {
+    DD det = x1.multiply(y2).selfSubtract(y1.multiply(x2));
+    return det;
+  }
   
   /*------------------------------------------------------------
    *   Ordering Functions
@@ -1326,6 +1354,7 @@ public strictfp final class DD
     int numDigits = 0;
     int numBeforeDec = 0;
     int exp = 0;
+    boolean hasDecimalChar = false;
     while (true) {
       if (i >= strlen)
         break;
@@ -1341,6 +1370,7 @@ public strictfp final class DD
       }
       if (ch == '.') {
         numBeforeDec = numDigits;
+        hasDecimalChar = true;
         continue;
       }
       if (ch == 'e' || ch == 'E') {
@@ -1359,7 +1389,10 @@ public strictfp final class DD
           + " in string " + str);
     }
     DD val2 = val;
-    
+
+    // correct number of digits before decimal sign if we don't have a decimal sign in the string
+    if (!hasDecimalChar) numBeforeDec = numDigits;
+
     // scale the number correctly
     int numDecPlaces = numDigits - numBeforeDec - exp;
     if (numDecPlaces == 0) {

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -36,7 +36,7 @@ public class JTSVersion {
   /**
    * The minor version number.
    */
-  public static final int MINOR = 15;
+  public static final int MINOR = 19;
 
   /**
    * The patch version number.
@@ -46,7 +46,7 @@ public class JTSVersion {
   /**
    * An optional string providing further release info (such as "alpha 1");
    */
-  private static final String releaseInfo = "";
+  private static final String RELEASE_INFO = "";
 
   /**
    * Prints the current JTSEntry version to stdout.
@@ -90,8 +90,8 @@ public class JTSVersion {
   public String toString()
   {
     String ver = MAJOR + "." + MINOR + "." + PATCH;
-    if (releaseInfo != null && releaseInfo.length() > 0)
-      return ver + " " + releaseInfo;
+    if (RELEASE_INFO != null && RELEASE_INFO.length() > 0)
+      return ver + " " + RELEASE_INFO;
     return ver;
   }
 

@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -93,7 +93,7 @@ public class KMLWriter
     return writer.write(geometry);
   }
 
-  private final int INDENT_SIZE = 2;
+  private static final int INDENT_SIZE = 2;
   private static final String COORDINATE_SEPARATOR = ",";
   private static final String TUPLE_SEPARATOR = " ";
 
@@ -299,12 +299,12 @@ public class KMLWriter
     writeModifiers(level, buf);
 
     startLine("  <outerBoundaryIs>\n", level, buf);
-    writeLinearRing((LinearRing) p.getExteriorRing(), null, false, level + 1, buf);
+    writeLinearRing(p.getExteriorRing(), null, false, level + 1, buf);
     startLine("  </outerBoundaryIs>\n", level, buf);
 
     for (int t = 0; t < p.getNumInteriorRing(); t++) {
       startLine("  <innerBoundaryIs>\n", level, buf);
-      writeLinearRing((LinearRing) p.getInteriorRingN(t), null, false, level + 1, buf);
+      writeLinearRing(p.getInteriorRingN(t), null, false, level + 1, buf);
       startLine("  </innerBoundaryIs>\n", level, buf);
     }
 
@@ -356,7 +356,7 @@ public class KMLWriter
     buf.append(COORDINATE_SEPARATOR);
     write(p.y, buf);
 
-    double z = p.z;
+    double z = p.getZ();
     // if altitude was specified directly, use it
     if (!Double.isNaN(zVal))
       z = zVal;

@@ -1,11 +1,10 @@
-
 /*
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -57,6 +56,8 @@ public abstract class AbstractNode implements Boundable, Serializable {
   /**
    * Returns either child {@link AbstractNode}s, or if this is a leaf node, real data (wrapped
    * in {@link ItemBoundable}s).
+   * 
+   * @return a list of the children
    */
   public List getChildBoundables() {
     return childBoundables;
@@ -89,6 +90,8 @@ public abstract class AbstractNode implements Boundable, Serializable {
   /**
    * Returns 0 if this node is a leaf, 1 if a parent of a leaf, and so on; the
    * root node will have the highest level
+   * 
+   * @return the node level
    */
   public int getLevel() {
     return level;
@@ -117,9 +120,16 @@ public abstract class AbstractNode implements Boundable, Serializable {
   /**
    * Adds either an AbstractNode, or if this is a leaf node, a data object
    * (wrapped in an ItemBoundable)
+   * 
+   * @param childBoundable the child to add
    */
   public void addChildBoundable(Boundable childBoundable) {
     Assert.isTrue(bounds == null);
     childBoundables.add(childBoundable);
+  }
+
+  void setChildBoundables(ArrayList childBoundables)
+  {
+    this.childBoundables = childBoundables;
   }
 }

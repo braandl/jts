@@ -1,23 +1,22 @@
 /*
+ * Copyright (c) 2016 Vivid Solutions.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
+/*
  * Copyright (c) 2003 Open Source Geospatial Foundation, All rights reserved.
- * 
+ *
  * This program and the accompanying materials are made available under the terms
  * of the OSGeo BSD License v1.0 available at:
  *
  * https://www.osgeo.org/sites/osgeo.org/files/Page/osgeo-bsd-license.txt
  */
-/*
- * Copyright (c) 2016 Vivid Solutions.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- *
- * http://www.eclipse.org/org/documents/edl-v10.php.
- */
-
 package org.locationtech.jtstest.testbuilder.io.shapefile;
 
 import java.io.IOException;
@@ -31,7 +30,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 
@@ -41,6 +39,8 @@ import org.locationtech.jts.geom.PrecisionModel;
  */
 public class PolygonHandler implements ShapeHandler{
     int myShapeType;
+    private PrecisionModel precisionModel = new PrecisionModel();
+    private GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
     
     public PolygonHandler()
     {
@@ -66,7 +66,7 @@ public class PolygonHandler implements ShapeHandler{
         {
             p = pointList[t];
             if ( (testPoint.x == p.x) && (testPoint.y == p.y) &&
-                    ((testPoint.z == p.z) || (!(testPoint.z == testPoint.z))  )  //nan test; x!=x iff x is nan
+                    ((testPoint.getZ() == p.getZ()) || (!(testPoint.getZ() == testPoint.getZ()))  )  //nan test; x!=x if x is nan
                     )
             {
                 return true;
@@ -87,7 +87,7 @@ public class PolygonHandler implements ShapeHandler{
         
          if (shapeType ==0)
         {
-             return new MultiPolygon(null,new PrecisionModel(),0); //null shape
+            return geometryFactory.createMultiPolygon(null); //null shape
         }
         
         if ( shapeType != myShapeType ) {
@@ -118,8 +118,8 @@ public class PolygonHandler implements ShapeHandler{
         }
         
         //LinearRing[] rings = new LinearRing[numParts];
-        ArrayList shells = new ArrayList();
-        ArrayList holes = new ArrayList();
+        ArrayList<LinearRing> shells = new ArrayList<LinearRing>();
+        ArrayList<LinearRing> holes = new ArrayList<LinearRing>();
         Coordinate[] coords = new Coordinate[numPoints];
         
         for(int t=0;t<numPoints;t++)
@@ -136,7 +136,7 @@ public class PolygonHandler implements ShapeHandler{
 			actualReadWords += 8;
              for(int t=0;t<numPoints;t++)
             {
-                coords[t].z = file.readDoubleLE();
+                coords[t].setZ(file.readDoubleLE());
 				actualReadWords += 4;
             }
         }
@@ -192,7 +192,10 @@ public class PolygonHandler implements ShapeHandler{
                 offset++;
             }
             LinearRing ring = geometryFactory.createLinearRing(points);
-            if(Orientation.isCCW(points)){
+            /**
+             * Allow reading a 3-point ring, and treat it as a shell.
+             */
+            if(points.length >= 4 && Orientation.isCCW(points)){
                 holes.add(ring);
             }
             else{
@@ -200,12 +203,12 @@ public class PolygonHandler implements ShapeHandler{
             }
         }
         
-        ArrayList holesForShells = assignHolesToShells(shells, holes);
+        ArrayList<ArrayList<LinearRing>> holesForShells = assignHolesToShells(shells, holes);
 
         Polygon[] polygons = new Polygon[shells.size()];
         for (int i = 0; i < shells.size(); i++) {
           polygons[i] = geometryFactory.createPolygon((LinearRing) shells.get(i),
-              (LinearRing[]) ((ArrayList) holesForShells.get(i))
+              (LinearRing[]) ((ArrayList<LinearRing>) holesForShells.get(i))
                   .toArray(new LinearRing[0]));
         }
 
@@ -220,16 +223,16 @@ public class PolygonHandler implements ShapeHandler{
 
         Geometry result = geometryFactory.createMultiPolygon(polygons);
         // if (!(result.isValid() ))
-        // System.out.println("geom isnt valid");
+        // System.out.println("geom isn't valid");
         return result;
       }
 
-      private ArrayList assignHolesToShells(ArrayList shells, ArrayList holes)
+      private ArrayList<ArrayList<LinearRing>> assignHolesToShells(ArrayList<LinearRing> shells, ArrayList<LinearRing> holes)
       {
         // now we have a list of all shells and all holes
-        ArrayList holesForShells = new ArrayList(shells.size());
+        ArrayList<ArrayList<LinearRing>> holesForShells = new ArrayList<ArrayList<LinearRing>>(shells.size());
         for (int i = 0; i < shells.size(); i++) {
-          holesForShells.add(new ArrayList());
+          holesForShells.add(new ArrayList<LinearRing>());
         }
 
         // find homes
@@ -269,7 +272,7 @@ public class PolygonHandler implements ShapeHandler{
           }
           else {
             // ((ArrayList)holesForShells.get(shells.indexOf(minShell))).add(testRing);
-            ((ArrayList) holesForShells.get(findIndex(shells, minShell)))
+            ((ArrayList<LinearRing>) holesForShells.get(findIndex(shells, minShell)))
                 .add(testHole);
           }
         }
@@ -299,24 +302,16 @@ public class PolygonHandler implements ShapeHandler{
     }
     public int getLength(Geometry geometry){
         
-           MultiPolygon multi;
-        if(geometry instanceof MultiPolygon){
-            multi = (MultiPolygon)geometry;
-        }
-        else{
-            multi = new MultiPolygon(new Polygon[]{(Polygon)geometry},geometry.getPrecisionModel(),geometry.getSRID());
-        }
-        
          int nrings=0;
         
-        for (int t=0;t<multi.getNumGeometries();t++)
+        for (int t=0;t<geometry.getNumGeometries();t++)
         {
             Polygon p;
-            p = (Polygon) multi.getGeometryN(t);
+            p = (Polygon) geometry.getGeometryN(t);
             nrings = nrings + 1 + p.getNumInteriorRing();
         }
          
-         int npoints = multi.getNumPoints();
+         int npoints = geometry.getNumPoints();
          
          if (myShapeType == 15)
          {
@@ -345,7 +340,7 @@ public class PolygonHandler implements ShapeHandler{
         
         for (int t=0;t<cs.length; t++)
         {
-            z= cs[t].z ;
+            z= cs[t].getZ() ;
             if (!(Double.isNaN( z ) ))
             {
                 if (validZFound)
@@ -395,7 +390,7 @@ public class PolygonHandler implements ShapeHandler{
  * Removed LEDatastream refs and replaced with EndianData[in/out]putstream
  *
  * Revision 1.1  2002/08/27 21:04:58  dblasby
- * orginal
+ * original
  *
  * Revision 1.3  2002/03/05 10:51:01  andyt
  * removed use of factory from write method

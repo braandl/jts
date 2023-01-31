@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -18,18 +18,24 @@ public class GeometryFunctionInvocation {
 
   private GeometryFunction function;
   private Object[] args;
+  private Geometry target;
 
-  public GeometryFunctionInvocation(GeometryFunction function, Object[] args) {
+  public GeometryFunctionInvocation(GeometryFunction function, Geometry target, Object[] args) {
     this.function = function;
+    this.target = target;
     this.args = args;
   }
 
   public String getSignature() {
     if (function == null)
       return null;
+    String funArgs = toString(target);
+    if (args.length > 0) {
+      funArgs += ", " + toString(args);
+    }
     return function.getCategory() 
         + "." + function.getName()
-        + "(" + toString(args) + ")";
+        + "( " + funArgs + " )";
   }
 
   public GeometryFunction getFunction() {
@@ -55,8 +61,11 @@ public class GeometryFunctionInvocation {
   public static String toString(Object o)
   {
     if (o == null) return "null";
-    if (o instanceof Geometry)
-      return ((Geometry) o).getGeometryType();
+    if (o instanceof Geometry) {
+      Geometry g = (Geometry) o;
+      int npts = g.getNumPoints();
+      return g.getGeometryType() + "[" + npts + "]";
+    }
     return o.toString();
   }
 }

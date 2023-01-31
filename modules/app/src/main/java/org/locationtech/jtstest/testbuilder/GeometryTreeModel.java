@@ -2,9 +2,9 @@
  * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License 2.0
  * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *
  * http://www.eclipse.org/org/documents/edl-v10.php.
@@ -15,6 +15,7 @@ package org.locationtech.jtstest.testbuilder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -23,7 +24,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.locationtech.jts.algorithm.Area;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -33,17 +33,23 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jtstest.testbuilder.geom.GeometryUtil;
 
 
 public class GeometryTreeModel implements TreeModel
 {
+  public static Comparator SORT_AREA_ASC = new AreaComparator(false);
+  public static Comparator SORT_AREA_DESC = new AreaComparator(true);
+  public static Comparator SORT_LEN_ASC = new LengthComparator(false);
+  public static Comparator SORT_LEN_DESC = new LengthComparator(true);
+  
   private Vector<TreeModelListener> treeModelListeners = new Vector<TreeModelListener>();
 
   private GeometricObjectNode rootGeom;
 
-  public GeometryTreeModel(Geometry geom, int source)
+  public GeometryTreeModel(Geometry geom, int source, Comparator comp)
   {
-    rootGeom = GeometryNode.create(geom, new GeometryContext(source));
+    rootGeom = GeometryNode.create(geom, new GeometryContext(source, comp));
   }
 
   // ////////////// TreeModel interface implementation ///////////////////////
@@ -117,6 +123,37 @@ public class GeometryTreeModel implements TreeModel
     System.out
         .println("*** valueForPathChanged : " + path + " --> " + newValue);
   }
+  
+  public static class AreaComparator implements Comparator {
+
+    private int dirFactor;
+
+    public AreaComparator(boolean direction) {
+      this.dirFactor = direction ? 1 : -1;
+    }
+    
+    @Override
+    public int compare(Object o1, Object o2) {
+      double area1 = ((GeometricObjectNode) o1).getGeometry().getArea();
+      double area2 = ((GeometricObjectNode) o2).getGeometry().getArea();
+      return dirFactor * Double.compare(area1, area2);
+    }
+  }
+  public static class LengthComparator implements Comparator {
+
+    private int dirFactor;
+
+    public LengthComparator(boolean direction) {
+      this.dirFactor = direction ? 1 : -1;
+    }
+    
+    @Override
+    public int compare(Object o1, Object o2) {
+      double area1 = ((GeometricObjectNode) o1).getGeometry().getLength();
+      double area2 = ((GeometricObjectNode) o2).getGeometry().getLength();
+      return dirFactor * Double.compare(area1, area2);
+    }
+  }
 }
 
 abstract class GeometricObjectNode
@@ -148,7 +185,7 @@ abstract class GeometricObjectNode
   public String getText()
   {
     if (index >= 0) {
-      return indexString(index) + " : " + text;
+      return indexString(index) + " " + text;
     }
     return text;
   }
@@ -169,9 +206,23 @@ abstract class GeometricObjectNode
 
 class GeometryContext {
   int source = 0;
+  private Comparator comp;
   
   GeometryContext(int source) {
     this.source = source;
+  }
+
+  public GeometryContext(int source, Comparator comp) {
+    this.source = source;
+    this.comp = comp;
+  }
+  
+  public Comparator getComparator() {
+    return comp;
+  }
+
+  public boolean isSorted() {
+    return comp != null;
   }
 }
 
@@ -225,39 +276,15 @@ abstract class GeometryNode extends GeometricObjectNode
         buf.append(" " + sizeString(size));
       }
     }
-    
-    if (hasLength(geom)) {
-    	buf.append("   --     Len: " + geom.getLength());
+    String metrics = GeometryUtil.metricsSummary(geom);
+    if (metrics.length() > 0) {
+      buf.append("  -  ");
     }
-    if (hasArea(geom)) { 
-      buf.append("      Area: " + area(geom));
-    }
+    buf.append( metrics );
     
     return buf.toString();
   }
   
-  private static double area(Geometry geom) {
-    double area = 0;
-    if (geom.getDimension() >= 2) {
-      area = geom.getArea();
-    }
-    else if (geom instanceof LinearRing) {
-      area = Area.ofRing(geom.getCoordinates());
-    }
-    return area;
-  }
-
-  private static boolean hasArea(Geometry geom) {
-	    if (geom.getDimension() >= 2) return true;
-	    if (geom instanceof LinearRing) return true;
-	    return false;
-	  }
-	  
-  private static boolean hasLength(Geometry geom) {
-	    if (geom.getDimension() >= 1) return true;
-	    return false;
-	  }
-	  
   public boolean isLeaf()
   {
     return isLeaf;
@@ -265,7 +292,7 @@ abstract class GeometryNode extends GeometricObjectNode
   
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_POLYGON : AppConstants.ICON_POLYGON_B;
+    return context.source == 0 ? AppIcons.ICON_POLYGON : AppIcons.ICON_POLYGON_B;
   }
 
   public GeometricObjectNode getChildAt(int index)
@@ -326,17 +353,20 @@ class PolygonNode extends GeometryNode
 
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_POLYGON : AppConstants.ICON_POLYGON_B;
+    return context.source == 0 ? AppIcons.ICON_POLYGON : AppIcons.ICON_POLYGON_B;
   }
 
   protected void fillChildren()
   {
-    children.add(new LinearRingNode((LinearRing) poly.getExteriorRing(),
-        "Shell", context));
     for (int i = 0; i < poly.getNumInteriorRing(); i++) {
       children.add(new LinearRingNode((LinearRing) poly.getInteriorRingN(i),
           "Hole " + i, context));
     }
+    if (context.isSorted()) {
+      children.sort(context.getComparator());
+    }
+    children.add(0, new LinearRingNode((LinearRing) poly.getExteriorRing(),
+        "Shell", context));
   }
 
 }
@@ -359,7 +389,7 @@ class LineStringNode extends GeometryNode
 
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_LINESTRING : AppConstants.ICON_LINESTRING_B;
+    return context.source == 0 ? AppIcons.ICON_LINESTRING : AppIcons.ICON_LINESTRING_B;
   }
 
   public Geometry getGeometry()
@@ -398,7 +428,7 @@ class LinearRingNode extends LineStringNode
   }
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_LINEARRING : AppConstants.ICON_LINEARRING_B;
+    return context.source == 0 ? AppIcons.ICON_LINEARRING : AppIcons.ICON_LINEARRING_B;
   }
 }
 
@@ -414,7 +444,7 @@ class PointNode extends GeometryNode
 
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_POINT : AppConstants.ICON_POINT_B;
+    return context.source == 0 ? AppIcons.ICON_POINT : AppIcons.ICON_POINT_B;
   }
 
   public Geometry getGeometry()
@@ -450,11 +480,14 @@ class GeometryCollectionNode extends GeometryNode
       node.setIndex(i);
       children.add(node);
     }
+    if (context.isSorted()) {
+      children.sort(context.getComparator());
+    }
   }
   
   public ImageIcon getIcon()
   {
-    return context.source == 0 ? AppConstants.ICON_COLLECTION : AppConstants.ICON_COLLECTION_B;
+    return context.source == 0 ? AppIcons.ICON_COLLECTION : AppIcons.ICON_COLLECTION_B;
   }
 
 
@@ -506,7 +539,7 @@ class CoordinateNode extends GeometricObjectNode
   }
   public ImageIcon getIcon()
   {
-    return AppConstants.ICON_POINT;
+    return AppIcons.ICON_POINT;
   }
 
   public Geometry getGeometry()
@@ -539,3 +572,4 @@ class CoordinateNode extends GeometricObjectNode
     throw new IllegalStateException("should not be here");
   }
 }
+
