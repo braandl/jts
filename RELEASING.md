@@ -183,13 +183,13 @@ Update master to the next release version:
 2. Update version number in Maven POMs (run the Maven release plugin at project root:
    
    ```
-   mvn versions:set -DnewVersion=1.19.0.5-SNAPSHOT
+   mvn versions:set -DnewVersion=1.19.0.6-SNAPSHOT
    ```
  
 3. Commit this change.
 
    ```
-   git commit -m "Version 1.19.0.5-SNAPSHOT"
+   git commit -m "Version 1.19.0.6-SNAPSHOT"
    git push
    ```
 4. Add a new version entry to the [Version History](https://github.com/locationtech/jts/blob/master/doc/JTS_Version_History.md)
