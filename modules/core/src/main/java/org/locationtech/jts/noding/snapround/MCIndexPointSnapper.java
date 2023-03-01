@@ -12,6 +12,8 @@
 
 package org.locationtech.jts.noding.snapround;
 
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.ItemVisitor;
@@ -90,6 +92,8 @@ public class MCIndexPointSnapper
       extends MonotoneChainSelectAction
   {
     private HotPixel hotPixel;
+
+    @Weak
     private SegmentString parentEdge;
     // is -1 if hotPixel is not a vertex
     private int hotPixelVertexIndex;

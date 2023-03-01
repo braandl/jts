@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.geomgraph;
 
+import com.google.j2objc.annotations.Weak;
 import java.io.PrintStream;
 
 import org.locationtech.jts.algorithm.BoundaryNodeRule;
@@ -32,10 +33,15 @@ import org.locationtech.jts.util.Assert;
 public class EdgeEnd
   implements Comparable
 {
+  @Weak
   protected Edge edge;  // the parent edge of this edge end
+  @Weak
   protected Label label;
 
+  @Weak
   private Node node;          // the node this edge end originates at
+
+  @Weak
   private Coordinate p0, p1;  // points of initial line segment
   private double dx, dy;      // the direction vector for this edge from its starting point
   private int quadrant;

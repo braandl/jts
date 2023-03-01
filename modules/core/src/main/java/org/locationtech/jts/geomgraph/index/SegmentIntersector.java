@@ -14,6 +14,8 @@ package org.locationtech.jts.geomgraph.index;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geomgraph.Edge;
@@ -42,8 +44,11 @@ public class SegmentIntersector
   private boolean hasProper = false;
   private boolean hasProperInterior = false;
   // the proper intersection point found
+
+  @Weak
   private Coordinate properIntersectionPoint = null;
 
+  @Weak
   private LineIntersector li;
   private boolean includeProper;
   private boolean recordIsolated;

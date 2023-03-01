@@ -13,6 +13,8 @@ package org.locationtech.jts.geomgraph;
 
 import java.io.PrintStream;
 
+
+import com.google.j2objc.annotations.Weak;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -43,6 +45,7 @@ public class Edge
     }
   }
 
+  @Weak
   Coordinate[] pts;
   private Envelope env;
   EdgeIntersectionList eiList = new EdgeIntersectionList(this);

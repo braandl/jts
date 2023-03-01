@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.util.Assert;
@@ -32,6 +34,8 @@ import org.locationtech.jts.util.Assert;
 public class SegmentNodeList
 {
   private Map nodeMap = new TreeMap();
+
+  @Weak
   private NodedSegmentString edge;  // the parent edge
 
   public SegmentNodeList(NodedSegmentString edge)

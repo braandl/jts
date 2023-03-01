@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.j2objc.annotations.Weak;
 import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.algorithm.LineIntersector;
 import org.locationtech.jts.geom.Coordinate;
@@ -69,6 +70,8 @@ public class NodedSegmentString
 
   private SegmentNodeList nodeList = new SegmentNodeList(this);
   private Coordinate[] pts;
+
+  @Weak
   private Object data;
 
   /**

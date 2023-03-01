@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.google.j2objc.annotations.Weak;
 import com.google.common.annotations.GwtIncompatible;
 import org.locationtech.jts.algorithm.Centroid;
 import org.locationtech.jts.algorithm.ConvexHull;
@@ -182,11 +183,13 @@ public abstract class Geometry
   /**
    *  The bounding box of this <code>Geometry</code>.
    */
+  @Weak
   protected Envelope envelope;
 
   /**
    * The {@link GeometryFactory} used to create this Geometry
    */
+  @Weak
   protected final GeometryFactory factory;
 
   /**

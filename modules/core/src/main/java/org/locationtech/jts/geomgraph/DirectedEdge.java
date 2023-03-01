@@ -13,6 +13,8 @@ package org.locationtech.jts.geomgraph;
 
 import java.io.PrintStream;
 
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.TopologyException;
@@ -47,10 +49,15 @@ public class DirectedEdge
   private boolean isInResult = false;
   private boolean isVisited = false;
 
+  @Weak
   private DirectedEdge sym; // the symmetric edge
+  @Weak
   private DirectedEdge next;  // the next edge in the edge ring for the polygon containing this edge
+  @Weak
   private DirectedEdge nextMin;  // the next edge in the MinimalEdgeRing that contains this edge
+  @Weak
   private EdgeRing edgeRing;  // the EdgeRing that this edge is part of
+  @Weak
   private EdgeRing minEdgeRing;  // the MinimalEdgeRing that this edge is part of
   /**
    * The depth of each side (position) of this edge.

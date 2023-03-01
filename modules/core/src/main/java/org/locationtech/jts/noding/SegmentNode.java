@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.noding;
 
+import com.google.j2objc.annotations.Weak;
 import java.io.PrintStream;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -23,7 +24,10 @@ import org.locationtech.jts.geom.Coordinate;
 public class SegmentNode
     implements Comparable
 {
+  @Weak
   private final NodedSegmentString segString;
+
+  @Weak
   public final Coordinate coord;   // the point of intersection
   public final int segmentIndex;   // the index of the containing line segment in the parent edge
   private final int segmentOctant;

@@ -14,12 +14,14 @@ package org.locationtech.jts.geomgraph.index;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geomgraph.Edge;
 
+import com.google.j2objc.annotations.Weak;
 
 /**
  * @version 1.7
  */
 public class SweepLineSegment {
 
+  @Weak
   Edge edge;
   Coordinate[] pts;
   int ptIndex;

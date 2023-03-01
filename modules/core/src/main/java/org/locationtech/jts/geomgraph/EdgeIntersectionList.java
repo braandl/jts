@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.google.j2objc.annotations.Weak;
 import org.locationtech.jts.geom.Coordinate;
 
 /**
@@ -30,6 +31,8 @@ public class EdgeIntersectionList
 {
   // a Map <EdgeIntersection, EdgeIntersection>
   private Map nodeMap = new TreeMap();
+
+  @Weak
   Edge edge;  // the parent edge
 
   public EdgeIntersectionList(Edge edge)

@@ -11,8 +11,8 @@
  */
 package org.locationtech.jts.operation.buffer;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -23,6 +23,9 @@ import org.locationtech.jts.math.MathUtil;
 import org.locationtech.jts.noding.Noder;
 import org.locationtech.jts.noding.ScaledNoder;
 import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //import debug.*;
 
@@ -301,12 +304,16 @@ public class BufferOp
     }
   }
 
+  @Weak
   private Geometry argGeom;
   private double distance;
-  
-  private BufferParameters bufParams = new BufferParameters();
+
+  @Weak
+  private BufferParameters bufParams;
 
   private Geometry resultGeometry = null;
+
+  @Weak
   private RuntimeException saveException;   // debugging only
   private boolean isInvertOrientation = false;
 

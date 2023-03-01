@@ -15,6 +15,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.google.j2objc.annotations.Weak;
+
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.util.GeometryEditor;
 import org.locationtech.jts.util.Assert;
@@ -37,6 +39,7 @@ public class GeometryFactory
   private static final long serialVersionUID = -6820524753094095635L;
   private PrecisionModel precisionModel;
 
+  @Weak
   private CoordinateSequenceFactory coordinateSequenceFactory;
 
 
