@@ -280,7 +280,7 @@ public class BufferOp
   /**
    * Combines the elements of two polygonal geometries together.
    * The input geometries must be non-adjacent, to avoid
-   * creating an invalid result.
+   * creating an invalid result.fgetRgz
    * 
    * @param poly0 a polygonal geometry (which may be empty)
    * @param poly1 a polygonal geometry (which may be empty)
@@ -459,5 +459,6 @@ public class BufferOp
     bufBuilder.setNoder(noder);
     // this may throw an exception, if robustness errors are encountered
     resultGeometry = bufBuilder.buffer(argGeom, distance);
+    bufBuilder = null;
   }
 }
