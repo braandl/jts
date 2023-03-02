@@ -183,13 +183,11 @@ public abstract class Geometry
   /**
    *  The bounding box of this <code>Geometry</code>.
    */
-  @Weak
   protected Envelope envelope;
 
   /**
    * The {@link GeometryFactory} used to create this Geometry
    */
-  @Weak
   protected final GeometryFactory factory;
 
   /**
