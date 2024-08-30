@@ -14,7 +14,6 @@ package org.locationtech.jtstest.function;
 import org.locationtech.jts.algorithm.hull.ConcaveHull;
 import org.locationtech.jts.algorithm.hull.ConcaveHullOfPolygons;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.simplify.PolygonHullSimplifier;
 import org.locationtech.jtstest.geomfunction.Metadata;
 
 public class HullFunctions {
@@ -42,6 +41,18 @@ public class HullFunctions {
       @Metadata(title="Length Ratio")
       double maxLenRatio) {
     return ConcaveHull.concaveHullByLengthRatio(geom, maxLenRatio, true);
+  }
+  
+  public static Geometry alphaShape(Geometry geom, 
+      @Metadata(title="Alpha (Radius)")
+      double alpha) {
+    return ConcaveHull.alphaShape(geom, alpha, false);
+  }
+  
+  public static Geometry alphaShapeWithHoles(Geometry geom, 
+      @Metadata(title="Alpha (Radius)")
+      double alpha) {
+    return ConcaveHull.alphaShape(geom, alpha, true);
   }
   
   public static double concaveHullLenGuess(Geometry geom) {

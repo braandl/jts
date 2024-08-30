@@ -14,7 +14,12 @@ package org.locationtech.jts.geom.impl;
 import java.io.Serializable;
 
 import com.google.common.annotations.GwtIncompatible;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateArrays;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Coordinates;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * A {@link CoordinateSequence} backed by an array of {@link Coordinate}s.

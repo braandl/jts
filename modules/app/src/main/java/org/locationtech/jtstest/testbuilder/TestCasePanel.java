@@ -11,11 +11,15 @@
  */
 package org.locationtech.jtstest.testbuilder;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,7 +41,9 @@ import javax.swing.event.ChangeEvent;
 import org.locationtech.jtstest.testbuilder.controller.JTSTestBuilderController;
 import org.locationtech.jtstest.testbuilder.event.ValidPanelEvent;
 import org.locationtech.jtstest.testbuilder.event.ValidPanelListener;
-import org.locationtech.jtstest.testbuilder.model.*;
+import org.locationtech.jtstest.testbuilder.model.GeometryEvent;
+import org.locationtech.jtstest.testbuilder.model.TestBuilderModel;
+import org.locationtech.jtstest.testbuilder.model.TestCaseEdit;
 import org.locationtech.jtstest.testbuilder.ui.SwingUtil;
 
 
@@ -279,15 +285,25 @@ public class TestCasePanel extends JPanel {
  
     JCheckBox cbDisplayAB = new JCheckBox();
     cbDisplayAB.setSelected(true);
-    cbDisplayAB.setToolTipText("Dislplay A and B");
-    //cbDisplayAB.setText("Display Input");
-    cbDisplayAB.addActionListener(new java.awt.event.ActionListener() {
+    cbDisplayAB.setToolTipText("Display A and B");
+     cbDisplayAB.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(ActionEvent e) {
           JTSTestBuilderController.editPanel().setShowingInput(cbDisplayAB.isSelected());
         }
       });
     JLabel lblDisplayAB = new JLabel();
     lblDisplayAB.setIcon(AppIcons.GEOFUNC_BINARY);
+    
+    JCheckBox cbDisplayGrid = new JCheckBox();
+    cbDisplayGrid.setSelected(true);
+    cbDisplayGrid.setToolTipText("Display Grid");
+    cbDisplayGrid.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          JTSTestBuilderController.editPanel().setShowingGrid(cbDisplayGrid.isSelected());
+        }
+      });
+    JLabel lblDisplayGrid = new JLabel();
+    lblDisplayGrid.setIcon(AppIcons.EDIT_GRID);
     
     cbRevealTopo.setToolTipText("Reveal Topology - visualize topological detail by stretching geometries");
     spStretchDist.setToolTipText("Stretch Distance (pixels)");
@@ -300,6 +316,8 @@ public class TestCasePanel extends JPanel {
     jPanelReveal.add(Box.createHorizontalStrut(8));
     jPanelReveal.add(cbDisplayAB);
     jPanelReveal.add(lblDisplayAB);
+    jPanelReveal.add(cbDisplayGrid);
+    jPanelReveal.add(lblDisplayGrid);
     jPanelReveal.add(Box.createHorizontalGlue());
     jPanelReveal.setBorder(BorderFactory.createLoweredBevelBorder());
 
@@ -338,9 +356,9 @@ public class TestCasePanel extends JPanel {
     tabFunctions.add(spatialFunctionPanel,  "Geometry");
     tabFunctions.add(scalarFunctionPanel,   "Scalar");
     
-    jTabbedPane1.add(tabFunctions, "Functions");
-    jTabbedPane1.add(relateTabPanel, "Predicates");
-    jTabbedPane1.add(validPanel, "Valid / Mark");
+    jTabbedPane1.add(tabFunctions, "Function");
+    jTabbedPane1.add(relateTabPanel, "Predicate");
+    jTabbedPane1.add(validPanel, "Valid/Mark");
 
     
     relateTabPanel.add(relatePanel, BorderLayout.CENTER);

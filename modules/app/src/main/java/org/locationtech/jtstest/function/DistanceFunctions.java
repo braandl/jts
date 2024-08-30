@@ -11,9 +11,13 @@
  */
 package org.locationtech.jtstest.function;
 
-import org.locationtech.jts.algorithm.distance.*;
-import org.locationtech.jts.geom.*;
-import org.locationtech.jts.operation.distance.*;
+import org.locationtech.jts.algorithm.distance.DiscreteFrechetDistance;
+import org.locationtech.jts.algorithm.distance.DiscreteHausdorffDistance;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.operation.distance.DistanceOp;
+import org.locationtech.jts.operation.distance.IndexedFacetDistance;
 
 public class DistanceFunctions {
   public static double distance(Geometry a, Geometry b) {
@@ -76,6 +80,10 @@ public class DistanceFunctions {
 	
   public static double distanceIndexed(Geometry a, Geometry b) {
     return IndexedFacetDistance.distance(a, b);
+  }
+  
+  public static boolean isWithinDistanceIndexed(Geometry a, Geometry b, double distance) {
+    return IndexedFacetDistance.isWithinDistance(a, b, distance);
   }
   
   public static Geometry nearestPointsIndexed(Geometry a, Geometry b) {

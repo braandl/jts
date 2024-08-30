@@ -16,14 +16,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -59,13 +57,10 @@ public class LayerListPanel extends JPanel {
   List<LayerItemPanel> layerItems = new ArrayList<LayerItemPanel>();
 
   private JButton btnCopy;
-
+  private JButton btnInspect;
   private JButton btnUp;
-
   private JButton btnDown;
-
   private JButton btnDelete;
-
   private JButton btnPaste;
 
   private Layer focusLayer;
@@ -107,6 +102,15 @@ public class LayerListPanel extends JPanel {
           }
         });
     buttonPanel.add(btnCopy);
+    
+    btnInspect = SwingUtil.createButton(AppIcons.GEOM_INSPECT, 
+        "Inspect layer geometry",
+            new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            layerInspect();
+          }
+        });
+    buttonPanel.add(btnInspect);
     
     btnPaste = SwingUtil.createButton(AppIcons.PASTE, 
         "Paste geometry into layer",
@@ -151,6 +155,7 @@ public class LayerListPanel extends JPanel {
     
     lyrStylePanel = new LayerStylePanel();
     GeometryViewStylePanel viewStylePanel = new GeometryViewStylePanel();
+    
     //add(lyrStylePanel, BorderLayout.CENTER);    
 
     //tabFunctions.setBackground(jTabbedPane1.getBackground());
@@ -230,6 +235,10 @@ public class LayerListPanel extends JPanel {
     JTSTestBuilder.controller().geometryViewChanged();
   }
 
+  private void layerInspect() {
+    JTSTestBuilder.controller().inspectGeometry(focusLayer.getName(), focusLayer.getGeometry());
+  }
+  
   private void layerDelete(Layer lyr) {
     // don't remove if non-empty
     if (lyr.hasGeometry()) return;
@@ -254,8 +263,7 @@ public class LayerListPanel extends JPanel {
   }
   
   private void layerClear(Layer lyr) {
-    StaticGeometryContainer src = (StaticGeometryContainer) lyr.getSource();
-    src.setGeometry(null);
+    lyr.getSource().clear();
     updateButtons(focusLayer);
     JTSTestBuilder.controller().geometryViewChanged();
   }
