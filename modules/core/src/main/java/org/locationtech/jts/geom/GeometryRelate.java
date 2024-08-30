@@ -32,10 +32,10 @@ import org.locationtech.jts.operation.relateng.RelatePredicate;
  */
 class GeometryRelate 
 {
-  public static String RELATE_PROPERTY_NAME = "jts.relate";
+  public static final String RELATE_PROPERTY_NAME = "jts.relate";
   
-  public static String RELATE_PROPERTY_VALUE_NG = "ng";
-  public static String RELATE_PROPERTY_VALUE_OLD = "old";
+  public static final String RELATE_PROPERTY_VALUE_NG = "ng";
+  public static final String RELATE_PROPERTY_VALUE_OLD = "old";
   
   /**
    * Currently the old relate implementation is the default

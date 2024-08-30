@@ -11,6 +11,7 @@
  */
 package org.locationtech.jts.operation.relateng;
 
+import com.google.common.annotations.GwtIncompatible;
 import java.util.Comparator;
 
 import org.locationtech.jts.algorithm.PolygonNodeTopology;
@@ -136,7 +137,8 @@ class NodeSection implements Comparable<NodeSection>
   public static boolean isProper(NodeSection a, NodeSection b) {
     return a.isProper() && b.isProper();
   }
-  
+
+  @GwtIncompatible
   public String toString() {
     String geomName = RelateGeometry.name(isA);
     String atVertexInd = isNodeAtVertex ? "-V-" : "---";
