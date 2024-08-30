@@ -11,8 +11,8 @@
  */
 package org.locationtech.jts.operation.buffer;
 
-import com.google.j2objc.annotations.Weak;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -24,9 +24,6 @@ import org.locationtech.jts.noding.Noder;
 import org.locationtech.jts.noding.ScaledNoder;
 import org.locationtech.jts.noding.snapround.SnapRoundingNoder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //import debug.*;
 
 /**
@@ -36,8 +33,8 @@ import java.util.List;
  * the Minkowski sum (or difference) of the geometry
  * with a circle of radius equal to the absolute value of the buffer distance.
  * In the CAD/CAM world buffers are known as <i>offset curves</i>.
- * In morphological analysis the 
- * operation of positive and negative buffering 
+ * In morphological analysis the
+ * operation of positive and negative buffering
  * is referred to as <i>erosion</i> and <i>dilation</i>
  * <p>
  * The buffer operation always returns a polygonal result.
@@ -66,11 +63,11 @@ import java.util.List;
  * </ul>
  * <p>
  * The buffer algorithm may perform simplification on the input to increase performance.
- * The simplification is performed a way that always increases the buffer area 
+ * The simplification is performed a way that always increases the buffer area
  * (so that the simplified input covers the original input).
  * The degree of simplification can be {@link BufferParameters#setSimplifyFactor(double) specified},
  * with a {@link BufferParameters#DEFAULT_SIMPLIFY_FACTOR default} used otherwise.
- * Note that if the buffer distance is zero then so is the computed simplify tolerance, 
+ * Note that if the buffer distance is zero then so is the computed simplify tolerance,
  * no matter what the simplify factor.
  * <p>
  * Buffer results are always valid geometry.
@@ -93,7 +90,7 @@ public class BufferOp
    * @deprecated use BufferParameters
    */
   public static final int CAP_BUTT = BufferParameters.CAP_FLAT;
-  
+
   /**
    * Specifies a butt (or flat) line buffer end cap style.
    * @deprecated use BufferParameters
@@ -104,11 +101,11 @@ public class BufferOp
    * @deprecated use BufferParameters
    */
   public static final int CAP_SQUARE = BufferParameters.CAP_SQUARE;
-  
+
   /**
    * A number of digits of precision which leaves some computational "headroom"
    * for floating point operations.
-   * 
+   *
    * This value should be less than the decimal precision of double-precision values (16).
    */
   private static int MAX_PRECISION_DIGITS = 12;
@@ -131,24 +128,24 @@ public class BufferOp
    * @return a scale factor for the buffer computation
    */
   private static double precisionScaleFactor(Geometry g,
-      double distance,
-    int maxPrecisionDigits)
+                                             double distance,
+                                             int maxPrecisionDigits)
   {
     Envelope env = g.getEnvelopeInternal();
     double envMax = MathUtil.max(
-        Math.abs(env.getMaxX()), 
-            Math.abs(env.getMaxY()), 
-                Math.abs(env.getMinX()), 
-                    Math.abs(env.getMinY())
-            );
-    
+            Math.abs(env.getMaxX()),
+            Math.abs(env.getMaxY()),
+            Math.abs(env.getMinX()),
+            Math.abs(env.getMinY())
+    );
+
     double expandByDistance = distance > 0.0 ? distance : 0.0;
     double bufEnvMax = envMax + 2 * expandByDistance;
 
     // the smallest power of 10 greater than the buffer envelope
     int bufEnvPrecisionDigits = (int) (Math.log(bufEnvMax) / Math.log(10) + 1.0);
     int minUnitLog10 = maxPrecisionDigits - bufEnvPrecisionDigits;
-    
+
     double scaleFactor = Math.pow(10.0, minUnitLog10);
     return scaleFactor;
   }
@@ -204,7 +201,7 @@ public class BufferOp
     Geometry geomBuf = bufOp.getResultGeometry(distance);
     return geomBuf;
   }
-  
+
   /**
    * Computes the buffer for a geometry for a given buffer distance
    * and accuracy of approximation.
@@ -236,8 +233,8 @@ public class BufferOp
    */
   public static Geometry bufferOp(Geometry g,
                                   double distance,
-    int quadrantSegments,
-    int endCapStyle)
+                                  int quadrantSegments,
+                                  int endCapStyle)
   {
     BufferOp bufOp = new BufferOp(g);
     bufOp.setQuadrantSegments(quadrantSegments);
@@ -251,14 +248,14 @@ public class BufferOp
    * The result can be computed using the maximum-signed-area orientation,
    * or by combining both orientations.
    * <p>
-   * This can be used to fix an invalid polygonal geometry to be valid 
+   * This can be used to fix an invalid polygonal geometry to be valid
    * (i.e. with no self-intersections).
-   * For some uses (e.g. fixing the result of a simplification) 
+   * For some uses (e.g. fixing the result of a simplification)
    * a better result is produced by using only the max-area orientation.
    * Other uses (e.g. fixing geometry) require both orientations to be used.
    * <p>
    * This function is for INTERNAL use only.
-   *  
+   *
    * @param geom the polygonal geometry to buffer by zero
    * @param isBothOrientations true if both orientations of input rings should be used
    * @return the buffered polygonal geometry
@@ -267,21 +264,21 @@ public class BufferOp
     //--- compute buffer using maximum signed-area orientation
     Geometry buf0 = geom.buffer(0);
     if (! isBothOrientations) return buf0;
-    
+
     //-- compute buffer using minimum signed-area orientation
     BufferOp op = new BufferOp(geom);
     op.isInvertOrientation = true;
     Geometry buf0Inv = op.getResultGeometry(0);
-    
+
     //-- the buffer results should be non-adjacent, so combining is safe
     return combine(buf0, buf0Inv);
   }
-  
+
   /**
    * Combines the elements of two polygonal geometries together.
    * The input geometries must be non-adjacent, to avoid
-   * creating an invalid result.fgetRgz
-   * 
+   * creating an invalid result.
+   *
    * @param poly0 a polygonal geometry (which may be empty)
    * @param poly1 a polygonal geometry (which may be empty)
    * @return a combined polygonal geometry
@@ -290,7 +287,7 @@ public class BufferOp
     // short-circuit - handles case where geometry is valid
     if (poly1.isEmpty()) return poly0;
     if (poly0.isEmpty()) return poly1;
-    
+
     List<Polygon> polys = new ArrayList<Polygon>();
     extractPolygons(poly0, polys);
     extractPolygons(poly1, polys);
@@ -304,16 +301,12 @@ public class BufferOp
     }
   }
 
-  @Weak
   private Geometry argGeom;
   private double distance;
 
-  @Weak
-  private BufferParameters bufParams;
+  private BufferParameters bufParams = new BufferParameters();
 
   private Geometry resultGeometry = null;
-
-  @Weak
   private RuntimeException saveException;   // debugging only
   private boolean isInvertOrientation = false;
 
@@ -351,7 +344,7 @@ public class BufferOp
   }
 
   /**
-   * Sets the number of line segments in a quarter-circle 
+   * Sets the number of line segments in a quarter-circle
    * used to approximate angle fillets for round end caps and joins.
    *
    * @param quadrantSegments the number of segments in a fillet for a quadrant
@@ -360,7 +353,7 @@ public class BufferOp
   {
     bufParams.setQuadrantSegments(quadrantSegments);
   }
-  
+
   /**
    * Returns the buffer computed for a geometry for a given buffer distance.
    *
@@ -394,7 +387,7 @@ public class BufferOp
         bufferReducedPrecision(precDigits);
       }
       catch (TopologyException ex) {
-      	// update the saved exception to reflect the new input geometry
+        // update the saved exception to reflect the new input geometry
         saveException = ex;
         // don't propagate the exception - it will be detected by fact that resultGeometry is null
       }
@@ -413,7 +406,7 @@ public class BufferOp
     PrecisionModel fixedPM = new PrecisionModel(sizeBasedScaleFactor);
     bufferFixedPrecision(fixedPM);
   }
-  
+
   private void bufferOriginalPrecision()
   {
     try {
@@ -443,8 +436,8 @@ public class BufferOp
     /*
      * Snap-Rounding provides both robustness
      * and a fixed output precision.
-     * 
-     * SnapRoundingNoder does not require rounded input, 
+     *
+     * SnapRoundingNoder does not require rounded input,
      * so could be used by itself.
      * But using ScaledNoder may be faster, since it avoids
      * rounding within SnapRoundingNoder.
@@ -459,6 +452,5 @@ public class BufferOp
     bufBuilder.setNoder(noder);
     // this may throw an exception, if robustness errors are encountered
     resultGeometry = bufBuilder.buffer(argGeom, distance);
-    bufBuilder = null;
   }
 }
