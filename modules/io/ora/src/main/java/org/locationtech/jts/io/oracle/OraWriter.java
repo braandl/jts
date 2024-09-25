@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 import oracle.jdbc.OracleConnection;
 
@@ -530,7 +530,7 @@ public class OraWriter
       
       int startOffset = triplet[0]; 
       //verify startOffset is same as ordIndex
-      Assert.isTrue(startOffset == ordIndex + 1,
+      JtsAssert.isTrue(startOffset == ordIndex + 1,
           "ElemInfo computed startingOffset does not match actual ordinates position");
       
       int elemType = triplet[1];

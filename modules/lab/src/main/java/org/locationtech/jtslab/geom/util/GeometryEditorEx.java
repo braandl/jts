@@ -26,7 +26,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.GeometryTransformer;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -187,7 +187,7 @@ public class GeometryEditorEx
       return editLineString((LineString) geometry);
     }
 
-    Assert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
+    JtsAssert.shouldNeverReachHere("Unsupported Geometry class: " + geometry.getClass().getName());
     return null;
   }
 

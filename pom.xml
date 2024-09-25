@@ -85,13 +85,13 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>artifacts.contagt.com</id>
+            <id>artifacts.stage.contagt.com</id>
             <name>JTS Repository - Snapshots</name>
             <url>https://artifacts.contagt.com/artifactory/contagt-snapshot-local</url>
         </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>artifacts.contagt.com</id>
+            <url>https://artifacts.contagt.com/artifactory/contagt-release-local</url>
         </repository>
         <site>
           <id>jts</id>
