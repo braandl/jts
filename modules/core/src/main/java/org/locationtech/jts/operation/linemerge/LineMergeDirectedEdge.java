@@ -14,7 +14,7 @@ package org.locationtech.jts.operation.linemerge;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.planargraph.DirectedEdge;
 import org.locationtech.jts.planargraph.Node;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A {@link org.locationtech.jts.planargraph.DirectedEdge} of a 
@@ -51,7 +51,7 @@ public class LineMergeDirectedEdge extends DirectedEdge {
     if (getToNode().getOutEdges().getEdges().get(0) == getSym()) {
       return (LineMergeDirectedEdge) getToNode().getOutEdges().getEdges().get(1);
     }
-    Assert.isTrue(getToNode().getOutEdges().getEdges().get(1) == getSym());
+    JtsAssert.isTrue(getToNode().getOutEdges().getEdges().get(1) == getSym());
 
     return (LineMergeDirectedEdge) getToNode().getOutEdges().getEdges().get(0);
   }

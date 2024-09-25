@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.LineString;
  *
  * @version 1.7
  */
-public class Debug {
+public class JtsDebug {
 
   public static String DEBUG_PROPERTY_NAME = "jts.debug";
   public static String DEBUG_PROPERTY_VALUE_ON = "on";
@@ -72,7 +72,7 @@ public class Debug {
                        (debugOn ? "ON" : "OFF") );
   }
 
-  private static final Debug debug = new Debug();
+  private static final JtsDebug debug = new JtsDebug();
   private static final GeometryFactory fact = new GeometryFactory();
   private static final String DEBUG_LINE_TAG = "D! ";
 
@@ -248,7 +248,7 @@ public class Debug {
     }
   }
   
-  private Debug() {
+  private JtsDebug() {
     out = System.out;
     printArgs = new Class[1];
     try {

@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.planargraph.DirectedEdge;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -86,8 +86,8 @@ class EdgeRing {
     do {
       edges.add(de);
       de = de.getNext();
-      Assert.isTrue(de != null, "found null DE in ring");
-      Assert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
+      JtsAssert.isTrue(de != null, "found null DE in ring");
+      JtsAssert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
     } while (de != startDE);
     return edges;
   }
@@ -121,8 +121,8 @@ class EdgeRing {
       add(de);
       de.setRing(this);
       de = de.getNext();
-      Assert.isTrue(de != null, "found null DE in ring");
-      Assert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
+      JtsAssert.isTrue(de != null, "found null DE in ring");
+      JtsAssert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
     } while (de != startDE);
   }
   

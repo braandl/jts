@@ -16,7 +16,7 @@ import org.locationtech.jts.algorithm.MinimumBoundingCircle;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 public class MinimumBoundingCircleStressTest 
 {
@@ -64,7 +64,7 @@ public class MinimumBoundingCircleStressTest
   		double ptRadius = centre.distance(p);
   		double error = ptRadius - radius;
   		if (error > tolerance) {
-  			Assert.shouldNeverReachHere();
+  			JtsAssert.shouldNeverReachHere();
   		}
   	}
   }

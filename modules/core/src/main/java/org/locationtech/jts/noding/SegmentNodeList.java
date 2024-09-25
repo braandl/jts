@@ -23,7 +23,7 @@ import com.google.j2objc.annotations.Weak;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -66,7 +66,7 @@ public class SegmentNodeList
     SegmentNode ei = (SegmentNode) nodeMap.get(eiNew);
     if (ei != null) {
       // debugging sanity check
-      Assert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
+      JtsAssert.isTrue(ei.coord.equals2D(intPt), "Found equal nodes with different coordinates");
 //      if (! ei.coord.equals2D(intPt))
 //        Debug.println("Found equal nodes with different coordinates");
 

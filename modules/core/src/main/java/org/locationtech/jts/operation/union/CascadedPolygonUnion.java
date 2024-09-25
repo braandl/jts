@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.Polygonal;
@@ -27,7 +26,7 @@ import org.locationtech.jts.index.strtree.STRtree;
 import org.locationtech.jts.operation.overlay.snap.SnapIfNeededOverlayOp;
 import org.locationtech.jts.operation.overlayng.OverlayNG;
 import org.locationtech.jts.operation.overlayng.OverlayNGRobust;
-import org.locationtech.jts.util.Debug;
+import org.locationtech.jts.util.JtsDebug;
 
 
 /**
@@ -313,14 +312,14 @@ public class CascadedPolygonUnion
   		return g0.copy();
 
   	countRemainder--;
-  	if (Debug.isDebugging()) {
-  	  Debug.println("Remainder: " + countRemainder + " out of " + countInput);
-      Debug.print("Union: A: " + g0.getNumPoints() + " / B: " + g1.getNumPoints() + "  ---  "  );
+  	if (JtsDebug.isDebugging()) {
+  	  JtsDebug.println("Remainder: " + countRemainder + " out of " + countInput);
+      JtsDebug.print("Union: A: " + g0.getNumPoints() + " / B: " + g1.getNumPoints() + "  ---  "  );
   	}
 
   	Geometry union = unionActual( g0, g1 );
   	
-    if (Debug.isDebugging()) Debug.println(" Result: " + union.getNumPoints());
+    if (JtsDebug.isDebugging()) JtsDebug.println(" Result: " + union.getNumPoints());
     //if (TestBuilderProxy.isActive()) TestBuilderProxy.showIndicator(union);
     
     return union;

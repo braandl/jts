@@ -27,7 +27,7 @@ import org.locationtech.jts.triangulate.quadedge.QuadEdgeSubdivision;
 import org.locationtech.jts.triangulate.quadedge.TriangleVisitor;
 import org.locationtech.jts.triangulate.tri.Tri;
 import org.locationtech.jts.triangulate.tri.TriangulationBuilder;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Functions to operate on triangulations represented as
@@ -149,7 +149,7 @@ class HullTriangulation
     for (HullTri tri : triList) {
       if (tri.isBorder()) return tri;
     }
-    Assert.shouldNeverReachHere("No border triangles found");
+    JtsAssert.shouldNeverReachHere("No border triangles found");
     return null;
   }
   

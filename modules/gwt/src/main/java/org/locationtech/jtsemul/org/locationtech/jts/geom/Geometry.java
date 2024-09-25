@@ -26,7 +26,7 @@ import org.locationtech.jts.operation.predicate.RectangleIntersects;
 import org.locationtech.jts.operation.union.UnaryUnionOp;
 import org.locationtech.jts.operation.valid.IsSimpleOp;
 import org.locationtech.jts.operation.valid.IsValidOp;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -1555,7 +1555,7 @@ public abstract class Geometry
             return clone;
         }
         catch (CloneNotSupportedException e) {
-            Assert.shouldNeverReachHere();
+            JtsAssert.shouldNeverReachHere();
             return null;
         }
     }

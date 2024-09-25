@@ -27,6 +27,7 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.operation.buffer.validate.BufferResultValidator;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jts.util.StringUtil;
 
 
@@ -212,7 +213,7 @@ public class BufferValidator
           // 10/29/2003]
           buffer = wktReader.read("POINT EMPTY");
         } catch (ParseException e) {
-          org.locationtech.jts.util.Assert.shouldNeverReachHere();
+          JtsAssert.shouldNeverReachHere();
         }
       }
     }
@@ -225,7 +226,7 @@ public class BufferValidator
         if (getOriginal().getClass() == GeometryCollection.class) {
           return;
         }
-        org.locationtech.jts.util.Assert.isTrue(getOriginal().isValid());
+        JtsAssert.isTrue(getOriginal().isValid());
         if (bufferDistance > 0) {
           Assert.assertTrue(
             supplement("Expected buffer to contain original"),

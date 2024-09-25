@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.CoordinateArrays;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Triangle;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes the <b>Minimum Bounding Circle</b> (MBC)
@@ -339,7 +339,7 @@ public class MinimumBoundingCircle
 				return;
 			}
 		}
-		Assert.shouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!"); 
+		JtsAssert.shouldNeverReachHere("Logic failure in Minimum Bounding Circle algorithm!");
 	}
 	
 	private static Coordinate lowestPoint(Coordinate[] pts)

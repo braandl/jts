@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.util.StringUtil;
 
 
@@ -94,7 +94,7 @@ private boolean verbose;
           reportBuf.write("    Actual: " + test.getActualResult().toFormattedString() + "\n");
         }
         catch (Exception e) {
-          Assert.shouldNeverReachHere(e.toString());
+          JtsAssert.shouldNeverReachHere(e.toString());
         }
       }
     }

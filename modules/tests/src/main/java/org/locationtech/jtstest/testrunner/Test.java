@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.geomop.GeometryOperation;
 import org.locationtech.jtstest.util.StringUtil;
 
@@ -202,7 +202,7 @@ public class Test implements Runnable
     xml += " arg1=\"" + geometryIndex + "\"";
     int j = 2;
     for (String argument : arguments ) {
-      Assert.isTrue(argument != null);
+      JtsAssert.isTrue(argument != null);
       xml += " arg" + j + "=\"" + argument + "\"";
       j++;
     }

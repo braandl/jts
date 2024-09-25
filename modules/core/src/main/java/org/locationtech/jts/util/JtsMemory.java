@@ -20,7 +20,7 @@ import com.google.common.annotations.GwtIncompatible;
  *
  */
 @GwtIncompatible
-public class Memory 
+public class JtsMemory
 {
 	public static long used()
 	{

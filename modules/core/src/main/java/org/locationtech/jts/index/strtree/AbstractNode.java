@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A node of an {@link AbstractSTRtree}. A node is one of:
@@ -124,7 +124,7 @@ public abstract class AbstractNode implements Boundable, Serializable {
    * @param childBoundable the child to add
    */
   public void addChildBoundable(Boundable childBoundable) {
-    Assert.isTrue(bounds == null);
+    JtsAssert.isTrue(bounds == null);
     childBoundables.add(childBoundable);
   }
 

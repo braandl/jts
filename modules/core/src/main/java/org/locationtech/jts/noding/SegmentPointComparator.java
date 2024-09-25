@@ -13,7 +13,7 @@
 package org.locationtech.jts.noding;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Implements a robust method of comparing the relative position of two
@@ -54,7 +54,7 @@ public class SegmentPointComparator {
       case 6: return compareValue(-ySign, xSign);
       case 7: return compareValue(xSign, -ySign);
     }
-    Assert.shouldNeverReachHere("invalid octant value");
+    JtsAssert.shouldNeverReachHere("invalid octant value");
     return 0;
   }
 

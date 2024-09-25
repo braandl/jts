@@ -30,7 +30,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.util.GeometryMapper;
 import org.locationtech.jts.index.chain.MonotoneChain;
 import org.locationtech.jts.index.chain.MonotoneChainSelectAction;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes an offset curve from a geometry.
@@ -535,7 +535,7 @@ public class OffsetCurve {
       
       //-- check for an abnormal state
       if (sectionCount++ > ringPts.length) {
-        Assert.shouldNeverReachHere("Too many sections for ring - probable bug");
+        JtsAssert.shouldNeverReachHere("Too many sections for ring - probable bug");
       }
     } while (sectionStart != startIndex && sectionEnd != startIndex);
   }

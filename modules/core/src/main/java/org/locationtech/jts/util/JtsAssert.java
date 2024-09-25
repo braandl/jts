@@ -16,7 +16,7 @@ package org.locationtech.jts.util;
  *
  *@version 1.7
  */
-public class Assert {
+public class JtsAssert {
 
   /**
    *  Throws an <code>AssertionFailedException</code> if the given assertion is

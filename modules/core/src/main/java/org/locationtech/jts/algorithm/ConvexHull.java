@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes the convex hull of a {@link Geometry}.
@@ -412,7 +412,7 @@ public class ConvexHull
    * @return the coordinates with unnecessary (collinear) vertices removed
    */
   private Coordinate[] cleanRing(Coordinate[] original) {
-    Assert.equals(original[0], original[original.length - 1]);
+    JtsAssert.equals(original[0], original[original.length - 1]);
     List<Coordinate> cleanedRing = new ArrayList<Coordinate>();
     Coordinate previousDistinctCoordinate = null;
     for (int i = 0; i <= original.length - 2; i++) {

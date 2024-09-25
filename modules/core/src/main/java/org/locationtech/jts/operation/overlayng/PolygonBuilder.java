@@ -18,7 +18,7 @@ import java.util.List;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 class PolygonBuilder {
 
@@ -137,7 +137,7 @@ class PolygonBuilder {
         shellCount++;
       }
     }
-    Assert.isTrue(shellCount <= 1, "found two shells in EdgeRing list");
+    JtsAssert.isTrue(shellCount <= 1, "found two shells in EdgeRing list");
     return shell;
   }
   

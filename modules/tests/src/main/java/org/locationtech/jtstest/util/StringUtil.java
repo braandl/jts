@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -92,7 +92,7 @@ public class StringUtil
             try {
                 stackTrace += lineNumberReader.readLine() + newLine;
             } catch (IOException e) {
-                Assert.shouldNeverReachHere();
+                JtsAssert.shouldNeverReachHere();
             }
         }
         return stackTrace;

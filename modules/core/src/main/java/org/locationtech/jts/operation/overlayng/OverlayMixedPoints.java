@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes an overlay where one input is Point(s) and one is not.
@@ -115,7 +115,7 @@ class OverlayMixedPoints {
     case OverlayNG.DIFFERENCE: 
       return computeDifference(coords);
     }
-    Assert.shouldNeverReachHere("Unknown overlay op code");
+    JtsAssert.shouldNeverReachHere("Unknown overlay op code");
     return null;
   }
 

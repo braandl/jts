@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.CoordinateArrays;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testbuilder.JTSTestBuilder;
 import org.locationtech.jtstest.testbuilder.geom.AdjacentVertexFinder;
 import org.locationtech.jtstest.testbuilder.geom.ComponentLocater;
@@ -145,7 +145,7 @@ public class GeometryEditModel
         String wkt = wktWriter.writeFormatted(geom);
         return wkt;
     }
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return "";
   }
 

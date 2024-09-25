@@ -36,7 +36,7 @@ import javax.swing.event.ChangeListener;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testbuilder.io.XMLTestWriter;
 import org.locationtech.jtstest.testbuilder.model.DisplayParameters;
 import org.locationtech.jtstest.testbuilder.model.GeometryEvent;
@@ -98,7 +98,7 @@ public class JTSTestBuilderFrame extends JFrame
    */
   public JTSTestBuilderFrame() {
     try {
-      Assert.isTrue(singleton == null);
+      JtsAssert.isTrue(singleton == null);
       singleton = this;
       enableEvents(AWTEvent.WINDOW_EVENT_MASK);
       setIconImage(AppIcons.APP.getImage());

@@ -14,7 +14,7 @@ package org.locationtech.jts.geom;
 import java.util.Arrays;
 import java.util.TreeSet;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -142,7 +142,7 @@ public class GeometryCollection extends Geometry {
 
   public Geometry getBoundary() {
     checkNotGeometryCollection(this);
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return null;
   }
 

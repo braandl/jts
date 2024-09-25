@@ -13,7 +13,7 @@ package org.locationtech.jts.geomgraph;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.IntersectionMatrix;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A GraphComponent is the parent class for the objects'
@@ -77,7 +77,7 @@ abstract public class GraphComponent {
    */
   public void updateIM(IntersectionMatrix im)
   {
-    Assert.isTrue(label.getGeometryCount() >= 2, "found partial label");
+    JtsAssert.isTrue(label.getGeometryCount() >= 2, "found partial label");
     computeIM(im);
   }
 

@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.Triangle;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A memory-efficient representation of a triangle in a triangulation.
@@ -374,8 +374,8 @@ public class Tri {
     int indexNeighbor = tri.getIndex(this);
     Coordinate n0 = tri.getCoordinate(indexNeighbor);
     Coordinate n1 = tri.getCoordinate(next(indexNeighbor));
-    Assert.isTrue(e0.equals2D(n1), "Edge coord not equal");
-    Assert.isTrue(e1.equals2D(n0), "Edge coord not equal");
+    JtsAssert.isTrue(e0.equals2D(n1), "Edge coord not equal");
+    JtsAssert.isTrue(e1.equals2D(n0), "Edge coord not equal");
     
     //--- check that no edges cross
     RobustLineIntersector li = new RobustLineIntersector();

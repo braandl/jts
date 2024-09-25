@@ -28,7 +28,7 @@ import javax.swing.JFrame;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.test.TestCaseList;
 import org.locationtech.jtstest.test.Testable;
 import org.locationtech.jtstest.testbuilder.AppStrings;
@@ -84,7 +84,7 @@ public class HtmlWriter {
     if (busyDialog != null) {
       busyDialog.setDescription("Saving .html and .gif files");
     }
-    Assert.isTrue(outputDirectory.isDirectory());
+    JtsAssert.isTrue(outputDirectory.isDirectory());
     this.outputDirectory = outputDirectory;
     MapAndList runMapAndRuns = runMapAndRuns(testCaseList);
     Map runMap = runMapAndRuns.map;
@@ -225,7 +225,7 @@ public class HtmlWriter {
   private Object actualResult(TestCaseEdit testCaseEdit, String opName, String first,
       String second) throws Exception {
     try {
-      Assert.isTrue((first.equalsIgnoreCase("A")) || (first.equalsIgnoreCase("B")));
+      JtsAssert.isTrue((first.equalsIgnoreCase("A")) || (first.equalsIgnoreCase("B")));
       Class geometryClass = Class.forName("com.vividsolutions.jts.geom.Geometry");
       Geometry source = testCaseEdit.getGeometry(first.equalsIgnoreCase("A") ? 0 : 1);
       Object[] target;

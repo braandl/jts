@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.Puntal;
 import org.locationtech.jts.io.WKBWriter;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.test.TestCase;
 import org.locationtech.jtstest.test.TestCaseList;
 import org.locationtech.jtstest.test.Testable;
@@ -57,7 +57,7 @@ public class XMLTestWriter
     int j = 2;
     for (int i = 0; i < arguments.length; i++) {
       String argument = arguments[i];
-      Assert.isTrue(argument != null);
+      JtsAssert.isTrue(argument != null);
       xml += " arg" + j + "=\"" + argument  + "\"";
       j++;
     }

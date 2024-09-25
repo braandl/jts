@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Performs merging on the noded edges of the input geometries.
@@ -68,7 +68,7 @@ class EdgeMerger {
         
         // Assert: edges are identical (up to direction)
         // this is a fast (but incomplete) sanity check
-        Assert.isTrue(baseEdge.size() == edge.size(),
+        JtsAssert.isTrue(baseEdge.size() == edge.size(),
             "Merge of edges of different sizes - probable noding error.");
         
         baseEdge.merge(edge);

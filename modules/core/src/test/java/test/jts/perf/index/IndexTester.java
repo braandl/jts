@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jts.util.Stopwatch;
 
 
@@ -132,7 +132,7 @@ public class IndexTester {
     for (int i = 0; i < queries.size(); i++) {
       Envelope env = (Envelope) queries.get(i);
       List list = index.query(env);
-      Assert.isTrue(!list.isEmpty());
+      JtsAssert.isTrue(!list.isEmpty());
       querySize += list.size();
     }
     System.out.println("Avg query size = " + querySize / queries.size());

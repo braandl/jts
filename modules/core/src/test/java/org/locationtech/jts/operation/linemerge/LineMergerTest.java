@@ -18,7 +18,7 @@ import java.util.Iterator;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 import junit.framework.TestCase;
 
@@ -122,7 +122,7 @@ public class LineMergerTest extends TestCase {
       try {
         geometries.add(reader.read(inputWKT[i]));
       } catch (ParseException e) {
-        Assert.shouldNeverReachHere();
+        JtsAssert.shouldNeverReachHere();
       }
     }
 

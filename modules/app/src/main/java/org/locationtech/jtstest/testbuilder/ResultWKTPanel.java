@@ -28,7 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Memory;
+import org.locationtech.jts.util.JtsMemory;
 import org.locationtech.jtstest.testbuilder.model.TestBuilderModel;
 import org.locationtech.jtstest.testbuilder.ui.SwingUtil;
 import org.locationtech.jtstest.util.ExceptionFormatter;
@@ -172,7 +172,7 @@ extends JPanel
   {
     functionLabel.setText(opName);
     timeLabel.setText(time);
-    memoryLabel.setText(Memory.usedTotalString());   
+    memoryLabel.setText(JtsMemory.usedTotalString());
   }
 
   public void setResult(Object o)

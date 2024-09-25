@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.operation.overlayng.CoverageUnion;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
 import org.locationtech.jts.triangulate.VoronoiDiagramBuilder;
-import org.locationtech.jts.util.Memory;
+import org.locationtech.jts.util.JtsMemory;
 import org.locationtech.jts.util.Stopwatch;
 
 /**
@@ -79,7 +79,7 @@ public class DelaunayStressTest
 		checkVoronoi(pts);
 		
 		System.out.println("  --  Time: " + sw.getTimeString()
-				+ "  Mem: " + Memory.usedTotalString());
+				+ "  Mem: " + JtsMemory.usedTotalString());
 //		System.out.println(g);
 	}
 	

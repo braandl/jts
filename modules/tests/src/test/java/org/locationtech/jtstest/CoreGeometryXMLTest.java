@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testrunner.SimpleReportWriter;
 import org.locationtech.jtstest.testrunner.TestEngine;
 
@@ -74,7 +74,7 @@ public class CoreGeometryXMLTest extends TestCase {
     };
     
     private static List<File> filenames(File directory) {
-        Assert.isTrue(directory.isDirectory());
+        JtsAssert.isTrue(directory.isDirectory());
         File[] files = directory.listFiles(XML_FILTER);
 
         return Arrays.asList(files);

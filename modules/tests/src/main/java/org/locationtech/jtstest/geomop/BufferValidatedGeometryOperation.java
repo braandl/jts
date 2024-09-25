@@ -15,7 +15,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.operation.buffer.validate.BufferResultValidator;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testrunner.GeometryResult;
 import org.locationtech.jtstest.testrunner.Result;
 
@@ -125,7 +125,7 @@ implements GeometryOperation
 		if (argCount == 2) {
 			return geom.buffer(distance, quadSegments);
 		}
-		Assert.shouldNeverReachHere("Unknown or unhandled buffer method");
+		JtsAssert.shouldNeverReachHere("Unknown or unhandled buffer method");
 		return null;
 	}
 	

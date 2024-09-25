@@ -21,7 +21,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.planargraph.GraphComponent;
 import org.locationtech.jts.planargraph.Node;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -131,7 +131,7 @@ public class LineMerger
     for (Iterator i = graph.getNodes().iterator(); i.hasNext(); ) {
       Node node = (Node) i.next();
       if (!node.isMarked()) { 
-        Assert.isTrue(node.getDegree() == 2);
+        JtsAssert.isTrue(node.getDegree() == 2);
         buildEdgeStringsStartingAt(node);
         node.setMarked(true);
       }

@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -111,7 +111,7 @@ public class GeoJsonWriter {
     try {
       write(geometry, writer);
     } catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
 
     return writer.toString();

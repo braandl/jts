@@ -16,7 +16,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFilter;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
+
 /**
  * Represents an affine transformation on the 2D Cartesian plane. 
  * It can be used to transform a {@link Coordinate} or {@link Geometry}.
@@ -1115,7 +1116,7 @@ public class AffineTransformation
   	try {
   		return super.clone();
   	} catch(Exception ex) {
-  		Assert.shouldNeverReachHere();
+  		JtsAssert.shouldNeverReachHere();
   	}
   	return null;
   }

@@ -77,7 +77,7 @@ public class StringUtil
          try {
              stackTrace += lineNumberReader.readLine() + NEWLINE;
          } catch (IOException e) {
-             Assert.shouldNeverReachHere();
+             JtsAssert.shouldNeverReachHere();
          }
      }
      return stackTrace;

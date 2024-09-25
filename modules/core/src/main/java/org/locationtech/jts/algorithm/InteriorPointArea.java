@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes a point in the interior of an areal geometry.
@@ -253,7 +253,7 @@ public class InteriorPointArea {
       if (crossings.size() == 0) return;
       
       // TODO: is there a better way to verify the crossings are correct?
-      Assert.isTrue(0 == crossings.size() % 2, "Interior Point robustness failure: odd number of scanline crossings");
+      JtsAssert.isTrue(0 == crossings.size() % 2, "Interior Point robustness failure: odd number of scanline crossings");
       
       crossings.sort(Double::compare);
       /*

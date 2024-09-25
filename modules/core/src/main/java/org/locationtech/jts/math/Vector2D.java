@@ -14,7 +14,7 @@ package org.locationtech.jts.math;
 import org.locationtech.jts.algorithm.Angle;
 import org.locationtech.jts.algorithm.CGAlgorithmsDD;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A 2-dimensional mathematical vector represented by double-precision X and Y components.
@@ -269,7 +269,7 @@ public class Vector2D {
 		case 3:
 			return create(y, -x);
 		}
-		Assert.shouldNeverReachHere();
+		JtsAssert.shouldNeverReachHere();
 		return null;
 	}
 

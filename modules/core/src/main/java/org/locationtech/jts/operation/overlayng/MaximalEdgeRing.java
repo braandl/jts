@@ -19,7 +19,7 @@ import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 class MaximalEdgeRing {
@@ -55,7 +55,7 @@ class MaximalEdgeRing {
    */
   public static void linkResultAreaMaxRingAtNode(OverlayEdge nodeEdge)
   {
-    Assert.isTrue(nodeEdge.isInResultArea(), "Attempt to link non-result edge");
+    JtsAssert.isTrue(nodeEdge.isInResultArea(), "Attempt to link non-result edge");
     // assertion is only valid if building a polygonal geometry (ie not a coverage)
     //Assert.isTrue(! nodeEdge.symOE().isInResultArea(), "Found both half-edges in result");
 

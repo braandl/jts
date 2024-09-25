@@ -11,7 +11,7 @@
  */
 package org.locationtech.jts.index.bintree;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A node of a {@link Bintree}.
@@ -100,7 +100,7 @@ public class Node
 
   void insert(Node node)
   {
-    Assert.isTrue(interval == null || interval.contains(node.interval));
+    JtsAssert.isTrue(interval == null || interval.contains(node.interval));
     int index = getSubnodeIndex(node.interval, centre);
     if (node.level == level - 1) {
       subnode[index] = node;

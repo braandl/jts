@@ -23,7 +23,7 @@ import org.locationtech.jts.geom.GeometryFilter;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -119,7 +119,7 @@ class InputExtracter implements GeometryFilter
     case 1: return lines;
     case 2: return polygons;
     }
-    Assert.shouldNeverReachHere("Invalid dimension: "  + dim);
+    JtsAssert.shouldNeverReachHere("Invalid dimension: "  + dim);
     return null;
   }
   
@@ -161,7 +161,7 @@ class InputExtracter implements GeometryFilter
       points.add((Point) geom);
       return;
     }
-    Assert.shouldNeverReachHere("Unhandled geometry type: " + geom.getGeometryType());
+    JtsAssert.shouldNeverReachHere("Unhandled geometry type: " + geom.getGeometryType());
   }
 
   private void recordDimension(int dim) {

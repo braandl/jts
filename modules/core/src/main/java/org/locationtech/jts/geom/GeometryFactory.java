@@ -19,7 +19,7 @@ import com.google.j2objc.annotations.Weak;
 
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.locationtech.jts.geom.util.GeometryEditor;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Supplies a set of utility methods for building Geometry objects from lists
@@ -591,7 +591,7 @@ public class GeometryFactory
       else if (geom0 instanceof Point) {
         return createMultiPoint(toPointArray(geomList));
       }
-      Assert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
+      JtsAssert.shouldNeverReachHere("Unhandled class: " + geom0.getClass().getName());
     }
     return geom0;
   }

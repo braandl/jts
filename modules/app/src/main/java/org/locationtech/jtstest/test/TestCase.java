@@ -18,7 +18,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -76,7 +76,7 @@ public class TestCase implements Testable {
           toNullOrGeometry(expectedBoundary));
     }
     catch (ParseException e) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
   }
 
@@ -151,7 +151,7 @@ public class TestCase implements Testable {
       this.expectedIntersection = toNullOrGeometry(wkt);
     }
     catch (ParseException e) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return this;
   }
@@ -161,7 +161,7 @@ public class TestCase implements Testable {
       this.expectedBoundary = toNullOrGeometry(wkt);
     }
     catch (ParseException e) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return this;
   }

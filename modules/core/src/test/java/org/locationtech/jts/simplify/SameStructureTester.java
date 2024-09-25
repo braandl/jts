@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Test if two geometries have the same structure
@@ -38,7 +38,7 @@ public class SameStructureTester {
     else if (g1 instanceof Point)
       return isSameStructurePoint((Point) g1, (Point) g2);
 
-    Assert.shouldNeverReachHere(
+    JtsAssert.shouldNeverReachHere(
         "Unsupported Geometry class: " + g1.getClass().getName());
     return false;
   }

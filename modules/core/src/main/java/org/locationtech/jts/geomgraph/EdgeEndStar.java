@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A EdgeEndStar is an ordered list of EdgeEnds around a node.
@@ -227,14 +227,14 @@ abstract public class EdgeEndStar
     int lastEdgeIndex = edges.size() - 1;
     Label startLabel = ((EdgeEnd) edges.get(lastEdgeIndex)).getLabel();
     int startLoc = startLabel.getLocation(geomIndex, Position.LEFT);
-    Assert.isTrue(startLoc != Location.NONE, "Found unlabelled area edge");
+    JtsAssert.isTrue(startLoc != Location.NONE, "Found unlabelled area edge");
 
     int currLoc = startLoc;
     for (Iterator it = iterator(); it.hasNext(); ) {
       EdgeEnd e = (EdgeEnd) it.next();
       Label label = e.getLabel();
       // we assume that we are only checking a area
-      Assert.isTrue(label.isArea(geomIndex), "Found non-area edge");
+      JtsAssert.isTrue(label.isArea(geomIndex), "Found non-area edge");
       int leftLoc   = label.getLocation(geomIndex, Position.LEFT);
       int rightLoc  = label.getLocation(geomIndex, Position.RIGHT);
 //System.out.println(leftLoc + " " + rightLoc);
@@ -288,7 +288,7 @@ abstract public class EdgeEndStar
           if (rightLoc != currLoc)
             throw new TopologyException("side location conflict", e.getCoordinate());
           if (leftLoc == Location.NONE) {
-            Assert.shouldNeverReachHere("found single null side (at " + e.getCoordinate() + ")");
+            JtsAssert.shouldNeverReachHere("found single null side (at " + e.getCoordinate() + ")");
           }
           currLoc = leftLoc;
         }
@@ -299,7 +299,7 @@ abstract public class EdgeEndStar
            *  the other geometry (which is determined by the current location).
            *  Assign both sides to be the current location.
            */
-          Assert.isTrue(label.getLocation(geomIndex, Position.LEFT) == Location.NONE, "found single null side");
+          JtsAssert.isTrue(label.getLocation(geomIndex, Position.LEFT) == Location.NONE, "found single null side");
           label.setLocation(geomIndex, Position.RIGHT, currLoc);
           label.setLocation(geomIndex, Position.LEFT, currLoc);
         }

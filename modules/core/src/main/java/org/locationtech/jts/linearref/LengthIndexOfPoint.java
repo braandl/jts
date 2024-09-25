@@ -15,7 +15,7 @@ package org.locationtech.jts.linearref;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineSegment;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes the length index of the point
@@ -83,7 +83,7 @@ class LengthIndexOfPoint
     /**
      * Return the minDistanceLocation found.
      */
-    Assert.isTrue(closestAfter >= minIndex,
+    JtsAssert.isTrue(closestAfter >= minIndex,
                   "computed index is before specified minimum index");
     return closestAfter;
   }

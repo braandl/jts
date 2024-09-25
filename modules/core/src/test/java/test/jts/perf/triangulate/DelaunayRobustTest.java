@@ -18,7 +18,7 @@ import java.util.List;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.triangulate.DelaunayTriangulationBuilder;
-import org.locationtech.jts.util.Memory;
+import org.locationtech.jts.util.JtsMemory;
 import org.locationtech.jts.util.Stopwatch;
 
 /**
@@ -65,7 +65,7 @@ public class DelaunayRobustTest
 		builder.getSubdivision();
 		
 		System.out.println("  --  Time: " + sw.getTimeString()
-				+ "  Mem: " + Memory.usedTotalString());
+				+ "  Mem: " + JtsMemory.usedTotalString());
 //		System.out.println(g);
 	}
 	

@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Lineal;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Extracts the subline of a linear {@link Geometry} between
@@ -69,7 +69,7 @@ class ExtractLineByLocation
     if (linear instanceof Lineal)
       return linear.reverse();
 
-    Assert.shouldNeverReachHere("non-linear geometry encountered");
+    JtsAssert.shouldNeverReachHere("non-linear geometry encountered");
     return null;
   }
   /**

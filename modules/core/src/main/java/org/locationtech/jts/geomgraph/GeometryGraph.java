@@ -40,7 +40,7 @@ import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geomgraph.index.EdgeSetIntersector;
 import org.locationtech.jts.geomgraph.index.SegmentIntersector;
 import org.locationtech.jts.geomgraph.index.SimpleMCSweepLineIntersector;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A GeometryGraph is a graph that models a given Geometry
@@ -310,7 +310,7 @@ public class GeometryGraph
      * Even if the LineString is closed, add both points as if they were endpoints.
      * This allows for the case that the node already exists and is a boundary point.
      */
-    Assert.isTrue(coord.length >= 2, "found LineString with single point");
+    JtsAssert.isTrue(coord.length >= 2, "found LineString with single point");
     insertBoundaryPoint(argIndex, coord[0]);
     insertBoundaryPoint(argIndex, coord[coord.length - 1]);
   }

@@ -20,7 +20,7 @@ import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.Quadrant;
 import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A DirectedEdgeStar is an ordered list of <b>outgoing</b> DirectedEdges around a node.
@@ -95,7 +95,7 @@ public class DirectedEdgeStar
       else if (deLast.getDy() != 0)
         return deLast;
     }
-    Assert.shouldNeverReachHere("found two horizontal edges incident on node");
+    JtsAssert.shouldNeverReachHere("found two horizontal edges incident on node");
     return null;
 
   }
@@ -224,7 +224,7 @@ public class DirectedEdgeStar
       if (firstOut == null)
         throw new TopologyException("no outgoing dirEdge found", getCoordinate());
       //Assert.isTrue(firstOut != null, "no outgoing dirEdge found (at " + getCoordinate() );
-      Assert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
+      JtsAssert.isTrue(firstOut.isInResult(), "unable to link last incoming dirEdge");
       incoming.setNext(firstOut);
     }
   }
@@ -257,8 +257,8 @@ public class DirectedEdgeStar
     }
 //print(System.out);
     if (state == LINKING_TO_OUTGOING) {
-      Assert.isTrue(firstOut != null, "found null for first outgoing dirEdge");
-      Assert.isTrue(firstOut.getEdgeRing() == er, "unable to link last incoming dirEdge");
+      JtsAssert.isTrue(firstOut != null, "found null for first outgoing dirEdge");
+      JtsAssert.isTrue(firstOut.getEdgeRing() == er, "unable to link last incoming dirEdge");
       incoming.setNextMin(firstOut);
     }
   }

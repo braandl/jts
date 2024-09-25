@@ -32,7 +32,7 @@ import org.locationtech.jts.geomgraph.Label;
 import org.locationtech.jts.geomgraph.Node;
 import org.locationtech.jts.geomgraph.PlanarGraph;
 import org.locationtech.jts.operation.GeometryGraphOperation;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes the geometric overlay of two {@link Geometry}s.  The overlay
@@ -372,9 +372,9 @@ public class OverlayOp
              * label of the edge must be updated to reflect the resultant
              * side locations indicated by the depth values.
              */
-              Assert.isTrue(! depth.isNull(i, Position.LEFT), "depth of LEFT side has not been initialized");
+              JtsAssert.isTrue(! depth.isNull(i, Position.LEFT), "depth of LEFT side has not been initialized");
               lbl.setLocation(i, Position.LEFT,   depth.getLocation(i, Position.LEFT));
-              Assert.isTrue(! depth.isNull(i, Position.RIGHT), "depth of RIGHT side has not been initialized");
+              JtsAssert.isTrue(! depth.isNull(i, Position.RIGHT), "depth of RIGHT side has not been initialized");
               lbl.setLocation(i, Position.RIGHT,  depth.getLocation(i, Position.RIGHT));
             }
           }

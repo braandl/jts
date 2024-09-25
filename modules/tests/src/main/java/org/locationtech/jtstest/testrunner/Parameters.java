@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.util.StringUtil;
 
 
@@ -51,7 +51,7 @@ public class Parameters {
      * Returns the singleton. Be sure to call #setParameters first.
      */
     public static Parameters getInstance() {
-        Assert.isTrue(arguments != null);
+        JtsAssert.isTrue(arguments != null);
         if (instance == null)
             instance = new Parameters();
         return instance;
@@ -99,7 +99,7 @@ public class Parameters {
      * Returns true if key is one of the parameters. Case-insensitive.
      */
     public boolean contains(String key) {
-        Assert.isTrue(allowedKeys.contains(key.toLowerCase()));
+        JtsAssert.isTrue(allowedKeys.contains(key.toLowerCase()));
         return hashtable.containsKey(key.toLowerCase());
     }
 
@@ -107,7 +107,7 @@ public class Parameters {
      * Returns the value of the specified parameter, or null if there is no such key. Case-insensitive.
      */
     public String get(String key) {
-        Assert.isTrue(allowedKeys.contains(key.toLowerCase()));
+        JtsAssert.isTrue(allowedKeys.contains(key.toLowerCase()));
         return (String) hashtable.get(key.toLowerCase());
     }
 }

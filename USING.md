@@ -66,7 +66,7 @@ The latest snapshot builds are now avaialble:
 
 ```xml
 <properties>
-    <jts.version>1.20.0.4-SNAPSHOT</jts.version>
+    <jts.version>1.20.0.5</jts.version>
 </properties>
 <dependency>
     <groupId>org.locationtech.jts</groupId>

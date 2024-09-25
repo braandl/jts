@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.locationtech.jts.index.ItemVisitor;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Base class for STRtree and SIRtree. STR-packed R-trees are described in:
@@ -89,7 +89,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * @param nodeCapacity the maximum number of child nodes in a node
    */
   public AbstractSTRtree(int nodeCapacity) {
-    Assert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
+    JtsAssert.isTrue(nodeCapacity > 1, "Node capacity must be greater than 1");
     this.nodeCapacity = nodeCapacity;
   }
 
@@ -139,7 +139,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * M is the node capacity.
    */
   protected List createParentBoundables(List childBoundables, int newLevel) {
-    Assert.isTrue(!childBoundables.isEmpty());
+    JtsAssert.isTrue(!childBoundables.isEmpty());
     ArrayList parentBoundables = new ArrayList();
     parentBoundables.add(createNode(newLevel));
     ArrayList sortedChildBoundables = new ArrayList(childBoundables);
@@ -175,7 +175,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * @return the root, which may be a ParentNode or a LeafNode
    */
   private AbstractNode createHigherLevels(List boundablesOfALevel, int level) {
-    Assert.isTrue(!boundablesOfALevel.isEmpty());
+    JtsAssert.isTrue(!boundablesOfALevel.isEmpty());
     List parentBoundables = createParentBoundables(boundablesOfALevel, level + 1);
     if (parentBoundables.size() == 1) {
       return (AbstractNode) parentBoundables.get(0);
@@ -261,7 +261,7 @@ public abstract class AbstractSTRtree implements Serializable {
 
 
   protected void insert(Object bounds, Object item) {
-    Assert.isTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
+    JtsAssert.isTrue(!built, "Cannot insert items into an STR packed R-tree after it has been built.");
     itemBoundables.add(new ItemBoundable(bounds, item));
   }
 
@@ -317,7 +317,7 @@ public abstract class AbstractSTRtree implements Serializable {
         matches.add(((ItemBoundable)childBoundable).getItem());
       }
       else {
-        Assert.shouldNeverReachHere();
+        JtsAssert.shouldNeverReachHere();
       }
     }
   }
@@ -336,7 +336,7 @@ public abstract class AbstractSTRtree implements Serializable {
         visitor.visitItem(((ItemBoundable)childBoundable).getItem());
       }
       else {
-        Assert.shouldNeverReachHere();
+        JtsAssert.shouldNeverReachHere();
       }
     }
   }
@@ -378,7 +378,7 @@ public abstract class AbstractSTRtree implements Serializable {
         valuesTreeForNode.add(((ItemBoundable)childBoundable).getItem());
       }
       else {
-        Assert.shouldNeverReachHere();
+        JtsAssert.shouldNeverReachHere();
       }
     }
     if (valuesTreeForNode.size() <= 0) 
@@ -456,7 +456,7 @@ public abstract class AbstractSTRtree implements Serializable {
    * @param level -1 to get items
    */
   private void boundablesAtLevel(int level, AbstractNode top, Collection boundables) {
-    Assert.isTrue(level > -2);
+    JtsAssert.isTrue(level > -2);
     if (top.getLevel() == level) {
       boundables.add(top);
       return;
@@ -467,7 +467,7 @@ public abstract class AbstractSTRtree implements Serializable {
         boundablesAtLevel(level, (AbstractNode)boundable, boundables);
       }
       else {
-        Assert.isTrue(boundable instanceof ItemBoundable);
+        JtsAssert.isTrue(boundable instanceof ItemBoundable);
         if (level == -1) { boundables.add(boundable); }
       }
     }

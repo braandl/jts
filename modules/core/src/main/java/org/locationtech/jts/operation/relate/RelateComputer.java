@@ -36,7 +36,7 @@ import org.locationtech.jts.geomgraph.Node;
 import org.locationtech.jts.geomgraph.NodeMap;
 import org.locationtech.jts.geomgraph.index.SegmentIntersector;
 import org.locationtech.jts.operation.BoundaryOp;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Computes the topological relationship between two Geometries.
@@ -402,7 +402,7 @@ public class RelateComputer
       Node n = (Node) ni.next();
       Label label = n.getLabel();
       // isolated nodes should always have at least one geometry in their label
-      Assert.isTrue(label.getGeometryCount() > 0, "node with empty label found");
+      JtsAssert.isTrue(label.getGeometryCount() > 0, "node with empty label found");
       if (n.isIsolated()) {
         if (label.isNull(0))
           labelIsolatedNode(n, 0);

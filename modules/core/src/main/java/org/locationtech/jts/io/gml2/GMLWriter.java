@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -185,7 +185,7 @@ public class GMLWriter {
 			write(geom, writer);
 		}
     catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
 		return writer.toString();
 	}

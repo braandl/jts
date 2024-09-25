@@ -24,7 +24,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.util.LinearComponentExtracter;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.locationtech.jts.util.Memory;
+import org.locationtech.jts.util.JtsMemory;
 
 import test.jts.perf.PerformanceTestCase;
 import test.jts.perf.PerformanceTestRunner;
@@ -57,13 +57,13 @@ public class LineDissolvePerfTest  extends PerformanceTestCase
     dis.add(data);
     Geometry result = dis.getResult();
     System.out.println();
-    System.out.println(Memory.allString());
+    System.out.println(JtsMemory.allString());
   }
   
   public void runBruteForce_World()
   {
     Geometry result = dissolveLines(data);
-    System.out.println(Memory.allString());
+    System.out.println(JtsMemory.allString());
   }
   
   private Geometry dissolveLines(Collection lines) {

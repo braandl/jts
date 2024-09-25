@@ -11,7 +11,7 @@
  */
 package org.locationtech.jts.index.strtree;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A contiguous portion of 1D-space. Used internally by SIRtree.
@@ -26,7 +26,7 @@ public class Interval {
   }
 
   public Interval(double min, double max) {
-    Assert.isTrue(min <= max);
+    JtsAssert.isTrue(min <= max);
     this.min = min;
     this.max = max;
   }

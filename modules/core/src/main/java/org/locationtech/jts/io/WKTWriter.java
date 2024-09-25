@@ -31,7 +31,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Writes the Well-Known Text representation of a {@link Geometry}.
@@ -388,7 +388,7 @@ public class WKTWriter
       writeFormatted(geometry, false, sw);
     }
     catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return sw.toString();
   }
@@ -420,7 +420,7 @@ public class WKTWriter
       writeFormatted(geometry, true, sw);
     }
     catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return sw.toString();
   }
@@ -533,7 +533,7 @@ public class WKTWriter
               useFormatting, level, writer, formatter);
     }
     else {
-      Assert.shouldNeverReachHere("Unsupported Geometry implementation:"
+      JtsAssert.shouldNeverReachHere("Unsupported Geometry implementation:"
            + geometry.getClass());
     }
   }

@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testbuilder.GeometryEditPanel;
 import org.locationtech.jtstest.testbuilder.model.TestBuilderModel;
 import org.locationtech.jtstest.testbuilder.model.TestCaseEdit;
@@ -51,7 +51,7 @@ public class PNGWriter {
   }
 
   public void write(File outputDirectory, TestCaseEdit testCase, PrecisionModel precisionModel) throws IOException {
-    Assert.isTrue(outputDirectory.isDirectory());
+    JtsAssert.isTrue(outputDirectory.isDirectory());
     this.outputDirectory = outputDirectory;
     createPNGFile("geoms", testCase.getGeometry(0),
         testCase.getGeometry(1), testCase.getResult(),

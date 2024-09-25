@@ -31,7 +31,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Writes the SVG representation of a {@link Geometry}.
@@ -104,7 +104,7 @@ public class SVGWriter
       writeFormatted(geometry, isFormatted, sw);
     }
     catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return sw.toString();
   }
@@ -135,7 +135,7 @@ public class SVGWriter
       writeFormatted(geometry, true, sw);
     }
     catch (IOException ex) {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
     return sw.toString();
   }
@@ -202,7 +202,7 @@ public class SVGWriter
       appendGeometryCollection((GeometryCollection) geometry, level, writer);
     }
     else {
-      Assert.shouldNeverReachHere("Unsupported Geometry implementation:"
+      JtsAssert.shouldNeverReachHere("Unsupported Geometry implementation:"
            + geometry.getClass());
     }
   }

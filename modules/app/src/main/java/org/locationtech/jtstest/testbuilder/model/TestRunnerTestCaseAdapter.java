@@ -19,7 +19,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.IntersectionMatrix;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.geomop.GeometryMethodOperation;
 import org.locationtech.jtstest.test.Testable;
 import org.locationtech.jtstest.testrunner.BooleanResult;
@@ -51,7 +51,7 @@ public class TestRunnerTestCaseAdapter
       testCase.setGeometryB(g);
     }
     else {
-      Assert.shouldNeverReachHere();
+      JtsAssert.shouldNeverReachHere();
     }
   }
 
@@ -131,7 +131,7 @@ public class TestRunnerTestCaseAdapter
     else if (index == 1) {
       return testCase.getGeometryB();
     }
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return null;
   }
 
@@ -169,7 +169,7 @@ public class TestRunnerTestCaseAdapter
       }
       return wktWriter.write(testCase.getGeometryB());
     }
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return null;
   }
 
@@ -220,7 +220,7 @@ public class TestRunnerTestCaseAdapter
     if (test == null) {
       return null;
     }
-    Assert.isTrue(test.getExpectedResult() instanceof GeometryResult);
+    JtsAssert.isTrue(test.getExpectedResult() instanceof GeometryResult);
     return ((GeometryResult) test.getExpectedResult()).getGeometry();
   }
 
@@ -253,12 +253,12 @@ public class TestRunnerTestCaseAdapter
       new GeometryFactory(testCase.getTestRun().getPrecisionModel(),
 			0).createGeometryCollection(null));
     }
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return null;
   }
 
   private Test getABTest(String opName) {
-    Assert.isTrue(GeometryMethodOperation.isBooleanFunction(opName) 
+    JtsAssert.isTrue(GeometryMethodOperation.isBooleanFunction(opName)
     		|| GeometryMethodOperation.isGeometryFunction(opName));
     for (Iterator i = testCase.getTests().iterator(); i.hasNext(); ) {
       Test test = (Test) i.next();

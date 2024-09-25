@@ -11,7 +11,7 @@
  */
 package org.locationtech.jts.geom;
 
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Represents a single point.
@@ -65,7 +65,7 @@ public class Point
     if (coordinates == null) {
       coordinates = getFactory().getCoordinateSequenceFactory().create(new Coordinate[]{});
     }
-    Assert.isTrue(coordinates.size() <= 1);
+    JtsAssert.isTrue(coordinates.size() <= 1);
     this.coordinates = coordinates;
   }
 

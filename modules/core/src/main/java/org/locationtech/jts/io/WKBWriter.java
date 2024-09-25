@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Writes a {@link Geometry} into Well-Known Binary format.
@@ -403,7 +403,7 @@ public class WKBWriter
       writeGeometryCollection(WKBConstants.wkbGeometryCollection,
           (GeometryCollection) geom, os);
     else {
-      Assert.shouldNeverReachHere("Unknown Geometry type");
+      JtsAssert.shouldNeverReachHere("Unknown Geometry type");
     }
   }
 

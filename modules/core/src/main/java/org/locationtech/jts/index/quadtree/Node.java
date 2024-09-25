@@ -12,7 +12,7 @@
 package org.locationtech.jts.index.quadtree;
 
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Represents a node of a {@link Quadtree}.  Nodes contain
@@ -105,7 +105,7 @@ public class Node
 
   void insertNode(Node node)
   {
-    Assert.isTrue(env == null || env.contains(node.env));
+    JtsAssert.isTrue(env == null || env.contains(node.env));
 //System.out.println(env);
 //System.out.println(quad.env);
     int index = getSubnodeIndex(node.env, centrex, centrey);

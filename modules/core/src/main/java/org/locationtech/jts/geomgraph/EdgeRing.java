@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 
@@ -129,7 +129,7 @@ public abstract class EdgeRing {
 //Debug.println(de);
 //Debug.println(de.getEdge());
       Label label = de.getLabel();
-      Assert.isTrue(label.isArea());
+      JtsAssert.isTrue(label.isArea());
       mergeLabel(label);
       addPoints(de.getEdge(), de.isForward(), isFirstEdge);
       isFirstEdge = false;

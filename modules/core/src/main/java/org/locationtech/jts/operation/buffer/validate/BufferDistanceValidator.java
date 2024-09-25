@@ -25,7 +25,7 @@ import org.locationtech.jts.geom.util.LinearComponentExtracter;
 import org.locationtech.jts.geom.util.PolygonExtracter;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.operation.distance.DistanceOp;
-import org.locationtech.jts.util.Debug;
+import org.locationtech.jts.util.JtsDebug;
 
 /**
  * Validates that a given buffer curve lies an appropriate distance
@@ -91,7 +91,7 @@ public class BufferDistanceValidator
   		checkNegativeValid();
   	}
     if (VERBOSE) {
-      Debug.println("Min Dist= " + minDistanceFound + "  err= " 
+      JtsDebug.println("Min Dist= " + minDistanceFound + "  err= "
         + (1.0 - minDistanceFound / bufDistance) 
         + "  Max Dist= " + maxDistanceFound + "  err= " 
         + (maxDistanceFound / bufDistance - 1.0)

@@ -22,7 +22,7 @@ import org.locationtech.jts.geom.Location;
 import org.locationtech.jts.geom.Position;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Implements the logic to compute the full labeling
@@ -124,7 +124,7 @@ class OverlayLabeller {
       }
       else {
         // must be a boundary edge
-        Assert.isTrue(label.hasSides(geomIndex));
+        JtsAssert.isTrue(label.hasSides(geomIndex));
         /**
          *  This is a boundary edge for the input area geom.
          *  Update the current location from its labels.
@@ -141,7 +141,7 @@ class OverlayLabeller {
         }
         int locLeft = e.getLocation(geomIndex, Position.LEFT);
         if (locLeft == Location.NONE) {
-          Assert.shouldNeverReachHere("found single null side at " + e);
+          JtsAssert.shouldNeverReachHere("found single null side at " + e);
         }
         currLoc = locLeft;
       }
@@ -165,7 +165,7 @@ class OverlayLabeller {
     do {
       OverlayLabel label = eStart.getLabel();
       if (label.isBoundary(geomIndex)) {
-        Assert.isTrue(label.hasSides(geomIndex));
+        JtsAssert.isTrue(label.hasSides(geomIndex));
         return eStart;
       }
       eStart = (OverlayEdge) eStart.oNext();

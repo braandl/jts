@@ -31,7 +31,7 @@ import org.locationtech.jts.planargraph.GraphComponent;
 import org.locationtech.jts.planargraph.Node;
 import org.locationtech.jts.planargraph.Subgraph;
 import org.locationtech.jts.planargraph.algorithm.ConnectedSubgraphFinder;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -216,8 +216,8 @@ public class LineSequencer
     isSequenceable = true;
 
     int finalLineCount = sequencedGeometry.getNumGeometries();
-    Assert.isTrue(lineCount == finalLineCount, "Lines were missing from result");
-    Assert.isTrue(sequencedGeometry instanceof LineString
+    JtsAssert.isTrue(lineCount == finalLineCount, "Lines were missing from result");
+    JtsAssert.isTrue(sequencedGeometry instanceof LineString
                   || sequencedGeometry instanceof MultiLineString,
                   "Result is not lineal");
   }
@@ -328,7 +328,7 @@ public class LineSequencer
     }
     if (expectedClosed) {
       // the path should end at the toNode of this de, otherwise we have an error
-      Assert.isTrue(fromNode == endNode, "path not contiguous");
+      JtsAssert.isTrue(fromNode == endNode, "path not contiguous");
     }
   }
 

@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jts.util.AssertionFailedException;
 
 /**
@@ -653,9 +653,9 @@ S  */
   {
     // throws Asserts for tokens that should never be seen
     if (tokenizer.ttype == StreamTokenizer.TT_NUMBER)
-      Assert.shouldNeverReachHere("Unexpected NUMBER token");
+      JtsAssert.shouldNeverReachHere("Unexpected NUMBER token");
     if (tokenizer.ttype == StreamTokenizer.TT_EOL)
-      Assert.shouldNeverReachHere("Unexpected EOL token");
+      JtsAssert.shouldNeverReachHere("Unexpected EOL token");
 
     String tokenStr = tokenString(tokenizer);
     return parseErrorWithLine(tokenizer, "Expected " + expected + " but found " + tokenStr);

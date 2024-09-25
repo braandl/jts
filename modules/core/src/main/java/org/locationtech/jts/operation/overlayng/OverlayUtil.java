@@ -22,8 +22,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.locationtech.jts.geom.TopologyException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Utility methods for overlay processing.
@@ -247,7 +246,7 @@ class OverlayUtil {
       result =  geomFact.createGeometryCollection();
       break;
     default:
-      Assert.shouldNeverReachHere("Unable to determine overlay result geometry dimension");
+      JtsAssert.shouldNeverReachHere("Unable to determine overlay result geometry dimension");
     }
     return result;
   }

@@ -26,7 +26,7 @@ import org.locationtech.jts.planargraph.DirectedEdgeStar;
 import org.locationtech.jts.planargraph.Edge;
 import org.locationtech.jts.planargraph.Node;
 import org.locationtech.jts.planargraph.PlanarGraph;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Represents a planar graph of edges that can be used to compute a
@@ -175,8 +175,8 @@ class PolygonizeGraph
       }
 
       de = de.getNext();
-      Assert.isTrue(de != null, "found null DE in ring");
-      Assert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
+      JtsAssert.isTrue(de != null, "found null DE in ring");
+      JtsAssert.isTrue(de == startDE || ! de.isInRing(), "found DE already in ring");
     } while (de != startDE);
 
     return intNodes;
@@ -341,7 +341,7 @@ class PolygonizeGraph
       }
     }
     if (prevInDE != null) {
-      Assert.isTrue(firstOutDE != null);
+      JtsAssert.isTrue(firstOutDE != null);
       prevInDE.setNext(firstOutDE);
     }
   }

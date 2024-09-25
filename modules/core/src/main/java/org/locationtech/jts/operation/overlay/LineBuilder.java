@@ -23,7 +23,7 @@ import org.locationtech.jts.geomgraph.DirectedEdgeStar;
 import org.locationtech.jts.geomgraph.Edge;
 import org.locationtech.jts.geomgraph.Label;
 import org.locationtech.jts.geomgraph.Node;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Forms JTS LineStrings out of a the graph of {@link DirectedEdge}s
@@ -139,7 +139,7 @@ public class LineBuilder {
     if (de.getEdge().isInResult()) return;  // if the edge linework is already included, don't include it again
 
     // sanity check for labelling of result edgerings
-    Assert.isTrue(! (de.isInResult() || de.getSym().isInResult()) || ! de.getEdge().isInResult());
+    JtsAssert.isTrue(! (de.isInResult() || de.getSym().isInResult()) || ! de.getEdge().isInResult());
 
     // include the linework if it's in the result of the operation
     if (OverlayOp.isResultOfOp(label, opCode)

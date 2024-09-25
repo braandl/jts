@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.testbuilder.io.HtmlSvgTestWriter;
 import org.locationtech.jtstest.testbuilder.io.HtmlWriter;
 import org.locationtech.jtstest.testbuilder.io.JavaTestWriter;
@@ -98,7 +98,7 @@ public class TestBuilderDialogs {
             break;
         }
         final File directory = directoryChooser.getSelectedFile();
-        Assert.isTrue(directory.exists());
+        JtsAssert.isTrue(directory.exists());
         //        BusyDialog.setOwner(this);
         //        BusyDialog busyDialog = new BusyDialog();
         //        writer.setBusyDialog(busyDialog);

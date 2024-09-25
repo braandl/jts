@@ -24,7 +24,7 @@ import org.locationtech.jts.geomgraph.DirectedEdge;
 import org.locationtech.jts.geomgraph.DirectedEdgeStar;
 import org.locationtech.jts.geomgraph.Edge;
 import org.locationtech.jts.geomgraph.Node;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * A RightmostEdgeFinder find the DirectedEdge in a list which has the highest coordinate,
@@ -67,7 +67,7 @@ class RightmostEdgeFinder {
      * If the rightmost point is a node, we need to identify which of
      * the incident edges is rightmost.
      */
-    Assert.isTrue(minIndex != 0 || minCoord.equals(minDe.getCoordinate()) , "inconsistency in rightmost processing");
+    JtsAssert.isTrue(minIndex != 0 || minCoord.equals(minDe.getCoordinate()) , "inconsistency in rightmost processing");
     if (minIndex == 0 ) {
       findRightmostEdgeAtNode();
     }
@@ -104,7 +104,7 @@ class RightmostEdgeFinder {
        * determine their relative orientation to decide which is rightmost.
        */
       Coordinate[] pts = minDe.getEdge().getCoordinates();
-      Assert.isTrue(minIndex > 0 && minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
+      JtsAssert.isTrue(minIndex > 0 && minIndex < pts.length, "rightmost point expected to be interior vertex of edge");
       Coordinate pPrev = pts[minIndex - 1];
       Coordinate pNext = pts[minIndex + 1];
       int orientation = Orientation.index(minCoord, pNext, pPrev);

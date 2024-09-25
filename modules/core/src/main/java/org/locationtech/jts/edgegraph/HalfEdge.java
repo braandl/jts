@@ -16,7 +16,7 @@ import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Quadrant;
 import org.locationtech.jts.io.WKTWriter;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Represents a directed component of an edge in an {@link EdgeGraph}.
@@ -302,7 +302,7 @@ public class HalfEdge {
       }
       ePrev = eNext;
     } while (ePrev != this);
-    Assert.shouldNeverReachHere();
+    JtsAssert.shouldNeverReachHere();
     return null;
   }
   
@@ -314,7 +314,7 @@ public class HalfEdge {
    * @param e the edge to insert (with same origin)
    */
   private void insertAfter(HalfEdge e) {
-    Assert.equals(orig, e.orig());
+    JtsAssert.equals(orig, e.orig());
     HalfEdge save = oNext();
     sym.setNext(e);
     e.sym().setNext(save);

@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import com.google.common.annotations.GwtIncompatible;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jts.util.NumberUtil;
 
 
@@ -402,7 +402,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 
       return coord; // return the clone
     } catch (CloneNotSupportedException e) {
-      Assert.shouldNeverReachHere(
+      JtsAssert.shouldNeverReachHere(
           "this shouldn't happen because this class is Cloneable");
 
       return null;

@@ -13,7 +13,7 @@ package org.locationtech.jts.index.quadtree;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * QuadRoot is the root of a single Quadtree.  It is centred at the origin,
@@ -73,7 +73,7 @@ public class Root
    */
   private void insertContained(Node tree, Envelope itemEnv, Object item)
   {
-    Assert.isTrue(tree.getEnvelope().contains(itemEnv));
+    JtsAssert.isTrue(tree.getEnvelope().contains(itemEnv));
    /**
     * Do NOT create a new quad for zero-area envelopes - this would lead
     * to infinite recursion. Instead, use a heuristic of simply returning

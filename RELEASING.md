@@ -214,7 +214,7 @@ Update master to the next release version:
 <<<<<<< HEAD
    mvn versions:set -DnewVersion=1.19.0.6-SNAPSHOT
 =======
-   mvn versions:set -DnewVersion=1.20.0.4-SNAPSHOT
+   mvn versions:set -DnewVersion=1.20.0.5
    ```
    
 3. Edit ``build-tools/pom.xml`` by hand, and compile to test.
@@ -231,7 +231,7 @@ Update master to the next release version:
    git commit -m "Version 1.19.0.6-SNAPSHOT"
 =======
    git add .
-   git commit -m "Version 1.20.0.4-SNAPSHOT"
+   git commit -m "Version 1.20.0.5"
 >>>>>>> master
    git push
    ```  

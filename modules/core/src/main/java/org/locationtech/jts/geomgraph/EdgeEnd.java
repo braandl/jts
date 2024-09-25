@@ -18,7 +18,7 @@ import org.locationtech.jts.algorithm.BoundaryNodeRule;
 import org.locationtech.jts.algorithm.Orientation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Quadrant;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Models the end of an edge incident on a node.
@@ -66,7 +66,7 @@ public class EdgeEnd
     dx = p1.x - p0.x;
     dy = p1.y - p0.y;
     quadrant = Quadrant.quadrant(dx, dy);
-    Assert.isTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
+    JtsAssert.isTrue(! (dx == 0 && dy == 0), "EdgeEnd with identical endpoints found");
   }
 
   public Edge getEdge() { return edge; }

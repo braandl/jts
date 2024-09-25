@@ -22,7 +22,7 @@ import java.util.PriorityQueue;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.ItemVisitor;
 import org.locationtech.jts.index.SpatialIndex;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 
 /**
@@ -122,7 +122,7 @@ implements SpatialIndex, Serializable
    * a new (parent) node.
    */
   protected List createParentBoundables(List childBoundables, int newLevel) {
-    Assert.isTrue(!childBoundables.isEmpty());
+    JtsAssert.isTrue(!childBoundables.isEmpty());
     int minLeafCount = (int) Math.ceil((childBoundables.size() / (double) getNodeCapacity()));
     ArrayList sortedChildBoundables = new ArrayList(childBoundables);
     Collections.sort(sortedChildBoundables, xComparator);
@@ -132,7 +132,7 @@ implements SpatialIndex, Serializable
   }
 
   private List createParentBoundablesFromVerticalSlices(List[] verticalSlices, int newLevel) {
-    Assert.isTrue(verticalSlices.length > 0);
+    JtsAssert.isTrue(verticalSlices.length > 0);
     List parentBoundables = new ArrayList();
     for (int i = 0; i < verticalSlices.length; i++) {
       parentBoundables.addAll(

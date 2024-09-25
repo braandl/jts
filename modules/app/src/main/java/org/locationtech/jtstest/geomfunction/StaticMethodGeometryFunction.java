@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.util.ClassUtil;
 import org.locationtech.jtstest.util.StringUtil;
 
@@ -39,7 +39,7 @@ public class StaticMethodGeometryFunction
 	
 	public static StaticMethodGeometryFunction createFunction(Method method)
 	{
-		Assert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[0]));
+		JtsAssert.isTrue(Geometry.class.isAssignableFrom((method.getParameterTypes())[0]));
 		
 		Class<?> clz = method.getDeclaringClass();
 		

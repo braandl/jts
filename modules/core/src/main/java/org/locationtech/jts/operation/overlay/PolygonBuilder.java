@@ -27,7 +27,7 @@ import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.geomgraph.DirectedEdge;
 import org.locationtech.jts.geomgraph.EdgeRing;
 import org.locationtech.jts.geomgraph.PlanarGraph;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 
 /**
  * Forms {@link Polygon}s out of a graph of {@link DirectedEdge}s.
@@ -146,7 +146,7 @@ public class PolygonBuilder {
         shellCount++;
       }
     }
-    Assert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
+    JtsAssert.isTrue(shellCount <= 1, "found two shells in MinimalEdgeRing list");
     return shell;
   }
   /**

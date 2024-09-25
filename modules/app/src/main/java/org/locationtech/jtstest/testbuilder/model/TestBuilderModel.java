@@ -27,7 +27,7 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.locationtech.jts.math.MathUtil;
-import org.locationtech.jts.util.Assert;
+import org.locationtech.jts.util.JtsAssert;
 import org.locationtech.jtstest.test.TestCaseList;
 import org.locationtech.jtstest.test.Testable;
 import org.locationtech.jtstest.testbuilder.AppColors;
@@ -333,7 +333,7 @@ public class TestBuilderModel
   }
 
   private TestCaseList createTestCaseListFromDirectory(File directory) {
-    Assert.isTrue(directory.isDirectory());
+    JtsAssert.isTrue(directory.isDirectory());
     TestCaseList testCaseList = new TestCaseList();
     List files = Arrays.asList(directory.listFiles());
     for (Iterator i = files.iterator(); i.hasNext(); ) {
