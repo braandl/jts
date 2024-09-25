@@ -12,6 +12,8 @@
 
 package org.locationtech.jts.io.kml;
 
+import com.google.j2objc.annotations.J2ObjCIncompatible;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DecimalFormat;
@@ -42,6 +44,7 @@ import org.locationtech.jts.util.StringUtil;
  * The <code>extrude</code> and <code>altitudeMode</code> modes can be set.
  * If set, the corresponding sub-elements will be output.
  */
+@J2ObjCIncompatible
 public class KMLWriter
 {
     /**

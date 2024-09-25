@@ -12,6 +12,8 @@
 
 package org.locationtech.jts.io.kml;
 
+import com.google.j2objc.annotations.J2ObjCIncompatible;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -41,6 +43,7 @@ import java.util.regex.Pattern;
  * Constructs a {@link Geometry} object from the OGC KML representation.
  * Works only with KML geometry elements and may also parse attributes within these elements
  */
+@J2ObjCIncompatible
 public class KMLReader {
     private final XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     private final GeometryFactory geometryFactory;

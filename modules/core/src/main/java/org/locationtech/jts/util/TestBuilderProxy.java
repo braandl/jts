@@ -11,6 +11,8 @@
  */
 package org.locationtech.jts.util;
 
+import com.google.j2objc.annotations.J2ObjCIncompatible;
+
 import java.awt.Color;
 import java.lang.reflect.Method;
 
@@ -30,6 +32,7 @@ import org.locationtech.jts.geom.Geometry;
  * @author Martin Davis
  *
  */
+@J2ObjCIncompatible
 public class TestBuilderProxy {
   
   private static final String CLASS_FUNCTIONS_UTIL = "org.locationtech.jtstest.function.FunctionsUtil";
