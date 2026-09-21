@@ -11,6 +11,8 @@
  */
 package org.locationtech.jts.geomgraph;
 
+import com.google.j2objc.annotations.Weak;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +43,20 @@ public abstract class EdgeRing {
   private Label label = new Label(Location.NONE); // label stores the locations of each geometry on the face surrounded by this ring
   private LinearRing ring;  // the ring created for this EdgeRing
   private boolean isHole;
+  /*
+   * Back-pointer only: setShell() also does shell.addHole(this), so a strong
+   * 'shell' closes a hole <-> shell retain cycle. Under j2objc (reference
+   * counting, no cycle collector) every such pair leaks for good, and with it
+   * the 'pts' and 'edges' lists of both rings - i.e. all the Coordinates of
+   * the ring. Buffering a closed ring produces exactly such a shell/hole pair
+   * on every call, so this leaked once per buffered outline.
+   *
+   * Safe to weaken because the shells are owned by PolygonBuilder#shellList
+   * for the whole build and getShell() is only ever read inside that build
+   * (PolygonBuilder#placeFreeHoles), so a shell always outlives every read of
+   * this field.
+   */
+  @Weak
   private EdgeRing shell;   // if non-null, the ring is a hole and this EdgeRing is its containing shell
   private ArrayList holes = new ArrayList(); // a list of EdgeRings which are holes in this EdgeRing
 
